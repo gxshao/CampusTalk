@@ -22,7 +22,7 @@ class WelcomeActivity : Activity() {
         send.setOnClickListener {
             object : Thread() {
                 override fun run() {
-                    var json = Gson()
+                  /*  var json = Gson()
                     var school = CTSchool()
                     school.sCode = "111"
                     school.sName = "123456"
@@ -49,7 +49,7 @@ class WelcomeActivity : Activity() {
                         override fun OnSent(messageSent: CharSequence?) {
 
                         }
-                    })
+                    })*/
                     super.run()
                 }
             }.start()

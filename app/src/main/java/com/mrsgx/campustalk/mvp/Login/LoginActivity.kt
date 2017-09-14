@@ -1,10 +1,15 @@
 package com.mrsgx.campustalk.mvp.Login
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
+import com.mrsgx.campustalk.data.WorkerRepository
+import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity(),LoginContract.View {
+class LoginActivity : Activity(),LoginContract.View {
+    var loginpresenter:LoginPresenter?=null
     override fun initViews() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -14,7 +19,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.View {
     }
 
     override fun showMessage(msg: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
 
     override fun startNewPage(target: Class<*>?) {
@@ -32,5 +37,7 @@ class LoginActivity : AppCompatActivity(),LoginContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        loginpresenter=LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!),this)
+        btn_login.setOnClickListener { loginpresenter!!.Login("aaa","123") }
     }
 }
