@@ -6,10 +6,11 @@ import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
+import com.mrsgx.campustalk.widget.TalkerProgressDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : Activity(),LoginContract.View {
-    var loginpresenter:LoginPresenter?=null
+class LoginActivity : Activity(), LoginContract.View {
+    var loginpresenter: LoginPresenter? = null
     override fun initViews() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -19,7 +20,7 @@ class LoginActivity : Activity(),LoginContract.View {
     }
 
     override fun showMessage(msg: String?) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun startNewPage(target: Class<*>?) {
@@ -37,7 +38,14 @@ class LoginActivity : Activity(),LoginContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        loginpresenter=LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!),this)
-        btn_login.setOnClickListener { loginpresenter!!.Login("aaa","123") }
+        loginpresenter = LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!), this)
+
+        var dialog = TalkerProgressDialog(this, R.style.BeanDialog)
+        dialog.show()
+        btn_login.setOnClickListener {
+            dialog.mText!!.text="xx"
+            dialog.show()
+        }
+        //loginpresenter!!.Login("aaa","123") }
     }
 }
