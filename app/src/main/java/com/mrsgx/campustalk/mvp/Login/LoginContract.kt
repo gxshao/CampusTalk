@@ -8,7 +8,6 @@ import com.mrsgx.campustalk.mvp.BaseView
  */
 class LoginContract {
     interface View : BaseView<Presenter>{
-       fun xx()
     }
     interface Presenter:BasePresenter{
         fun initData()

@@ -22,16 +22,20 @@
         <activity android:name=".mvp.Main.MainActivity" />
         <activity
             android:name=".mvp.Welcome.WelcomeActivity"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:launchMode="standard"
+            android:theme="@style/AppTheme"></activity>
 
         <service
             android:name=".service.ConnService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".mvp.Login.LoginActivity" >
+        <activity
+            android:name=".mvp.Login.LoginActivity"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".mvp.Regesiter.RegesiterActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -21,13 +21,17 @@
             android:src="@drawable/beanprogress"
             />
 
-        <ImageView
-            android:id="@+id/prg_box"
+        <TextView
+            android:id="@+id/prg_dot"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/bean_box" />
+            android:textColor="#FFF"
+            android:background="@drawable/bean_box"
+            android:text="@string/dots"
+            android:textAlignment="center"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <TextView
@@ -35,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFF"
-        android:text="null"
+        android:text="@string/please_wait"
         android:textSize="15sp" />
 
 </LinearLayout>

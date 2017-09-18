@@ -12,5 +12,6 @@ package com.mrsgx.campustalk.obj
     var Headpic:String?=null
     var Userexplain:String?=null
     var State:String?=null
+    var Password:String?=null
 }
 

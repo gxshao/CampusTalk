@@ -25,15 +25,31 @@ class TalkerProgressDialog(context: Context?, theme:Int) : Dialog(context,theme)
             mImg!!.postDelayed({
                 val an:AnimationDrawable= this.mImg!!.drawable as AnimationDrawable
                 an.start()
-            },100)
+            },10)
         })
+        this.setOnDismissListener {
+            mImg!!.post {
+                val an:AnimationDrawable= this.mImg!!.drawable as AnimationDrawable
+                an.stop()
+            }
+        }
 
+    }
+
+    fun show(txt:String) {
+        if(mText!=null)
+        {
+            mText!!.text=txt
+        }
+        if(!isShowing)
+            show()
     }
 
     override fun hide(){
         if(isShowing){
+            val an:AnimationDrawable= this.mImg!!.drawable as AnimationDrawable
+            an.stop()
             hide()
-
         }
     }
 

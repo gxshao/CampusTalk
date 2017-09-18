@@ -8,4 +8,7 @@ import io.reactivex.Observable
  */
 interface DataSource {
     fun Login(email:String?,pwd:String?):Observable<ResponseResult<CTUser>>?
+    fun CheckEmail(email: String?):Observable<ResponseResult<Boolean>>
+    fun GetCode():Observable<ResponseResult<Boolean>>
+    fun RegAccount(user:String,code:String):Observable<ResponseResult<CTUser>>
 }

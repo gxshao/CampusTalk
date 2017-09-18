@@ -11,6 +11,19 @@ import io.reactivex.Observable
  * Created by Shao on 2017/9/14.
  */
 class WorkerRemoteDataSource : DataSource {
+    override fun RegAccount(user: String, code: String): Observable<ResponseResult<CTUser>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).RegAccount("reg",user,code)
+    }
+
+
+    override fun GetCode(): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetCode("ckcode")
+    }
+
+    override fun CheckEmail(email: String?): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).CheckEmail("ckemail",email!!)
+    }
+
     override fun Login(email: String?, pwd: String?): Observable<ResponseResult<CTUser>> {
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).Login("login", email!!, pwd!!)
     }

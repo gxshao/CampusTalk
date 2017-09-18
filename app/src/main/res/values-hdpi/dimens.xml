@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="TextSize">15sp</dimen>
+    <dimen name="logTextSize">10dp</dimen>
+    <dimen name="TitleSize">25sp</dimen>
+    <dimen name="iconSize">30dp</dimen>
+    <dimen name="boxPadding">10dp</dimen>
+    <dimen name="menuSize">25dp</dimen>
+    <dimen name="contentSize">13sp</dimen>
+</resources>

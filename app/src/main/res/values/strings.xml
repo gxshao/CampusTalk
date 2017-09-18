@@ -14,4 +14,21 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="please_wait">请稍候…</string>
+    <string name="dots">…</string>
+    <string name="login_failed_problem_network">登录失败，请检查网络!</string>
+    <string name="login">登录中…</string>
+    <string name="login_failed_problem_email">账号不存在</string>
+    <string name="login_failed_problem_password">密码错误!</string>
+    <string name="loading">Loading</string>
+    <string name="login_failed_problem_stopped">您的账号已被停用</string>
+    <string name="getvalidatecode">获取验证码</string>
+    <string name="email">邮箱</string>
+    <string name="getcode_fail_wrong_email">邮箱填写有误，请重试!</string>
+    <string name="aviliable_email">邮箱可用</string>
+    <string name="email_sent">验证码已发送到您的邮箱，请确认！</string>
+    <string name="email_sent_error">验证码发送错误，请稍候重试！</string>
+    <string name="reging_please_wait">注册中,请稍候..</string>
+    <string name="reg_fail_unknow">注册失败!请稍候重试</string>
+    <string name="reg_fail_wrong_code">错误的验证码!</string>
 </resources>

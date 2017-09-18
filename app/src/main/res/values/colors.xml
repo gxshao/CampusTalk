@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="dialog_bg">#3399cc</color>
     <color name="dialog_bg_start">#3366ff</color>
+    <color name="welcome_bg">#FFF</color>
 </resources>

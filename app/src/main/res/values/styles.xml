@@ -1,8 +1,10 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/fade</item>
+        <item name="android:windowEnterAnimation">@transition/fade</item>
+        <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
     <style name="BeanDialog" parent="android:Theme.Dialog">
         <!-- 是否半透明 -->
