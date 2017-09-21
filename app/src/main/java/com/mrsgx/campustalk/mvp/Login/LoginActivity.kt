@@ -46,7 +46,7 @@ class LoginActivity : Activity(), LoginContract.View {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_login)
-        loginpresenter = LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!), this)
+        loginpresenter = LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         btn_login.setOnClickListener {
          TalkerProgressHelper.getInstance(this).show("what hell")
            // this.startActivity(Intent(this, WelcomeActivity::class.java))

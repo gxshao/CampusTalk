@@ -14,19 +14,18 @@ import com.mrsgx.campustalk.widget.TalkerProgressDialog
 class SharedHelper {
     companion object {
         @SuppressLint("StaticFieldLeak")
-        private var instance:SharedPreferences? = null
+        private var instance: SharedPreferences?=null
 
         fun getInstance(context: Context): SharedPreferences {
-            if (instance == null) {
-                synchronized(TalkerProgressDialog::class) {
-                    if (instance == null) {
-                        instance = context.getSharedPreferences(SHARED_NAME, Activity.MODE_PRIVATE)
-                    }
-                }
+            synchronized(TalkerProgressDialog::class) {
+                if(instance==null)
+                instance = context.getSharedPreferences(SHARED_NAME, Activity.MODE_PRIVATE)
             }
             return instance!!
         }
-        val SHARED_NAME="config"
-        val KEY_EMAIL="email"
-        val KEY_PWD="pass"
-}}
+
+        val SHARED_NAME = "config"
+        val KEY_EMAIL = "email"
+        val KEY_PWD = "pass"
+    }
+}

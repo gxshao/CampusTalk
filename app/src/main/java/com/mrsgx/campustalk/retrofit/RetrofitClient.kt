@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
  */
 class RetrofitClient {
     companion object {
-        var INSTANCE:RetrofitClient?=null
         fun getInstance():Retrofit?{
             return ClientHolder.retrofit
         }

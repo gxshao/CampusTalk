@@ -12,16 +12,16 @@ import io.reactivex.Observable
  */
 class WorkerRemoteDataSource : DataSource {
     override fun RegAccount(user: String, code: String): Observable<ResponseResult<CTUser>> {
-        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).RegAccount("reg",user,code)
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).RegAccount("regesiter", user, code)
     }
 
 
-    override fun GetCode(): Observable<ResponseResult<Boolean>> {
-        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetCode("ckcode")
+    override fun SendCode(email: String): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).SendCode("sendcode", email)
     }
 
     override fun CheckEmail(email: String?): Observable<ResponseResult<Boolean>> {
-        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).CheckEmail("ckemail",email!!)
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).CheckEmail("ckemail", email!!)
     }
 
     override fun Login(email: String?, pwd: String?): Observable<ResponseResult<CTUser>> {
@@ -29,12 +29,11 @@ class WorkerRemoteDataSource : DataSource {
     }
 
     companion object {
-        fun getInstance(): WorkerRemoteDataSource? {
-            var INSTANCE: WorkerRemoteDataSource? = null
-            if (INSTANCE == null) {
+        private var INSTANCE: WorkerRemoteDataSource? = null
+        fun getInstance(): WorkerRemoteDataSource {
+            if (INSTANCE == null)
                 INSTANCE = WorkerRemoteDataSource()
-            }
-            return INSTANCE
+            return INSTANCE!!
         }
     }
 }

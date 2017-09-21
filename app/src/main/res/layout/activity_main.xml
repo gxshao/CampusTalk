@@ -1,20 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mrsgx.campustalk.mvp.Main.MainActivity">
+    tools:context="com.mrsgx.campustalk.mvp.Main.MainActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="73dp">
 
-    <TextView
-        android:id="@+id/sample_text"
+
+    <Button
+        android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="41dp"
+        android:layout_marginRight="41dp"
+        android:layout_marginTop="106dp"
+        android:text="链接" />
 
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/frg_navibar"
+        android:layout_width="@dimen/navibar_width"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+       <!--- android:layout_marginLeft="@dimen/hide_navibar_width"
+        android:layout_marginStart="@dimen/hide_navibar_width">-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            tools:ignore="UselessParent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3">
+
+                <RadioGroup
+                    android:id="@+id/radio_navi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioButton"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:button="@null"
+                        android:drawablePadding="-10dp"
+                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:text="匹配"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/contentSize" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:button="@null"
+                        android:drawablePadding="-10dp"
+                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:text="匹配"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/contentSize" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:button="@null"
+                        android:drawablePadding="-10dp"
+                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:text="匹配"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/contentSize" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:button="@null"
+                        android:drawablePadding="-10dp"
+                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:text="匹配"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/contentSize" />
+                </RadioGroup>
+
+
+            </ScrollView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7">
+
+                <ImageButton
+                    android:id="@+id/btn_img_navi_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@android:drawable/ic_media_play" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>

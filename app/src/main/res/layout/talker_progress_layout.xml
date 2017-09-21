@@ -7,7 +7,7 @@
     android:minHeight="120dp"
     android:minWidth="190dp"
     android:orientation="vertical"
-    android:background="@drawable/bean_bg"
+    android:background="@drawable/talker_bg"
     android:padding="10dp" >
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/prg_img"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/beanprogress"
+            android:src="@drawable/talkerprogress"
             />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="10dp"
             android:textColor="#FFF"
-            android:background="@drawable/bean_box"
+            android:background="@drawable/talker_box"
             android:text="@string/dots"
             android:textAlignment="center"
             android:textSize="15sp" />

@@ -24,9 +24,9 @@ import java.util.*
 
 class RegesiterActivity : Activity(), RegesiterContract.View {
     override fun setEmailBoxState(b: Boolean) {
-        if(b){
+        if (b) {
             ed_email.setBackgroundColor(this.resources.getColor(R.color.welcome_bg))
-        }else
+        } else
             ed_email.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
     }
 
@@ -44,7 +44,7 @@ class RegesiterActivity : Activity(), RegesiterContract.View {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun startNewPage(target: Class<*>?) {
-        startActivity(Intent(this,target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         this.finish()
     }
 
@@ -60,7 +60,7 @@ class RegesiterActivity : Activity(), RegesiterContract.View {
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_regesiter)
         context = this
-        presenter = RegesiterPensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!), this)
+        presenter = RegesiterPensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         //邮件地址检测
         ed_email.setOnFocusChangeListener { view, b ->
             kotlin.run {
@@ -74,23 +74,27 @@ class RegesiterActivity : Activity(), RegesiterContract.View {
         //获取验证码事件
         btn_getcode.setOnClickListener {
             //发起邮件请求
-            if (!RegesiterPensenter.IS_EMAIL_AVILIABLE) {
+            if (RegesiterPensenter.IS_EMAIL_AVILIABLE) {
                 showMessage(context!!.getString(R.string.getcode_fail_wrong_email))
             } else {
-                presenter!!.getCode()
+                presenter!!.SendCode(ed_email.text.toString())
                 //改变按钮状态
                 btn_getcode.isEnabled = false
-                val msg = mHand.obtainMessage()
+
                 var count = 60
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
-                        msg.what = 1
-                        if (count == 0) {
-                            this.cancel()
+                        synchronized(this) {
+                            val msg = mHand.obtainMessage()
+                            msg.what = 1
+                            if (count == 0) {
+                                this.cancel()
+                                return
+                            }
+                            count--
+                            msg.obj = count
+                            mHand.sendMessage(msg)
                         }
-                        count--
-                        msg.obj = count
-                        mHand.sendMessage(msg)
                     }
                 }, 10, 1000)
             }
@@ -98,7 +102,8 @@ class RegesiterActivity : Activity(), RegesiterContract.View {
 
         //提交注册
         btn_submit.setOnClickListener {
-            presenter!!.RegAccount(CTUser(),"")
+            //获取信息并判断然后提交
+            presenter!!.RegAccount(CTUser(), "123456")
         }
 
     }

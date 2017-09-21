@@ -17,7 +17,7 @@ interface RetrofitService {
     @GET(Api.API_VALIDATE)
     fun CheckEmail(@Query(Api.KEY)key:String?,@Query(Api.API_EMAIL)email:String):Observable<ResponseResult<Boolean>>
     @GET(Api.API_VALIDATE)
-    fun GetCode(@Query(Api.KEY)key:String?):Observable<ResponseResult<Boolean>>
+    fun SendCode(@Query(Api.KEY)key:String?,@Query(Api.API_EMAIL)email:String):Observable<ResponseResult<Boolean>>
     @POST(Api.API_VALIDATE)
     fun RegAccount(@Query(Api.KEY)key:String?,@Query(Api.API_CTUSER)user:String,@Query(Api.API_CODE)code:String):Observable<ResponseResult<CTUser>>
 }

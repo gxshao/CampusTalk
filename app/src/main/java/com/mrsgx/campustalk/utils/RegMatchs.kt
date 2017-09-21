@@ -6,7 +6,7 @@ package com.mrsgx.campustalk.utils
 class RegMatchs {
 
     companion object {
-        private val REGEX_EMAIL=""
+        private val REGEX_EMAIL="/^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)\$/"
         fun MatchEmail(email:String):Boolean{
             return Regex(REGEX_EMAIL).matches(email)
         }

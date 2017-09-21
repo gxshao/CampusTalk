@@ -1,6 +1,9 @@
 package com.mrsgx.campustalk.mvp.Regesiter
 
 import android.content.Context
+import android.os.Build
+import android.support.annotation.RequiresApi
+import com.google.gson.Gson
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.ResponseResult
@@ -18,9 +21,9 @@ import io.reactivex.schedulers.Schedulers
  * Created by Shao on 2017/9/18.
  */
 class RegesiterPensenter(private val view: RegesiterContract.View, private val workerRepository: WorkerRepository, private val context: Context) : RegesiterContract.Presenter {
-    override fun getCode() {
+    override fun SendCode(email:String) {
         //发出获取邮件请求
-        val disposiable = workerRepository.GetCode().observeOn(AndroidSchedulers.mainThread())
+        val disposiable = workerRepository.SendCode(email).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(object : DisposableObserver<ResponseResult<Boolean>>() {
                     override fun onError(e: Throwable?) {
@@ -44,9 +47,9 @@ class RegesiterPensenter(private val view: RegesiterContract.View, private val w
         compositeDisposable.add(disposiable)
     }
 
-    override fun RegAccount(user: CTUser,code:String) {
+    override fun RegAccount(user: CTUser, code:String) {
         TalkerProgressHelper.getInstance(context).show(context.getString(R.string.reging_please_wait))
-        var json=""
+        val json=Gson().toJson(user)
         val disposiable=workerRepository.RegAccount(json,code).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(object :DisposableObserver<ResponseResult<CTUser>>(){
@@ -55,13 +58,14 @@ class RegesiterPensenter(private val view: RegesiterContract.View, private val w
                     }
 
                     override fun onError(e: Throwable?) {
+                        println(e!!.message)
                        view.showMessage(context.getString(R.string.reg_fail_unknow))
                     }
 
                     override fun onNext(value: ResponseResult<CTUser>?) {
                         if(value!=null){
                             val usr=value.Body
-                            if(usr==null)
+                            if(usr!!.Email==null)
                             {
                                 view.showMessage(context.getString(R.string.reg_fail_wrong_code))
                                 return

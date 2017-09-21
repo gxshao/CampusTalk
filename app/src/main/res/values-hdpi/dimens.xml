@@ -6,5 +6,7 @@
     <dimen name="iconSize">30dp</dimen>
     <dimen name="boxPadding">10dp</dimen>
     <dimen name="menuSize">25dp</dimen>
-    <dimen name="contentSize">13sp</dimen>
+    <dimen name="contentSize">10sp</dimen>
+    <dimen name="navibar_width">100dp</dimen>
+    <dimen name="hide_navibar_width">-70dp</dimen>
 </resources>

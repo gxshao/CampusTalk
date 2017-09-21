@@ -6,6 +6,12 @@
         <item name="android:windowEnterAnimation">@transition/fade</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
+    <style name="AppTheme.NoActionBar" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/fade</item>
+        <item name="android:windowEnterAnimation">@transition/fade</item>
+        <item name="android:windowActionBar">@null</item>
+        <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
+    </style>
     <style name="BeanDialog" parent="android:Theme.Dialog">
         <!-- 是否半透明 -->
         <item name="android:windowIsTranslucent">true</item>

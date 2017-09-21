@@ -1,8 +1,6 @@
 package com.mrsgx.campustalk.mvp.Welcome
 
-import android.animation.Animator
 import android.animation.AnimatorInflater
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
@@ -14,7 +12,6 @@ import android.os.Message
 import android.support.annotation.RequiresApi
 import android.view.KeyEvent
 import android.view.Window
-import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
@@ -60,7 +57,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         val timer = Timer()
         var count = 5
         val context = this
-        val welpresenter = WelcomePresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()!!), this)
+        val welpresenter = WelcomePresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         timer.schedule(object : TimerTask() {
             override fun run() {
                 val msg = mHand.obtainMessage()
@@ -93,7 +90,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
             return false
         return super.onKeyDown(keyCode, event)
     }
-    var mHand = @SuppressLint("HandlerLeak")
+   private var mHand = @SuppressLint("HandlerLeak")
     object : Handler() {
         override fun dispatchMessage(msg: Message) {
             if (msg.what == 1) {

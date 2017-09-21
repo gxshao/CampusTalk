@@ -13,7 +13,7 @@ class RegesiterContract {
     }
     interface Presenter:BasePresenter{
         fun CheckEmail(email:String)
-        fun getCode()
+        fun SendCode(email: String)
         fun RegAccount(user:CTUser,code:String)
     }
 }
