@@ -1,33 +1,37 @@
 package com.mrsgx.campustalk.mvp.Main
 
-import android.app.Activity
 import android.app.ActivityOptions
+import android.support.v4.app.Fragment
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.View
-import android.view.Window
+import android.support.v4.app.FragmentActivity
+import android.support.v4.view.ViewPager
+import android.util.Log
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.adapter.FragAdapter
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.interfaces.NetEventManager
 import com.mrsgx.campustalk.service.CTConnection
 import com.mrsgx.campustalk.service.NetStateListening
+import com.mrsgx.campustalk.widget.MainViewPagerTransform
 import com.zsoft.signala.SendCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
-class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
+class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent,MatchFragment.OnFragmentInteractionListener
+            ,FollowFragment.OnFragmentInteractionListener,FindFragment.OnFragmentInteractionListener,SettingFragment.OnFragmentInteractionListener{
+    override fun onFragmentInteraction(uri: Uri) {
+
+    }
 
     private var mNaviState = false
     override fun OnNetChanged(net: Int) {
@@ -64,11 +68,47 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
     override fun setPresenter(presenter: MainContract.Presenter?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+    var viewpagerAdapter:FragAdapter?=null
     override fun initViews() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //viewpager
+        val fm=this.supportFragmentManager
+        val mFragments=ArrayList<Fragment>()
+        mFragments.add(MatchFragment())
+        mFragments.add(FindFragment())
+        mFragments.add(FollowFragment())
+        mFragments.add(SettingFragment())
+        viewpagerAdapter=FragAdapter(fm,mFragments)
+        viewpager.adapter=viewpagerAdapter
+        viewpager.setOnTouchListener { view, motionEvent->
+            kotlin.run {
+                if (mNaviState){
+                    btn_img_navi_switch.performClick()}
+                false
+            }
+        }
+        viewpager.setPageTransformer(true, MainViewPagerTransform())
+        colorAnimationView.setmViewPager(viewpager,4, 0xffFF8080.toInt(), 0xff8080FF.toInt(), 0xffffffff.toInt(), 0xff80ff80.toInt())
+        radio_navi.setOnCheckedChangeListener(mRadioChanged)
     }
+    private val mRadioChanged= RadioGroup.OnCheckedChangeListener { p0, who ->
+        run {
+            when (who) {
+                radio_match.id -> {
+                   viewpager.setCurrentItem(0,true)
+                }
+                radio_find.id->{
+                    viewpager.setCurrentItem(1,true)
+                }
+                radio_follow.id->{
+                    viewpager.setCurrentItem(2,true)
+                }
+                radio_setting.id->{
+                    viewpager.setCurrentItem(3,true)
+                }
+            }
+        }
 
+    }
     private lateinit var mainpresenter: MainPresenter
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -76,7 +116,7 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_main)
-
+        initViews()
         NetEventManager.getInstance().subscribe(this) //订阅网络消息
         mainpresenter = MainPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         gestureDetector= GestureDetector(this,listener)
@@ -110,13 +150,29 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
             }
         }
         frg_navibar.setOnTouchListener(NaviTouchEvent)
+
+
+
         /**
          * 1.加载用户信息，学生认证校验和资料校验
-         * 2.链接通讯服务器  监听网络状态
-         * 3.加载导航
+         * 2.链接通讯服务器  监听网络状态 done
+         * 3.加载导航 done
          * 4.子页业务逻辑
          */
     }
+
+    override fun onAttachFragment(fragment: Fragment?) {
+        super.onAttachFragment(fragment)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+
+
+
 
     //{动画区
    private var gestureDetector: GestureDetector?=null
@@ -158,11 +214,6 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
             true
         }
     }
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (mNaviState)
-            btn_img_navi_switch.performClick()
-        return super.onTouchEvent(event)
-    }
     /**
      * 旋转开关动画
      */
@@ -197,9 +248,7 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
             frgbar.startAnimation(ani)
     }
     //动画区}
-    override fun onResume() {
-        super.onResume()
-    }
+
 
     /**
      * A native method that is implemented by the 'native-lib' native library,
@@ -212,10 +261,6 @@ class MainActivity : Activity(), MainContract.View, NetStateListening.NetEvent{
         // Used to load the 'native-lib' library on application startup.
         init {
             System.loadLibrary("native-lib")
-        }
-
-        fun get() {
-
         }
     }
 }

@@ -8,6 +8,17 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="73dp">
 
+    <com.mrsgx.campustalk.widget.ColorAnimationView
+        android:id="@+id/colorAnimationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </android.support.v4.view.ViewPager>
 
     <Button
         android:id="@+id/btn_start"
@@ -25,17 +36,16 @@
         android:id="@+id/frg_navibar"
         android:layout_width="@dimen/navibar_width"
         android:layout_height="match_parent"
-        android:background="@color/black">
-       <!--- android:layout_marginLeft="@dimen/hide_navibar_width"
-        android:layout_marginStart="@dimen/hide_navibar_width">-->
+        android:layout_marginLeft="@dimen/hide_navibar_width"
+        android:layout_marginStart="@dimen/hide_navibar_width">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="horizontal"
             android:baselineAligned="false"
+            android:orientation="horizontal"
             tools:ignore="UselessParent">
 
             <ScrollView
@@ -47,49 +57,50 @@
                     android:id="@+id/radio_navi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
                     <RadioButton
-                        android:id="@+id/radioButton"
+                        android:id="@+id/radio_match"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:button="@null"
                         android:drawablePadding="-10dp"
                         android:drawableTop="@drawable/leak_canary_icon"
-                        android:text="匹配"
+                        android:text="@string/match"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
-                        android:id="@+id/radioButton3"
+                        android:id="@+id/radio_find"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:button="@null"
                         android:drawablePadding="-10dp"
                         android:drawableTop="@drawable/leak_canary_icon"
-                        android:text="匹配"
+                        android:text="@string/find"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
-                        android:id="@+id/radioButton2"
+                        android:id="@+id/radio_follow"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:button="@null"
                         android:drawablePadding="-10dp"
                         android:drawableTop="@drawable/leak_canary_icon"
-                        android:text="匹配"
+                        android:text="@string/follow"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
-                        android:id="@+id/radioButton1"
+                        android:id="@+id/radio_setting"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:button="@null"
                         android:drawablePadding="-10dp"
                         android:drawableTop="@drawable/leak_canary_icon"
-                        android:text="匹配"
+                        android:text="@string/settings"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
                 </RadioGroup>

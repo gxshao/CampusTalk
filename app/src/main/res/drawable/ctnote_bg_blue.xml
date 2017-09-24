@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <stroke android:color="@color/dark_gary_strok" android:width="1dp"/>
+            <gradient
+                android:startColor="@color/ctnote_blue_start"
+                android:centerColor="@color/ctnote_blue_center"
+                android:endColor="@color/ctnote_blue_end"
+                android:angle="-90"/>
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</layer-list>

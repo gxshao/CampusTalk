@@ -7,7 +7,7 @@ import com.mrsgx.campustalk.obj.CTUser
 /**
  * Created by Shao on 2017/9/18.
  */
-class RegesiterContract {
+class RegisterContract {
     interface View:BaseView<Presenter>{
         fun setEmailBoxState(b:Boolean)
     }

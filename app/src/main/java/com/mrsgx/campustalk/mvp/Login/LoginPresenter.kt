@@ -60,6 +60,7 @@ class LoginPresenter(private val view:LoginContract.View, private val workerRepo
                             edit.putString("pass",pwd)
                             edit.apply()
                             view.startNewPage(MainActivity::class.java)
+                            view.finishActivity()
                         }else
                         {
                             view.showMessage(context.getString(R.string.login_failed_problem_network))

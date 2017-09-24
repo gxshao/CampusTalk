@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="area">
+        <item>地区</item>
+    </string-array>
+    <string-array name="school">
+        <item>学校</item>
+    </string-array>
+
+</resources>

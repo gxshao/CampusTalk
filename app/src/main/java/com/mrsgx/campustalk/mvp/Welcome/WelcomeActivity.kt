@@ -50,7 +50,6 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_welcome)
 
-        this.actionBar.hide()
         val anim=AnimatorInflater.loadAnimator(this,R.animator.anim_appname)
         anim.setTarget(txt_apptitle)
         anim.start()

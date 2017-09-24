@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/ctnote_width"
+    android:background="@drawable/ctnote_bg_green"
+    android:layout_gravity="center_horizontal"
+    android:alpha="8"
+    android:minHeight="@dimen/btn_height"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/btn_close_cnote"
+        android:layout_width="@dimen/tiny_pic"
+        android:layout_height="@dimen/tiny_pic"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@mipmap/close" />
+
+    <TextView
+        android:id="@+id/txt_title_cnote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="8dp"
+        android:text="TextView"
+        android:textSize="@dimen/TextSize"
+        android:layout_marginStart="8dp"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/txt_note_cnote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/txt_title_cnote"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="5dp"
+        android:maxLines="5"
+        android:text="TextView"
+        android:textSize="@dimen/contentSize"
+        android:layout_marginStart="8dp" />
+
+</RelativeLayout>

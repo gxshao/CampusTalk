@@ -12,6 +12,13 @@
         <item name="android:windowActionBar">@null</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
+
+    <!-- 自定义弹出层-->
+    <style name="anim_ctnote">
+        <item name="android:windowEnterAnimation">@anim/ctnote_enter</item>
+        <item name="android:windowExitAnimation">@anim/ctnote_out</item>
+    </style>
+
     <style name="BeanDialog" parent="android:Theme.Dialog">
         <!-- 是否半透明 -->
         <item name="android:windowIsTranslucent">true</item>

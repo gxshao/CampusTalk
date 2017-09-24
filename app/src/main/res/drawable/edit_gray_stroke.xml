@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 灰色阴影 -->
+    <item>
+        <shape>
+            <stroke android:width="1dp" android:color="@android:color/holo_green_light" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <!-- 白色前景 -->
+</layer-list>

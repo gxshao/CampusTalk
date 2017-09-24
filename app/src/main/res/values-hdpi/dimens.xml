@@ -2,11 +2,23 @@
 <resources>
     <dimen name="TextSize">15sp</dimen>
     <dimen name="logTextSize">10dp</dimen>
-    <dimen name="TitleSize">25sp</dimen>
+    <dimen name="TitleSize">35sp</dimen>
     <dimen name="iconSize">30dp</dimen>
     <dimen name="boxPadding">10dp</dimen>
     <dimen name="menuSize">25dp</dimen>
-    <dimen name="contentSize">10sp</dimen>
+    <dimen name="small_distance">20dp</dimen>
+    <dimen name="big_distance">70dp</dimen>
+    <dimen name="double_distance">140dp</dimen>
+    <dimen name="contentSize">20sp</dimen>
     <dimen name="navibar_width">100dp</dimen>
     <dimen name="hide_navibar_width">-70dp</dimen>
+    <dimen name="btn_width">100dp</dimen>
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="btn_text_size">15sp</dimen>
+    <dimen name="edit_width">250dp</dimen>
+    <dimen name="edit_height">50dp</dimen>
+    <dimen name="small_pic">40dp</dimen>
+    <dimen name="tiny_pic">20dp</dimen>
+    <dimen name="small_txt">10sp</dimen>
+    <dimen name="ctnote_width">300dp</dimen>
 </resources>

@@ -17,21 +17,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme">
+       >
         <activity
             android:name=".mvp.Main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:launchMode="singleTask"
+           >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".mvp.Welcome.WelcomeActivity"
             android:launchMode="standard"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
 
         <service
             android:name=".service.ConnService"
@@ -40,10 +39,18 @@
 
         <activity
             android:name=".mvp.Login.LoginActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".mvp.Regesiter.RegesiterActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:name=".mvp.Regesiter.RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <!-- BroadCastReceiver -->
         <receiver android:name=".service.NetStateListening">
             <intent-filter>

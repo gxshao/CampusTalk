@@ -1,13 +1,12 @@
 package com.mrsgx.campustalk.mvp.Regesiter
 
 import android.content.Context
-import android.os.Build
-import android.support.annotation.RequiresApi
 import com.google.gson.Gson
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.ResponseResult
 import com.mrsgx.campustalk.data.WorkerRepository
+import com.mrsgx.campustalk.mvp.Login.LoginActivity
 import com.mrsgx.campustalk.mvp.Main.MainActivity
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.utils.SharedHelper
@@ -20,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Shao on 2017/9/18.
  */
-class RegesiterPensenter(private val view: RegesiterContract.View, private val workerRepository: WorkerRepository, private val context: Context) : RegesiterContract.Presenter {
+class RegisterPensenter(private val view: RegisterContract.View, private val workerRepository: WorkerRepository, private val context: Context) : RegisterContract.Presenter {
     override fun SendCode(email:String) {
         //发出获取邮件请求
         val disposiable = workerRepository.SendCode(email).observeOn(AndroidSchedulers.mainThread())
@@ -77,6 +76,7 @@ class RegesiterPensenter(private val view: RegesiterContract.View, private val w
                                 edit.putString(SharedHelper.KEY_PWD,user.Password)
                                 edit.apply()
                                 view.startNewPage(MainActivity::class.java)
+                                LoginActivity.LOGIN_INSTANCE!!.finish()
                             }
                         }else
                         {
@@ -107,7 +107,7 @@ class RegesiterPensenter(private val view: RegesiterContract.View, private val w
                     override fun onNext(value: ResponseResult<Boolean>?) {
                         if (value != null) {
                             val b = value.Body as Boolean
-                            RegesiterPensenter.IS_EMAIL_AVILIABLE = b
+                            RegisterPensenter.IS_EMAIL_AVILIABLE = b
                             //根据判断结果修改UI状态
                             view.setEmailBoxState(b)
                         }
