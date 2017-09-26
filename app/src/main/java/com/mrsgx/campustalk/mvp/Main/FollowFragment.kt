@@ -40,6 +40,9 @@ class FollowFragment : Fragment() {
         return inflater!!.inflate(R.layout.fragment_follow, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {

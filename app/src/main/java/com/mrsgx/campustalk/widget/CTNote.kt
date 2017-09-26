@@ -2,6 +2,9 @@ package com.mrsgx.campustalk.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,7 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.mrsgx.campustalk.R
+import java.util.*
 
 /**
  * Created by Shao on 2017/9/24.
@@ -16,18 +20,18 @@ import com.mrsgx.campustalk.R
 class CTNote(private val context: Context) : PopupWindow(context) {
     companion object {
         //背景颜色分级
-        val LEVEL_TIPS = 0
-        val LEVEL_WARNING = 1
-        val LEVEL_ERROR = 2
-        val LEVEL_NOTIFY = 3
+        const val LEVEL_TIPS = 0
+        const val LEVEL_WARNING = 1
+        const val LEVEL_ERROR = 2
+        const val LEVEL_NOTIFY = 3
         //时间
-        val TIME_SHORT = 4
-        val TIME_LENGTH = 8
+        const val TIME_SHORT = 4
+        const val TIME_LENGTH = 8
 
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: CTNote? = null
         @SuppressLint("StaticFieldLeak")
-        private var rootview: View?=null
+        private var rootview: View? = null
 
         fun getInstance(context: Context, r: View): CTNote {
             if (INSTANCE == null) {
@@ -43,7 +47,8 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private var mContent: TextView? = null
     private var mBtnClose: ImageView? = null
     private val MILLISECOND: Int = 1000 //时间系数
-
+    private var mTimer: Timer = Timer()
+    private var isRunning = false
     init {
         view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
         this.contentView = view
@@ -64,21 +69,78 @@ class CTNote(private val context: Context) : PopupWindow(context) {
 
     }
 
-
-    fun show(title: String, content: String, levle: Int, len: Int) {
+    /***
+     * 显示通知
+     */
+    fun show(title: String, content: String, level: Int, len: Int) {
         mTitle!!.text = title
         mContent!!.text = content
         //判断级别并设置背景和时间
-        if(this.isShowing)
-        {
+        var background: Drawable = this.context.resources.getDrawable(R.drawable.ctnote_bg_green)
+        when (level) {
+            LEVEL_TIPS -> {
+            }
+            LEVEL_ERROR -> {
+                background = this.context.resources.getDrawable(R.drawable.ctnote_bg_red)
+            }
+            LEVEL_WARNING -> {
+                background = this.context.resources.getDrawable(R.drawable.ctnote_bg_orange)
+            }
+            LEVEL_NOTIFY -> {
+                background = this.context.resources.getDrawable(R.drawable.ctnote_bg_blue)
+            }
+        }
+        background.alpha=180
+        view!!.setBackgroundDrawable(background)
+        if (this.isShowing) {
             this.update()
-        }else {
+        } else {
+            //从上面弹出
             this.showAtLocation(rootview, android.view.Gravity.TOP, 0, 0)
+
         }
+        if (!isRunning) {
+            mTimer.purge()
+            mTimer=Timer()
+            mTimer.schedule(getDismisTask(), (MILLISECOND * len).toLong())
+            isRunning = true
+        } else {
+            mTimer.cancel()
+            mTimer.purge()
+            mTimer=Timer()
+            mTimer.schedule(getDismisTask(), (MILLISECOND * len).toLong())
+            isRunning = true
         }
-    fun hide(){
+    }
+
+    /**
+     * 自动退出线程
+     */
+    fun getDismisTask():TimerTask{
+         val mTask = object : TimerTask() {
+            override fun run() {
+                mHandler.sendMessage(mHandler.obtainMessage())
+                isRunning = false
+                this.cancel()
+            }
+        }
+        return mTask
+    }
+    val mHandler= @SuppressLint("HandlerLeak")
+    object : Handler(){
+        override fun dispatchMessage(msg: Message?) {
+            if(INSTANCE!=null)
+                INSTANCE!!.dismiss()
+            super.dispatchMessage(msg)
+        }
+
+    }
+    /**
+     * 手动退出方法
+     */
+    fun hide() {
         this.dismiss()
-        INSTANCE=null
+        INSTANCE = null
     }
 
 }

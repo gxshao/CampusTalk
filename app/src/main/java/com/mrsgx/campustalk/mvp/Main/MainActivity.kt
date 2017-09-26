@@ -87,7 +87,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             }
         }
         viewpager.setPageTransformer(true, MainViewPagerTransform())
-        colorAnimationView.setmViewPager(viewpager,4, 0xffFF8080.toInt(), 0xff8080FF.toInt(), 0xffffffff.toInt(), 0xff80ff80.toInt())
+        colorAnimationView.setmViewPager(viewpager,4, 0xff63B8FF.toInt(), 0xff1E90FF.toInt(), 0xff4876FF.toInt(), 0xff27408B.toInt())
         radio_navi.setOnCheckedChangeListener(mRadioChanged)
     }
     private val mRadioChanged= RadioGroup.OnCheckedChangeListener { p0, who ->
@@ -122,22 +122,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         gestureDetector= GestureDetector(this,listener)
         val con = CTConnection.getInstance(this)
         con.Start()
-        btn_start.setOnClickListener {
-            object : Thread() {
-                override fun run() {
-                    con.Send("xxx", object : SendCallback() {
-                        override fun OnError(ex: Exception?) {
-                            println("error:" + ex!!.message)
-                        }
-
-                        override fun OnSent(messageSent: CharSequence?) {
-
-                        }
-                    })
-                    super.run()
-                }
-            }.start()
-        }
 
         /**
          * 导航栏事件

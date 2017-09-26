@@ -51,4 +51,9 @@
     <string name="tips_confirm_password">请确认密码</string>
     <string name="school">学校</string>
     <string name="tips_agreement">同意用户协议</string>
+    <string name="tips_matching">匹配中...</string>
+    <string name="longclick_speak">长按说话</string>
+    <string name="please_input">请输入要发送的内容</string>
+    <string name="realse_to_send">松开发送语音...</string>
+    <string name="btn_send">发送</string>
 </resources>

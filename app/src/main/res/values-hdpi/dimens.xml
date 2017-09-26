@@ -10,8 +10,10 @@
     <dimen name="big_distance">70dp</dimen>
     <dimen name="double_distance">140dp</dimen>
     <dimen name="contentSize">20sp</dimen>
+    <dimen name="middle_txt">18sp</dimen>
+    <dimen name="middle_txt_2">15sp</dimen>
     <dimen name="navibar_width">100dp</dimen>
-    <dimen name="hide_navibar_width">-70dp</dimen>
+    <dimen name="hide_navibar_width">-60dp</dimen>
     <dimen name="btn_width">100dp</dimen>
     <dimen name="btn_height">40dp</dimen>
     <dimen name="btn_text_size">15sp</dimen>
@@ -21,4 +23,7 @@
     <dimen name="tiny_pic">20dp</dimen>
     <dimen name="small_txt">10sp</dimen>
     <dimen name="ctnote_width">300dp</dimen>
+    <dimen name="big_button">200dp</dimen>
+    <dimen name="chat_bar_height">50dp</dimen>
+    <dimen name="middle_button">50dp</dimen>
 </resources>

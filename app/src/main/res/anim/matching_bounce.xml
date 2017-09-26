@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="3000"
+    android:interpolator="@android:interpolator/bounce"
+    android:repeatMode="reverse"
+    android:shareInterpolator="true">
+    <translate
+        android:repeatMode="reverse"
+        android:fromYDelta="-5%"
+        android:toYDelta="0" />
+    <scale
+        android:repeatMode="reverse"
+        android:fromXScale="0"
+        android:fromYScale="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="1.1"
+        android:toYScale="1.1" />
+</set>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_gravity="right"
+    android:gravity="right"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlHardcoded">
+
+    <TextView
+        android:id="@+id/txt_my_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="300dp"
+        android:textSize="@dimen/contentSize"
+        android:textAlignment="gravity"
+        android:layout_gravity="center_vertical|left"
+        android:background="@mipmap/my_chat"
+        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+
+    <com.github.snowdream.android.widget.SmartImageView
+        android:id="@+id/txt_my_headpic"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_gravity="center_vertical"
+        android:src="@color/dark_gary_strok"
+        android:layout_width="@dimen/small_pic"
+        android:layout_height="@dimen/small_pic" />
+</LinearLayout>

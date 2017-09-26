@@ -28,7 +28,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="10dp"
             android:textColor="#FFF"
-            android:background="@drawable/talker_box"
+            android:background="@mipmap/talker_box"
             android:text="@string/dots"
             android:textAlignment="center"
             android:textSize="15sp" />

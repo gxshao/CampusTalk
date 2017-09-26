@@ -14,7 +14,7 @@ import android.opengl.ETC1.getWidth
  * Created by Shao on 2017/9/22.
  */
 class MainViewPagerTransform: ViewPager.PageTransformer {
-    var MIN_SCALE = 0.75f;
+    var MIN_SCALE = 0.75f
     override fun transformPage(view: View, position: Float) {
         val pageWidth = view.width
         if (position < -1) { // [-Infinity,-1)

@@ -114,7 +114,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
         //提交注册
         btn_submit.setOnClickListener {
 
-            CTNote.getInstance(this,rootview!!).show("xxx","xxx",0,CTNote.LEVEL_TIPS)
+            CTNote.getInstance(this,rootview!!).show("xxx","xxx",CTNote.LEVEL_ERROR,CTNote.TIME_SHORT)
             //获取信息并判断然后提交
            // presenter!!.RegAccount(CTUser(), "123456")
         }

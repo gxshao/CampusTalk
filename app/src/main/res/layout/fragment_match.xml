@@ -1,7 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/match_fragment_shape"
     tools:context="com.mrsgx.campustalk.mvp.Main.MatchFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -9,13 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+        <Button
+            android:id="@+id/btn_start_match"
+            android:layout_width="@dimen/big_button"
+            android:layout_height="@dimen/big_button"
+            android:text="匹配就完了"
+            android:textSize="@dimen/middle_txt_2"
+            android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="138dp"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_start_match" />
     </RelativeLayout>
 
 </FrameLayout>

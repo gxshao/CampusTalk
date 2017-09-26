@@ -1,14 +1,23 @@
 package com.mrsgx.campustalk.mvp.Main
 
+import android.animation.Animator
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.mvp.Chat.ChatActivity
+import kotlinx.android.synthetic.main.fragment_match.*
 
 /**
  * A simple [Fragment] subclass.
@@ -36,7 +45,7 @@ class MatchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        println("this is my fragment one called match")
+
         return inflater!!.inflate(R.layout.fragment_match, container, false)
     }
 
@@ -49,10 +58,39 @@ class MatchFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+
         if (context is OnFragmentInteractionListener) {
             mListener = context
         } else {
             throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val anim_match = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
+        anim_match.setAnimationListener(mAnim_bounce)
+        btn_start_match.startAnimation(anim_match)
+
+        btn_start_match.setOnClickListener {
+            startActivity(Intent(context, ChatActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+        }
+    }
+
+    private val mAnim_bounce = object : Animation.AnimationListener {
+        override fun onAnimationRepeat(p0: Animation?) {
+
+        }
+
+        override fun onAnimationEnd(p0: Animation?) {
+            val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
+            bounce_anim.setAnimationListener(this)
+            btn_start_match.startAnimation(bounce_anim)
+        }
+
+        override fun onAnimationStart(p0: Animation?) {
+
         }
     }
 
@@ -100,3 +138,4 @@ class MatchFragment : Fragment() {
         }
     }
 }// Required empty public constructor
+

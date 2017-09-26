@@ -3,7 +3,6 @@
     android:layout_width="@dimen/ctnote_width"
     android:background="@drawable/ctnote_bg_green"
     android:layout_gravity="center_horizontal"
-    android:alpha="8"
     android:minHeight="@dimen/btn_height"
     android:layout_height="wrap_content">
 

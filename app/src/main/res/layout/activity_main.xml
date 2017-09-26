@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mrsgx.campustalk.mvp.Main.MainActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="73dp">
+    tools:context="com.mrsgx.campustalk.mvp.Main.MainActivity">
 
     <com.mrsgx.campustalk.widget.ColorAnimationView
         android:id="@+id/colorAnimationView"
@@ -15,29 +13,22 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:paddingBottom="@dimen/small_distance"
+        android:paddingTop="@dimen/small_distance"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_height="match_parent"
+        tools:ignore="RtlSymmetry"
+        android:paddingStart="10dp">
     </android.support.v4.view.ViewPager>
-
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="41dp"
-        android:layout_marginRight="41dp"
-        android:layout_marginTop="106dp"
-        android:text="链接" />
 
     <FrameLayout
         android:id="@+id/frg_navibar"
         android:layout_width="@dimen/navibar_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/hide_navibar_width"
-        android:layout_marginStart="@dimen/hide_navibar_width">
+        android:layout_marginStart="@dimen/hide_navibar_width"
+       >
 
 
         <LinearLayout
@@ -62,10 +53,10 @@
 
                     <RadioButton
                         android:id="@+id/radio_match"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:button="@null"
-                        android:drawablePadding="-10dp"
+                        android:drawablePadding="-8dp"
                         android:drawableTop="@drawable/leak_canary_icon"
                         android:text="@string/match"
                         android:textAlignment="center"
@@ -73,10 +64,10 @@
 
                     <RadioButton
                         android:id="@+id/radio_find"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:button="@null"
-                        android:drawablePadding="-10dp"
+                        android:drawablePadding="-8dp"
                         android:drawableTop="@drawable/leak_canary_icon"
                         android:text="@string/find"
                         android:textAlignment="center"
@@ -84,10 +75,10 @@
 
                     <RadioButton
                         android:id="@+id/radio_follow"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:button="@null"
-                        android:drawablePadding="-10dp"
+                        android:drawablePadding="-8dp"
                         android:drawableTop="@drawable/leak_canary_icon"
                         android:text="@string/follow"
                         android:textAlignment="center"
@@ -95,10 +86,10 @@
 
                     <RadioButton
                         android:id="@+id/radio_setting"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:button="@null"
-                        android:drawablePadding="-10dp"
+                        android:drawablePadding="-8dp"
                         android:drawableTop="@drawable/leak_canary_icon"
                         android:text="@string/settings"
                         android:textAlignment="center"

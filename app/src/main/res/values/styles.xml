@@ -2,11 +2,27 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/fade</item>
-        <item name="android:windowEnterAnimation">@transition/fade</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/unpressed_blue</item>
+        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/slide</item>
+        <item name="android:windowEnterAnimation">@transition/slide</item>
+        <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/slide</item>
+    </style>
+    <style name="AppTheme.FadeTransition" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:activityOpenEnterAnimation" tools:targetApi="lollipop">@transition/fade</item>
+        <item name="android:activityCloseExitAnimation">@transition/fade</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">@transition/fade</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
     <style name="AppTheme.NoActionBar" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/slide</item>
+        <item name="android:windowEnterAnimation">@transition/slide</item>
+        <item name="android:windowActionBar">@null</item>
+        <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/slide</item>
+    </style>
+    <style name="AppTheme.NoActionBar.FadeTransition" parent="android:Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/fade</item>
         <item name="android:windowEnterAnimation">@transition/fade</item>
         <item name="android:windowActionBar">@null</item>

@@ -7,5 +7,9 @@
         android:duration="300"
         android:fromYDelta="-50%"
         android:toYDelta="0" />
-
+    <alpha
+        android:toAlpha="1"
+        android:fromAlpha="0"
+        android:duration="200"
+        />
 </set>

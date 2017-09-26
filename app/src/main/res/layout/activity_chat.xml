@@ -1,10 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.mrsgx.campustalk.mvp.Chat.ChatActivity">
 
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/main_chat"
+        android:layout_weight="0.1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/chat_bg"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chat_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/unable" />
+
+    <LinearLayout
+        android:id="@+id/main_tool"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_switch_inputmode"
+            android:layout_width="@dimen/chat_bar_height"
+            android:layout_height="@dimen/chat_bar_height"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/btn_switch_voice_bg"
+            tools:ignore="NestedWeights" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights">
+
+            <Button
+                android:id="@+id/btn_audio"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_speak_bg"
+                android:text="@string/longclick_speak"
+                android:visibility="invisible" />
+
+            <EditText
+                android:id="@+id/ed_content"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_speak_shaper"
+                android:ems="10"
+                android:hint="@string/please_input"
+                android:imeOptions="actionSend"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
+                android:paddingBottom="2dp"
+                android:paddingLeft="2dp"
+                android:paddingStart="2dp"
+                android:paddingTop="5dp"
+                android:singleLine="false"
+                android:textSize="@dimen/middle_txt"
+                tools:ignore="RtlSymmetry" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="@dimen/chat_bar_height"
+            android:layout_height="@dimen/chat_bar_height"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp">
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="@dimen/chat_bar_height"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/btn_send_bg"
+                android:text="@string/btn_send"
+                android:textColor="@android:color/white"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="@dimen/chat_bar_height"
+                android:layout_height="@dimen/chat_bar_height"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/btn_more" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
