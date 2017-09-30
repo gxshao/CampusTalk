@@ -13,17 +13,23 @@
     <dimen name="middle_txt">18sp</dimen>
     <dimen name="middle_txt_2">15sp</dimen>
     <dimen name="navibar_width">100dp</dimen>
-    <dimen name="hide_navibar_width">-60dp</dimen>
+    <dimen name="hide_navibar_width">-73dp</dimen>
     <dimen name="btn_width">100dp</dimen>
     <dimen name="btn_height">40dp</dimen>
     <dimen name="btn_text_size">15sp</dimen>
     <dimen name="edit_width">250dp</dimen>
     <dimen name="edit_height">50dp</dimen>
     <dimen name="small_pic">40dp</dimen>
+    <dimen name="middle_pic">60dp</dimen>
     <dimen name="tiny_pic">20dp</dimen>
     <dimen name="small_txt">10sp</dimen>
     <dimen name="ctnote_width">300dp</dimen>
     <dimen name="big_button">200dp</dimen>
     <dimen name="chat_bar_height">50dp</dimen>
     <dimen name="middle_button">50dp</dimen>
+    <dimen name="settings_pic_height">160dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="radio_width">50dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_6">6dp</dimen>
 </resources>

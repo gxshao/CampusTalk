@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
+    android:id="@+id/chat_father"
     tools:context="com.mrsgx.campustalk.mvp.Chat.ChatActivity">
 
 
     <LinearLayout
         android:id="@+id/main_chat"
-        android:layout_weight="0.1"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/chat_bg"
@@ -35,9 +35,9 @@
     <LinearLayout
         android:id="@+id/main_tool"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.9"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
+        android:background="@color/light_gray"
         android:orientation="horizontal">
 
         <ImageView
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:ignore="NestedWeights">
+            tools:ignore="NestedWeights,RtlSymmetry">
 
             <Button
                 android:id="@+id/btn_audio"
@@ -65,10 +65,11 @@
                 android:visibility="invisible" />
 
             <EditText
+                android:layout_gravity="center_vertical"
                 android:id="@+id/ed_content"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btn_speak_shaper"
                 android:ems="10"
@@ -90,7 +91,10 @@
             android:layout_width="@dimen/chat_bar_height"
             android:layout_height="@dimen/chat_bar_height"
             android:layout_marginLeft="2dp"
-            android:layout_marginStart="2dp">
+            android:layout_marginStart="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
+            tools:ignore="RtlSymmetry">
 
             <Button
                 android:id="@+id/btn_send"
@@ -112,5 +116,4 @@
         </FrameLayout>
 
     </LinearLayout>
-
 </LinearLayout>

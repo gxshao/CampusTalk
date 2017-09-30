@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:background="@drawable/item_follow_bg"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingRight="5dp"
+    android:layout_height="wrap_content">
+    <com.github.snowdream.android.widget.SmartImageView
+        android:id="@+id/img_headpic"
+        android:src="@mipmap/usr"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:scaleType="centerCrop"
+        android:paddingTop="2dp"
+        android:layout_width="@dimen/middle_pic"
+        android:layout_height="@dimen/middle_pic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="0.5"
+        android:paddingLeft="2dp"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="@dimen/dp_6"
+        android:weightSum="1"
+        android:paddingEnd="@dimen/dp_6"
+        android:paddingStart="2dp">
+
+        <TextView
+            android:id="@+id/txt_item_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="TextView"
+            android:textAlignment="gravity"
+            android:textSize="@dimen/contentSize" />
+
+        <TextView
+            android:id="@+id/txt_item_explan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/unable"
+            android:maxLength="50"
+            android:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView"
+            android:textAlignment="gravity"
+            android:textSize="@dimen/small_txt" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_unfollow"
+        android:layout_weight="0.95"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/middle_txt_2"
+        android:layout_height="30dp"
+        android:focusable="false"
+        android:background="@drawable/btn_warning_style"
+        android:text="取消关注" />
+
+</LinearLayout>

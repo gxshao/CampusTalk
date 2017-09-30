@@ -9,7 +9,7 @@ import com.mrsgx.campustalk.mvp.BaseView
 class MainContract{
     interface View:BaseView<Presenter>
     {
-
+        fun showMessage(msg:String,level: Int,time:Int)
     }
     interface Presenter:BasePresenter{
         fun initData()

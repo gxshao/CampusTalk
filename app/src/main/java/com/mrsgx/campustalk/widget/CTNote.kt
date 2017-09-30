@@ -49,6 +49,11 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private val MILLISECOND: Int = 1000 //时间系数
     private var mTimer: Timer = Timer()
     private var isRunning = false
+    private var Title_Tips=""
+    private var Title_Warning=""
+    private var Title_Error=""
+    private var Title_Notify=""
+
     init {
         view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
         this.contentView = view
@@ -66,31 +71,39 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                 this.dismiss()
             }
         }
-
+        Title_Tips=context.resources.getString(R.string.tips)
+        Title_Error=context.resources.getString(R.string.error)
+        Title_Notify=context.resources.getString(R.string.notify)
+        Title_Warning=context.resources.getString(R.string.warning)
     }
 
-    /***
+    @SuppressLint("ResourceType")
+            /***
      * 显示通知
      */
-    fun show(title: String, content: String, level: Int, len: Int) {
-        mTitle!!.text = title
+    fun show(content: String, level: Int, len: Int) {
+        mTitle!!.text=Title_Tips
         mContent!!.text = content
         //判断级别并设置背景和时间
+
         var background: Drawable = this.context.resources.getDrawable(R.drawable.ctnote_bg_green)
         when (level) {
             LEVEL_TIPS -> {
             }
             LEVEL_ERROR -> {
+                mTitle!!.text=Title_Error
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_red)
             }
             LEVEL_WARNING -> {
+                mTitle!!.text=Title_Warning
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_orange)
             }
             LEVEL_NOTIFY -> {
+                mTitle!!.text=Title_Notify
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_blue)
             }
         }
-        background.alpha=180
+        background.alpha=255
         view!!.setBackgroundDrawable(background)
         if (this.isShowing) {
             this.update()

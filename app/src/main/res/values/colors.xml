@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3399cc</color>
+    <color name="colorPrimaryDark">#4279ee</color>
+    <color name="colorAccent">#3399cc</color>
+
     <color name="dialog_bg">#3399cc</color>
-    <color name="dialog_bg_start">#4279ee</color>
+    <color name="dialog_bg_start">#0066B2</color>
     <color name="welcome_bg">#FFF</color>
     <color name="dark_gary_strok">#393939</color>
     <color name="unpressed_blue">#4279ee</color>
     <color name="unable">#FF949494</color>
-    <color name="pressed_blue">#0c48fc</color>
+    <color name="pressed_blue">#0066B2</color>
     <color name="warning_pressed">#ff333d</color>
     <color name="warning">#fc0c40</color>
     <color name="ctnote_green_start">#2cb437</color>
@@ -26,7 +27,12 @@
 
     <color name="ctnote_blue_start">#3399cc</color>
     <color name="ctnote_blue_center">#4279ee</color>
-    <color name="ctnote_blue_end">#0c48fc</color>
-    <color name="chat_bg">#faf6dc</color>
+    <color name="ctnote_blue_end">#0066B2</color>
+    <color name="chat_bg">#fcf7d7</color>
     <color name="light_gray">#dfdfdf</color>
+    <color name="deep_gray">#E9EBEC</color>
+    <color name="unpressed_red">#ba2010</color>
+    <color name="pressed_red">#800f04</color>
+    <color name="chat_actionbar">#004273</color>
+    <color name="fragment_bg">#eaeaec</color>
 </resources>

@@ -2,13 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/follow_fragment_shape"
     tools:context="com.mrsgx.campustalk.mvp.Main.FollowFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="followwwwwwwwww" />
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/follow_title"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_6"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/TitleSize"
+            android:background="@drawable/follow_bar"
+            android:text="@string/follow_list" />
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/follw_recyler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 </FrameLayout>

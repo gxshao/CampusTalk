@@ -1,14 +1,25 @@
 package com.mrsgx.campustalk.mvp.Main
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.DatePicker
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.data.GlobalVar.Companion.ALLOW_FIND_DAY
+import com.mrsgx.campustalk.mvp.Find.FindActivity
+import kotlinx.android.synthetic.main.fragment_find.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -23,8 +34,17 @@ class FindFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-
+    var rootview:MainContract.View?=null
     private var mListener: OnFragmentInteractionListener? = null
+    lateinit var parentContext:Context
+
+    private lateinit var mDatePicker:DatePickerDialog
+    private lateinit var mStartTimePcker:TimePickerDialog
+    private lateinit var mEndPicker:TimePickerDialog
+
+    private var mDay=""
+    private var mStartTime=""
+    private var mEndTime=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +95,43 @@ class FindFragment : Fragment() {
         fun onFragmentInteraction(uri: Uri)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initViews()
+
+    }
+
+    private val mOnDateSelected= DatePickerDialog.OnDateSetListener { p, y, m, d ->
+            mDay="$y-$m-$d"
+            ed_date.setText(mDay)
+    }
+
+
+    private fun initViews() {
+        val typeFace = Typeface.createFromAsset(context.assets, "fonts/myfonts.ttf")
+            fint_title.typeface = typeFace
+            mDatePicker=DatePickerDialog(context,R.style.ThemeDialog,mOnDateSelected,0,0,0)
+            mDatePicker.datePicker.minDate= System.currentTimeMillis()-ALLOW_FIND_DAY
+            mDatePicker.datePicker.maxDate=System.currentTimeMillis()
+            mStartTimePcker= TimePickerDialog(context,R.style.ThemeDialog,null,0,0,true)
+            mEndPicker =TimePickerDialog(context,R.style.ThemeDialog,null,0,0,true)
+        btn_search.setOnClickListener{
+            //startActivity(Intent(context, FindActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+            //待传入的数据为
+            //AlertTime = mYear + "-" + mMonth + "-" + mDay + " " + mHour + ":" + mMinutes;
+            startActivity(Intent(context,FindActivity::class.java))
+        }
+        ed_date.setOnClickListener {
+            mDatePicker.show()
+        }
+        ed_start_time.setOnClickListener {
+            mStartTimePcker.show()
+        }
+        ed_end_time.setOnClickListener {
+            mEndPicker.show()
+        }
+    }
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

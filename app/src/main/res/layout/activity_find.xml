@@ -5,5 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mrsgx.campustalk.mvp.Find.FindActivity">
-
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/map_bdmap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,6 @@
     <style name="AppTheme.FadeTransition" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:activityOpenEnterAnimation" tools:targetApi="lollipop">@transition/fade</item>
         <item name="android:activityCloseExitAnimation">@transition/fade</item>
-        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowActivityTransitions" tools:targetApi="lollipop">@transition/fade</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
@@ -27,6 +26,13 @@
         <item name="android:windowEnterAnimation">@transition/fade</item>
         <item name="android:windowActionBar">@null</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
+    </style>
+
+    <style name="ThemeDialog" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+
     </style>
 
     <!-- 自定义弹出层-->

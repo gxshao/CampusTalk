@@ -56,4 +56,24 @@
     <string name="please_input">请输入要发送的内容</string>
     <string name="realse_to_send">松开发送语音...</string>
     <string name="btn_send">发送</string>
+    <string name="btn_exit">退出登录</string>
+    <string name="txt_about">关 于</string>
+    <string name="txt_settings">系统设置</string>
+    <string name="txt_changepass">修改密码</string>
+    <string name="txt_changeprofile">修改资料</string>
+    <string name="txt_start_matching">开始匹配</string>
+    <string name="txt_matching">☺在线匹配❤</string>
+    <string name="follow_list">关注列表</string>
+    <string name="time_machine">Time Machine ✈</string>
+    <string name="find_introduction">功能简介:通过已上传的GPS坐标查找10米范围的异性用户</string>
+    <string name="date">日期：</string>
+    <string name="begain_time">开始时间：</string>
+    <string name="end_time">结束时间：</string>
+    <string name="select_date">请选择日期(过去一周内)</string>
+    <string name="select_start_time">请选择开始时间</string>
+    <string name="select_end_time">请选择结束时间</string>
+    <string name="tips">提示</string>
+    <string name="error">错误</string>
+    <string name="notify">通知</string>
+    <string name="warning">警告</string>
 </resources>

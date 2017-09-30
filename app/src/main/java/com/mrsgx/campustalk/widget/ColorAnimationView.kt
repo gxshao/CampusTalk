@@ -48,7 +48,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         //		this.mViewPager = mViewPager;
         if (mViewPager.adapter == null) {
             throw IllegalStateException(
-                    "ViewPager does not have adapter instance.")
+                    "没找到适配器铁子")
         }
         mPageChangeListener.viewPagerChildCount = count
 

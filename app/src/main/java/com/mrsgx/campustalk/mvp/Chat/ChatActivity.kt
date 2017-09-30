@@ -24,11 +24,12 @@ import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_chat.*
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import com.mrsgx.campustalk.utils.AndroidBug5497Workaround
+import com.mrsgx.campustalk.utils.AndroidBugSolver
 
 
 class ChatActivity : Activity(), ChatContract.View {
     override fun showMessage(title: String, msg: String, level: Int) {
-        CTNote.getInstance(this, mView!!).show(title, msg, level, CTNote.TIME_SHORT)
+        CTNote.getInstance(this, mView!!).show( msg, level, CTNote.TIME_SHORT)
     }
 
     private var context: Context? = null
@@ -133,6 +134,7 @@ class ChatActivity : Activity(), ChatContract.View {
         btn_send.setOnClickListener {
             if (!ed_content.text.isEmpty()) {
                 mAdapter.addMyChat(ed_content.text.toString())
+                chat_recycler.smoothScrollToPosition(mAdapter.itemCount-1)
                 chat_recycler.smoothScrollBy(0,
                         chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
                 ed_content.text.clear()
@@ -199,12 +201,13 @@ class ChatActivity : Activity(), ChatContract.View {
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_chat)
         mView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
+       AndroidBugSolver.addLayoutListener(chat_father,main_tool)
         this.actionBar.hide()
         initViews()
         //发出匹配请求
         // match_mask.visibility = View.INVISIBLE
         loadActionBar()
-        this.actionBar.show()
+
     }
 
     private fun loadActionBar() {
@@ -212,7 +215,9 @@ class ChatActivity : Activity(), ChatContract.View {
         this.actionBar.title = "正在与" + who + "聊天..."
         this.actionBar.setDisplayShowHomeEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)
+        this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.actionbar_head))
         // this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.ctnote_bg_blue))
+        this.actionBar.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

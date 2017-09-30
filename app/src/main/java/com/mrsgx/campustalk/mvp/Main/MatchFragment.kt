@@ -1,12 +1,15 @@
 package com.mrsgx.campustalk.mvp.Main
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -17,7 +20,9 @@ import android.view.animation.AnimationUtils
 
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.mvp.Chat.ChatActivity
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_match.*
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -65,14 +70,12 @@ class MatchFragment : Fragment() {
             throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val anim_match = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
         anim_match.setAnimationListener(mAnim_bounce)
         btn_start_match.startAnimation(anim_match)
-
         btn_start_match.setOnClickListener {
             startActivity(Intent(context, ChatActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
         }

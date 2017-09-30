@@ -9,18 +9,23 @@
     <com.mrsgx.campustalk.widget.ColorAnimationView
         android:id="@+id/colorAnimationView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:paddingBottom="@dimen/small_distance"
-        android:paddingTop="@dimen/small_distance"
+        android:paddingEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_height="match_parent"
-        tools:ignore="RtlSymmetry"
-        android:paddingStart="10dp">
-    </android.support.v4.view.ViewPager>
+        android:paddingStart="10dp"
+        android:paddingTop="@dimen/small_distance"
+        tools:ignore="RtlSymmetry"></android.support.v4.view.ViewPager>
 
     <FrameLayout
         android:id="@+id/frg_navibar"
@@ -36,12 +41,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:baselineAligned="false"
+
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/white"
                 android:layout_weight="0.3">
 
                 <RadioGroup
@@ -53,63 +60,62 @@
 
                     <RadioButton
                         android:id="@+id/radio_match"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:button="@null"
-                        android:drawablePadding="-8dp"
-                        android:drawableTop="@drawable/leak_canary_icon"
                         android:text="@string/match"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
                         android:id="@+id/radio_find"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:button="@null"
-                        android:drawablePadding="-8dp"
-                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:drawableTop="@mipmap/icon_find"
                         android:text="@string/find"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
                         android:id="@+id/radio_follow"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:button="@null"
-                        android:drawablePadding="-8dp"
-                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:drawableTop="@mipmap/follow"
                         android:text="@string/follow"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
 
                     <RadioButton
                         android:id="@+id/radio_setting"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:button="@null"
-                        android:drawablePadding="-8dp"
-                        android:drawableTop="@drawable/leak_canary_icon"
+                        android:drawableTop="@mipmap/icon_my"
                         android:text="@string/settings"
                         android:textAlignment="center"
                         android:textSize="@dimen/contentSize" />
                 </RadioGroup>
-
-
             </ScrollView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7">
+                android:layout_weight="0.8"
+               >
 
                 <ImageButton
                     android:id="@+id/btn_img_navi_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:src="@android:drawable/ic_media_play" />
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_switch"
+                    tools:ignore="RtlSymmetry" />
 
             </RelativeLayout>
 

@@ -1,14 +1,246 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/setting_fragment_shape"
+    tools:ignore="RtlSymmetry"
     tools:context="com.mrsgx.campustalk.mvp.Main.SettingFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="settingssssssss" />
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/shape_big_headpic"
+            android:layout_width="wrap_content"
+            android:paddingTop="@dimen/dp_10"
+            android:layout_height="@dimen/settings_pic_height">
+            <com.github.snowdream.android.widget.SmartImageView
+                android:id="@+id/btn_change_headpic"
+                android:background="@drawable/shape_big_headpic"
+                android:src="@mipmap/headpic"
+                android:soundEffectsEnabled="true"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="@dimen/settings_pic_height" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:paddingRight="@dimen/dp_6"
+            android:paddingLeft="@dimen/dp_6"
+            android:paddingEnd="@dimen/dp_6"
+            android:paddingStart="@dimen/dp_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/textView3"
+                android:layout_width="@dimen/small_pic"
+                android:layout_height="@dimen/small_pic"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_marginStart="@dimen/dp_6"
+                android:src="@mipmap/usr"
+                 />
+
+            <TextView
+                android:id="@+id/txt_nickname"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/TitleSize"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marshall."
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/unable" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/dp_6"
+            android:paddingLeft="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_6"
+            android:paddingStart="@dimen/dp_6">
+            <!--  修改个人资料-->
+            <LinearLayout
+                android:id="@+id/btn_change_profile"
+                android:background="@drawable/item_follow_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp_6"
+                android:paddingLeft="@dimen/dp_6"
+                android:paddingRight="@dimen/dp_6"
+                android:paddingStart="@dimen/dp_6"
+             >
+
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="@dimen/small_pic"
+                    android:layout_height="@dimen/small_pic"
+                    android:src="@drawable/btn_switch_text_bg" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_weight="1"
+                    android:text="@string/txt_changeprofile"
+                    android:textSize="@dimen/middle_txt" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+            <!--  修改密码-->
+            <LinearLayout
+                android:background="@drawable/item_follow_bg"
+                android:id="@+id/btn_change_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp_6"
+                android:paddingLeft="@dimen/dp_6"
+                android:paddingRight="@dimen/dp_6"
+                android:paddingStart="@dimen/dp_6">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="@dimen/small_pic"
+                    android:layout_height="@dimen/small_pic"
+                    android:src="@drawable/btn_switch_text_bg" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_weight="1"
+                    android:text="@string/txt_changepass"
+                    android:textSize="@dimen/middle_txt" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+
+            <!--  系统设置-->
+            <LinearLayout
+                android:background="@drawable/item_follow_bg"
+                android:id="@+id/btn_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="@dimen/dp_6"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp_6"
+                android:paddingLeft="@dimen/dp_6"
+                android:paddingRight="@dimen/dp_6"
+                android:paddingStart="@dimen/dp_6">
+
+                <ImageView
+                    android:id="@+id/img_settings"
+                    android:layout_width="@dimen/small_pic"
+                    android:layout_height="@dimen/small_pic"
+                    android:src="@drawable/btn_switch_text_bg" />
+
+                <TextView
+                    android:id="@+id/txt_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_weight="1"
+                    android:text="@string/txt_settings"
+                    android:textSize="@dimen/middle_txt" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+            <!--  关于-->
+            <LinearLayout
+                android:background="@drawable/item_follow_bg"
+                android:id="@+id/btn_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp_6"
+                android:paddingLeft="@dimen/dp_6"
+                android:paddingRight="@dimen/dp_6"
+                android:paddingStart="@dimen/dp_6">
+
+                <ImageView
+                    android:id="@+id/img_about"
+                    android:layout_width="@dimen/small_pic"
+                    android:layout_height="@dimen/small_pic"
+                    android:src="@drawable/btn_switch_text_bg" />
+
+                <TextView
+                    android:id="@+id/txt_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_weight="1"
+                    android:text="@string/txt_about"
+                    android:textSize="@dimen/middle_txt"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_warning_style"
+                    android:layout_marginBottom="@dimen/dp_6"
+                    android:text="@string/btn_exit"
+                    android:textSize="@dimen/middle_txt"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 </FrameLayout>
