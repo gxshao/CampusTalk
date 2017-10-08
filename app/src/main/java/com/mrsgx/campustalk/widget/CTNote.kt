@@ -1,10 +1,13 @@
 package com.mrsgx.campustalk.widget
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.os.Message
+import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +29,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         const val LEVEL_NOTIFY = 3
         //时间
         const val TIME_SHORT = 4
-        const val TIME_LENGTH = 8
+        const val TIME_LONG = 20
 
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: CTNote? = null
@@ -38,6 +41,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                 INSTANCE = CTNote(context)
             }
             rootview = r
+
             return INSTANCE!!
         }
     }
@@ -77,6 +81,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         Title_Warning=context.resources.getString(R.string.warning)
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @SuppressLint("ResourceType")
             /***
      * 显示通知
@@ -103,14 +108,14 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_blue)
             }
         }
-        background.alpha=255
+        background.alpha=180
         view!!.setBackgroundDrawable(background)
         if (this.isShowing) {
             this.update()
         } else {
             //从上面弹出
-            this.showAtLocation(rootview, android.view.Gravity.TOP, 0, 0)
-
+            if(!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing)
+                  this.showAtLocation(rootview, android.view.Gravity.TOP, 0, 0)
         }
         if (!isRunning) {
             mTimer.purge()
@@ -129,21 +134,20 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     /**
      * 自动退出线程
      */
-    fun getDismisTask():TimerTask{
-         val mTask = object : TimerTask() {
-            override fun run() {
-                mHandler.sendMessage(mHandler.obtainMessage())
-                isRunning = false
-                this.cancel()
-            }
-        }
-        return mTask
+    private fun getDismisTask():TimerTask{
+        return object : TimerTask() {
+           override fun run() {
+               mHandler.sendMessage(mHandler.obtainMessage())
+               isRunning = false
+               cancel()
+           }
+       }
     }
-    val mHandler= @SuppressLint("HandlerLeak")
+    private val mHandler= @SuppressLint("HandlerLeak")
     object : Handler(){
         override fun dispatchMessage(msg: Message?) {
-            if(INSTANCE!=null)
-                INSTANCE!!.dismiss()
+            if(INSTANCE!=null&&!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing)
+                INSTANCE!!.hide()
             super.dispatchMessage(msg)
         }
 

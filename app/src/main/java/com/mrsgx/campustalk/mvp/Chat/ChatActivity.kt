@@ -2,11 +2,15 @@ package com.mrsgx.campustalk.mvp.Chat
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
-import android.opengl.Visibility
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -15,33 +19,65 @@ import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.view.animation.Interpolator
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.ChatAdapter
+import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
+import com.mrsgx.campustalk.data.WorkerRepository
+import com.mrsgx.campustalk.obj.CTUser
+import com.mrsgx.campustalk.utils.AndroidBugSolver
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_chat.*
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import com.mrsgx.campustalk.utils.AndroidBug5497Workaround
-import com.mrsgx.campustalk.utils.AndroidBugSolver
 
 
 class ChatActivity : Activity(), ChatContract.View {
-    override fun showMessage(title: String, msg: String, level: Int) {
-        CTNote.getInstance(this, mView!!).show( msg, level, CTNote.TIME_SHORT)
+
+    override fun setCurrentState(state: Int) {
+        synchronized(this)
+        {
+            mMatchingState = state
+        }
     }
+
+    override fun getCurrentState(): Int {
+        return mMatchingState
+    }
+
+    override fun getPartner(): CTUser {
+
+        return mPartner!!
+    }
+
+
+    override fun reset() {
+        this.actionBar.hide()
+        frm_mask.visibility = View.VISIBLE
+        mAdapter.clearAll()
+
+    }
+
 
     private var context: Context? = null
     private var INPUTMODE = true
+    private var mPartner: CTUser? = null
+    private var mView: View? = null
+    private var chatpresenter: ChatContract.Prensenter? = null
+    private lateinit var mAdapter: ChatAdapter
+    private var mMatchingState: Int = 0
+
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun initViews() {
         context = this
+        rootView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
         val bounce_anim = AnimationUtils.loadAnimation(this, R.anim.matching_bounce)
         bounce_anim.setAnimationListener(mAnim_bounce)
-        // txt_matc-hing.startAnimation(bounce_anim)
+        val typeFace = Typeface.createFromAsset(this.assets, "fonts/myfonts.ttf")
+        txt_matching.typeface = typeFace
+        txt_matching.startAnimation(bounce_anim)
         val rotate_anim = AnimationUtils.loadAnimation(this, R.anim.btn_more_rotate)
-        val mAdapter = ChatAdapter()
+        mAdapter = ChatAdapter()
         chat_recycler.layoutManager = LinearLayoutManager(this)
         chat_recycler.adapter = mAdapter
         mAdapter.addMyChat("xxxxxdsdadasdsa")
@@ -125,8 +161,7 @@ class ChatActivity : Activity(), ChatContract.View {
             if (!b) {
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(window.decorView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            }else
-            {
+            } else {
                 chat_recycler.smoothScrollBy(0,
                         chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
             }
@@ -134,9 +169,10 @@ class ChatActivity : Activity(), ChatContract.View {
         btn_send.setOnClickListener {
             if (!ed_content.text.isEmpty()) {
                 mAdapter.addMyChat(ed_content.text.toString())
-                chat_recycler.smoothScrollToPosition(mAdapter.itemCount-1)
+                chat_recycler.smoothScrollToPosition(mAdapter.itemCount - 1)
                 chat_recycler.smoothScrollBy(0,
                         chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
+                chatpresenter!!.sendTextMsg(ed_content.text.toString())
                 ed_content.text.clear()
             }
 
@@ -145,11 +181,53 @@ class ChatActivity : Activity(), ChatContract.View {
 
     override fun Close() {
         //退出匹配 发出空闲状态
+        if (chatpresenter != null) {
+            when (mMatchingState) {
+                0 -> {//空闲
+
+                }
+                1 -> {
+                    //匹配中
+                    chatpresenter!!.stopMatch()
+                    mMatchingState = 0
+
+                }
+                2 -> {
+                    //聊天中
+                    chatpresenter!!.stopMatch()
+                    mMatchingState = 0
+                }
+
+            }
+            chatpresenter!!.unregsiter()
+        }
         this.finish()
     }
 
     override fun showMessage(msg: String?) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun showMessage(msg: String, level: Int, time: Int) {
+        CTNote.getInstance(this, mView!!).show(msg, level, time)
+    }
+
+    //连接成功
+    override fun setPartner(p: CTUser) {
+        mPartner = p
+        //待设置显示关注
+        val msg = mHand.obtainMessage()
+        msg.what = 1
+        mHand.sendMessage(msg)
+    }
+
+    //收到消息
+    override fun onReceiveMsg(msg: String) {
+        mAdapter.addOtherChat(msg)
+        chat_recycler.smoothScrollToPosition(mAdapter.itemCount - 1)
+        chat_recycler.smoothScrollBy(0,
+                chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
     }
 
     override fun startNewPage(target: Class<*>?) {
@@ -167,7 +245,7 @@ class ChatActivity : Activity(), ChatContract.View {
         override fun onAnimationEnd(p0: Animator?) {
             val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.matching_bounce)
             bounce_anim.setAnimationListener(this)
-            //txt_matching.startAnimation(bounce_anim)
+            txt_matching.startAnimation(bounce_anim)
         }
 
         override fun onAnimationStart(p0: Animator?) {
@@ -183,7 +261,7 @@ class ChatActivity : Activity(), ChatContract.View {
         override fun onAnimationEnd(p0: Animation?) {
             val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.matching_bounce)
             bounce_anim.setAnimationListener(this)
-            //txt_matching.startAnimation(bounce_anim)
+            txt_matching.startAnimation(bounce_anim)
         }
 
         override fun onAnimationStart(p0: Animation?) {
@@ -194,30 +272,47 @@ class ChatActivity : Activity(), ChatContract.View {
         }
 
     }
-    private var mView: View? = null
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_chat)
+        chatpresenter = ChatPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         mView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
-       AndroidBugSolver.addLayoutListener(chat_father,main_tool)
+        AndroidBugSolver.addLayoutListener(chat_father, main_tool)
         this.actionBar.hide()
         initViews()
         //发出匹配请求
-        // match_mask.visibility = View.INVISIBLE
-        loadActionBar()
-
+        chatpresenter!!.startMatch()
     }
 
     private fun loadActionBar() {
-        var who = "mosren"
-        this.actionBar.title = "正在与" + who + "聊天..."
         this.actionBar.setDisplayShowHomeEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)
         this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.actionbar_head))
-        // this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.ctnote_bg_blue))
+        this.actionBar.title = "正在与" + mPartner!!.Nickname + "聊天..."
         this.actionBar.show()
+    }
+
+    private var rootView: View? = null
+    val mHand: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun dispatchMessage(msg: Message?) {
+            when (msg!!.what) {
+                1 -> {
+                    //匹配成功
+                    frm_mask.visibility = View.INVISIBLE
+                    loadActionBar()
+                }
+            }
+            super.dispatchMessage(msg)
+        }
+    }
+
+    override fun onStop() {
+        CTNote.getInstance(this, rootView!!).hide()
+        super.onStop()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -237,12 +332,26 @@ class ChatActivity : Activity(), ChatContract.View {
                     context!!.resources.getDrawable(R.mipmap.follow)
                 else
                     context!!.resources.getDrawable(R.mipmap.unfollow)
-
             }
             android.R.id.home -> {
-                this.finish()
+                //询问是否退出匹配
+                AlertDialog.Builder(this).setTitle(getString(R.string.tips)).setMessage(getString(R.string.tips_quit_or_not)).setPositiveButton(getString(R.string.yes), { d, i ->
+                    this.Close()
+                }).setNegativeButton(getString(R.string.no), null).show()
+            }
+            KeyEvent.KEYCODE_BACK->{
+                if(frm_mask.visibility==View.INVISIBLE)
+                    AlertDialog.Builder(this).setTitle(getString(R.string.tips)).setMessage(getString(R.string.tips_quit_or_not_match)).setPositiveButton(getString(R.string.yes), { d, i ->
+                    this.Close()
+                     }).setNegativeButton(getString(R.string.no), null).show()
+                return false
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        chatpresenter = null
+        super.onDestroy()
     }
 }

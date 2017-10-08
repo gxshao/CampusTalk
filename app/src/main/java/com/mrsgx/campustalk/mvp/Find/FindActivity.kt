@@ -5,18 +5,18 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.view.MenuItem
-import android.view.Window
-import android.view.WindowContentFrameStats
+import android.view.*
 import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.map.BaiduMap
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_find.*
 
 class FindActivity : Activity(),FindContract.View {
     override fun initViews() {
+        rootView=LayoutInflater.from(this).inflate(R.layout.activity_find,null)
         mMap=map_bdmap.map
         mMap.mapType=BaiduMap.MAP_TYPE_NORMAL
         map_bdmap.mapLevel
@@ -74,5 +74,12 @@ class FindActivity : Activity(),FindContract.View {
     override fun onPause() {
         super.onPause()
         map_bdmap.onPause()
+    }
+
+    private var rootView: View?=null
+
+    override fun onStop() {
+        CTNote.getInstance(this,rootView!!).hide()
+        super.onStop()
     }
 }

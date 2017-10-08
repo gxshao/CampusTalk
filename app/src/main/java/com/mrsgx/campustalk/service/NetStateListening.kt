@@ -7,6 +7,9 @@ import android.net.ConnectivityManager
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.NetEventManager
 import com.mrsgx.campustalk.utils.Utils
+import com.zsoft.signala.ConnectionState
+import com.zsoft.signala.transport.StateBase
+import java.sql.Connection
 
 /**
  * Created by Shao on 2017/9/20.

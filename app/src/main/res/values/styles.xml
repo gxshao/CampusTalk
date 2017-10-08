@@ -19,6 +19,9 @@
         <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/slide</item>
         <item name="android:windowEnterAnimation">@transition/slide</item>
         <item name="android:windowActionBar">@null</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/unpressed_blue</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/slide</item>
     </style>
     <style name="AppTheme.NoActionBar.FadeTransition" parent="android:Theme.DeviceDefault.Light.NoActionBar">
@@ -27,7 +30,10 @@
         <item name="android:windowActionBar">@null</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
-
+    <style name="SplashTheme" parent="AppTheme.NoActionBar.FadeTransition">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <style name="ThemeDialog" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>

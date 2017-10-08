@@ -7,11 +7,13 @@ package com.mrsgx.campustalk.obj
     var Sex: String? = null  //性别
     var Uid: String? = null  //UUID+0 || +1
     var School: CTSchool? = null //学校
+    var Age:String?=null
     var Email:String?=null
     var Nickname:String?=null
     var Headpic:String?=null
     var Userexplain:String?=null
     var State:String?=null
     var Password:String?=null
+    var Stucard:String?=null
 }
 

@@ -9,6 +9,8 @@ import com.mrsgx.campustalk.mvp.BaseView
 class LoginContract {
     interface View : BaseView<Presenter>{
         fun finishActivity()
+        fun showMessage(msg:String,level: Int,time:Int)
+        fun isAutoLogin():Boolean
     }
     interface Presenter:BasePresenter{
         fun initData()

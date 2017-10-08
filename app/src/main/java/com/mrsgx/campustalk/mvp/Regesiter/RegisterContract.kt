@@ -9,7 +9,7 @@ import com.mrsgx.campustalk.obj.CTUser
  */
 class RegisterContract {
     interface View:BaseView<Presenter>{
-        fun setEmailBoxState(b:Boolean)
+        fun showMessage(msg:String,level: Int,time:Int)
     }
     interface Presenter:BasePresenter{
         fun CheckEmail(email:String)

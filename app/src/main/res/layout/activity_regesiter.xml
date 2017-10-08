@@ -131,7 +131,6 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="@string/man"
-                android:textSize="@dimen/contentSize"
               />
 
             <RadioButton
@@ -140,7 +139,6 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/contentSize"
                 android:layout_weight="1"
                 android:text="@string/female"
            />
@@ -174,8 +172,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:entries="@array/school"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textSize="@dimen/contentSize" />
         </LinearLayout>
@@ -208,8 +206,7 @@
                 android:background="@drawable/btn_common_style"
                 android:text="@string/getvalidatecode"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/contentSize"
-               android:layout_marginLeft="@dimen/small_distance"
+                android:layout_marginLeft="@dimen/small_distance"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginStart="@dimen/small_distance" />
         </LinearLayout>
@@ -221,7 +218,6 @@
             android:layout_marginTop="16dp"
             android:text="@string/tips_agreement"
             android:textColor="@color/unpressed_blue"
-            android:textSize="@dimen/contentSize"
             android:checked="true"
             app:layout_constraintTop_toBottomOf="@+id/ed_pass2"
             tools:layout_editor_absoluteX="125dp" />

@@ -1,6 +1,7 @@
 package com.mrsgx.campustalk.interfaces
 
 import com.mrsgx.campustalk.service.NetStateListening
+import com.zsoft.signala.transport.StateBase
 
 /**
  * Created by Shao on 2017/9/20.

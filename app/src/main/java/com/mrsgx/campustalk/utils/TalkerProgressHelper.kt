@@ -14,14 +14,15 @@ class TalkerProgressHelper {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var instance: TalkerProgressDialog?=null
-
+        @SuppressLint("StaticFieldLeak")
+        private var O_context:Context?=null
         fun getInstance(context: Context): TalkerProgressDialog {
-            synchronized(TalkerProgressDialog::class) {
-                if(instance==null)
-                instance = TalkerProgressDialog(context,R.style.BeanDialog)
+            synchronized(this) {
+                if(O_context!=context)
+                     instance = TalkerProgressDialog(context, R.style.BeanDialog)
+                O_context=context
+                return instance!!
             }
-            return instance!!
         }
-
     }
 }

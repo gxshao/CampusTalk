@@ -10,8 +10,10 @@ class MainContract{
     interface View:BaseView<Presenter>
     {
         fun showMessage(msg:String,level: Int,time:Int)
+        fun uploadImg(path:String,uid:String)
     }
     interface Presenter:BasePresenter{
         fun initData()
+        fun uploadHeadpic(path:String,uid:String)
     }
 }

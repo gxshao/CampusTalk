@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="@dimen/dp_10"
+    tools:context="com.mrsgx.campustalk.mvp.Profile.ProfileActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/email" />
+        <EditText
+            android:id="@+id/ed_email_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_weight="0.3"
+            android:text="@string/nulls"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_school_names"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/school" />
+        <EditText
+            android:id="@+id/ed_school_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_weight="0.3"
+            android:text="@string/nulls"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:inputType="text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/sex" />
+
+        <EditText
+            android:id="@+id/ed_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_weight="0.3"
+            android:text="@string/nulls"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:inputType="text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txt_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/nickname" />
+
+        <EditText
+            android:id="@+id/ed_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:hint="@string/tips_please_input_nickname" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/age" />
+
+        <EditText
+            android:id="@+id/ed_ages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:hint="@string/tips_please_input_gae"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_stucard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/stucard" />
+
+        <com.github.snowdream.android.widget.SmartImageView
+            android:paddingTop="2dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/pic_stucard"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_weight="0.3"
+            android:scaleType="fitXY"
+           android:src="@mipmap/headpic" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txt_userexplain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textAlignment="center"
+            android:textSize="@dimen/middle_txt"
+            android:text="@string/userexplain" />
+
+        <EditText
+            android:id="@+id/ed_userexplain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textAlignment="center"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:minLines="5"
+            android:textSize="@dimen/middle_txt"
+            android:background="@android:drawable/edit_text"
+            android:hint="@string/tips_please_input_userexplain"
+            />
+    </LinearLayout>
+
+</LinearLayout>

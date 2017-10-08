@@ -12,6 +12,7 @@ class ConnService : Service() {
     }
 
     override fun onCreate() {
+        CTConnection.getInstance(this).Start()
         super.onCreate()
     }
 

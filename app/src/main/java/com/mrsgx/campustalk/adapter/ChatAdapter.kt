@@ -38,13 +38,13 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     fun addMyChat(xx: String) {
         mListChat.add(xx)
         mListRoles.add(TYPE_MY)
-        this.notifyDataSetChanged()
+        this.notifyItemInserted(mListChat.size-1)
     }
 
     fun addOtherChat(xx: String) {
         mListChat.add(xx)
         mListRoles.add(TYPE_OTHER)
-        this.notifyDataSetChanged()
+        this.notifyItemInserted(mListChat.size-1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ChatHolder {
@@ -57,7 +57,12 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     override fun getItemCount(): Int {
         return mListChat.size
     }
-
+    //重新绘画
+    fun clearAll(){
+        mListChat.clear()
+        mListRoles.clear()
+        this.notifyDataSetChanged()
+    }
     override fun getItemViewType(position: Int): Int {
         return mListRoles[position]
     }

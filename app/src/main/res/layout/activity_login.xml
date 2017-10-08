@@ -116,13 +116,13 @@
                 android:layout_height="wrap_content">
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/cb_autologin"
+                    android:checked="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:textSize="@dimen/contentSize"
                     android:layout_gravity="center|center_horizontal"
                     android:text="@string/autologin" />
 
