@@ -10,6 +10,14 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRepository(private val workerRemoteDataSource: DataSource) : DataSource {
+    override fun GetFollowList( uid: String?): Observable<ResponseResult<ArrayList<CTUser>>> {
+        return workerRemoteDataSource.GetFollowList(uid)
+    }
+
+    override fun FollowEvents(uid:String?,tid: String?, op: String): Observable<ResponseResult<Boolean>> {
+        return workerRemoteDataSource.FollowEvents(uid,tid,op)
+    }
+
     override fun StopMatch(uid: String?, schoolcode: String?): Observable<ResponseResult<Boolean>> {
 
         return workerRemoteDataSource.StopMatch(uid,schoolcode)

@@ -16,9 +16,11 @@ import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.FollowAdapter
 import com.mrsgx.campustalk.interfaces.RecyclerViewClickListener
+import com.mrsgx.campustalk.obj.CTSchool
 import com.mrsgx.campustalk.obj.CTUser
 import kotlinx.android.synthetic.main.fragment_follow.*
 
@@ -35,6 +37,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     private var mCurrenSelectItem = 0
     override fun onItemClick(view: View, pos: Int) {
         mCurrenSelectItem = pos
+        val user=mAdataper!!.getChildItemByPos(pos)
+        rootview!!.showUserProfile(user!!)
     }
 
     // TODO: Rename and change types of parameters
@@ -60,6 +64,9 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     val mArray = ArrayList<CTUser>()
     var layoutManager: LinearLayoutManager? = null
     var mAdataper: FollowAdapter? = null
+     var rootview:  MainContract.View?=null
+     var parentContext: Context?=null
+
     @SuppressLint("ResourceAsColor")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -72,7 +79,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
         swipe_refresh.setOnRefreshListener({
             mHandler.postDelayed({
                 mArray.clear()
-                initData()
+                if(rootview!=null)
+                    rootview!!.updateFollowList()
             }, 1000)
         })
         follw_recyler.layoutManager = layoutManager
@@ -83,7 +91,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
         follw_recyler.addOnScrollListener(mOnScrollListener)
         mHandler.postDelayed({
             mArray.clear()
-            initData()
+            if(rootview!=null)
+            rootview!!.updateFollowList()
         }, 1500)
     }
 
@@ -102,7 +111,7 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
                         }else if (!isLoading) {
                             isLoading = true
                             mHandler.postDelayed({
-                                initData()
+                                rootview!!.updateFollowList()
                                 isLoading = false
                             }, 1000)
                         }
@@ -119,23 +128,32 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
 
         }
     }
-    private val mRefreshListener = SwipeRefreshLayout.OnRefreshListener {
 
-
-    }
-
-    private fun initData() {
+    fun initData(arrayList: ArrayList<CTUser>) {
         mArray.clear()
-        var usr = CTUser()
-        usr.Nickname = "sadasdasdas"
-        usr.Userexplain = "这是一个简单的说明而已"
-        usr.Headpic = "http://img.blog.csdn.net/20151123180331708"
-        var usr1 = CTUser()
-        usr1.Nickname = "哈哈哈哈哈"
-        usr1.Userexplain = "这是一个简单的说明而已"
-        usr1.Headpic = "http://img.blog.csdn.net/20151123180331708"
-        mArray.add(usr)
-        mArray.add(usr1)
+        if(arrayList.isEmpty()){
+            tips_empty_list.visibility=View.VISIBLE
+        }else
+            tips_empty_list.visibility=View.INVISIBLE
+        mArray.addAll(arrayList)
+        ///待删除的备注
+//        var usr = CTUser()
+//        usr.Nickname = "sadasdasdas"
+//        usr.Userexplain = "这是一个简单的说明而已"
+//        val school=CTSchool()
+//        school.SName="添加剂"
+//        school.SCode="2212"
+//        usr.School=school
+//        usr.Headpic = "http://img.blog.csdn.net/20151123180331708"
+//        var usr1 = CTUser()
+//        usr1.Nickname = "哈哈哈哈哈"
+//        usr1.Userexplain = "这是一个简单的说明而已"
+//        usr1.School=school
+//        usr1.Headpic = "http://img.blog.csdn.net/20151123180331708"
+//        mArray.add(usr)
+//        mArray.add(usr1)
+//////////////////////////////////////////////////
+
         mAdataper!!.notifyDataSetChanged()
         mAdataper!!.notifyItemRemoved(mArray.size - 1)
         if(swipe_refresh!=null)
@@ -145,8 +163,11 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     var btnListener = View.OnClickListener { view ->
         synchronized(this) {
             //网络删除
+
             //本地删除
-            var pos=follw_recyler.indexOfChild(view.tag as View)
+            val pos=follw_recyler.indexOfChild(view.tag as View)
+            val user=mAdataper!!.getChildItemByPos(pos)
+            rootview!!.cancelFollow(user!!.Uid)
             mAdataper!!.deleteFromFollowList(pos)
         }
     }
@@ -223,4 +244,6 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
             return fragment
         }
     }
+
+
 }// Required empty public constructor

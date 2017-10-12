@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="small_edit">100dp</dimen>
     <dimen name="small_btn_width">120dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
 </resources>

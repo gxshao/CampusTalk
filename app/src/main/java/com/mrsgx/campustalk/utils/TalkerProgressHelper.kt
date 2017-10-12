@@ -24,5 +24,12 @@ class TalkerProgressHelper {
                 return instance!!
             }
         }
+        fun hide(){
+            if(instance!=null){
+                instance!!.hideDialog()
+            }
+            instance=null
+            O_context=null
+        }
     }
 }

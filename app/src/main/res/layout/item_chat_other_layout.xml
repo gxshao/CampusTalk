@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_gravity="left"
     android:layout_height="wrap_content"
+    android:layout_gravity="left"
+    android:orientation="horizontal"
     tools:ignore="RtlHardcoded">
+
     <com.github.snowdream.android.widget.SmartImageView
         android:id="@+id/txt_other_headpic"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_gravity="center_vertical"
-        android:src="@color/dark_gary_strok"
         android:layout_width="@dimen/small_pic"
-        android:layout_height="@dimen/small_pic" />
-    <TextView
-        android:id="@+id/txt_other_chat"
-        android:layout_width="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        android:textAlignment="gravity"
+        android:layout_height="@dimen/small_pic"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dp"
+        android:scaleType="centerCrop"
+        android:layout_marginRight="3dp"
+        android:background="@android:color/white"
+        android:src="@mipmap/headpic" />
 
-        android:maxWidth="300dp"
-        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        android:textSize="@dimen/contentSize"
-        android:background="@mipmap/other_chat"
-        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:background="@mipmap/other_chat">
+
+    <FrameLayout
+        android:id="@+id/txt_other_layer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_other_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:maxWidth="300dp"
+            android:textAlignment="gravity"
+
+            android:textSize="@dimen/contentSize" />
+    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/img_other_layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </FrameLayout>
+    </FrameLayout>
 </LinearLayout>

@@ -9,7 +9,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
@@ -84,12 +86,16 @@
         <activity
             android:name=".mvp.Chat.ChatActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.FadeTransition" />
+            android:theme="@style/AppTheme.FadeTransition" >
+
+
+        </activity>
         <activity
             android:name=".mvp.Find.FindActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.FadeTransition" />
-        <activity android:name=".mvp.Profile.ProfileActivity"></activity>
+        <activity android:name=".mvp.Profile.ProfileActivity" />
+        <activity android:name=".mvp.Setting.SettingActivity"></activity>
     </application>
 
 </manifest>

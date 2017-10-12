@@ -1,14 +1,16 @@
 package com.mrsgx.campustalk.mvp.Main
 
-import android.content.ComponentName
 import android.content.Context
+import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.Local.DB
 import com.mrsgx.campustalk.data.ResponseResult
 import com.mrsgx.campustalk.data.WorkerRepository
+import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import com.mrsgx.campustalk.widget.CTNote
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
@@ -20,6 +22,57 @@ import java.io.File
  * Created by Shao on 2017/9/4.
  */
 class MainPresenter(private val view: MainContract.View, private val workerRepository: WorkerRepository, private val context: Context) : MainContract.Presenter {
+    private val compositeDisposable = CompositeDisposable()
+
+
+    override fun updateFollowList() {
+        val disposable=workerRepository.GetFollowList(GlobalVar.LOCAL_USER!!.Uid).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object :DisposableObserver<ResponseResult<ArrayList<CTUser>>>(){
+                    override fun onError(e: Throwable?) {
+                        view.initFollowData(ArrayList())
+                        view.showMessage("更新关注列表失败,请稍候重试！",CTNote.LEVEL_WARNING,CTNote.TIME_SHORT)
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onNext(value: ResponseResult<ArrayList<CTUser>>?) {
+                        if(value?.Body != null){
+                            view.initFollowData(value.Body!!)
+                        }
+                    }
+                })
+        compositeDisposable.add(disposable)
+
+    }
+
+
+    override fun cancelFollow(uid: String) {
+        val disposable = workerRepository.FollowEvents(GlobalVar.LOCAL_USER!!.Uid, uid, GlobalVar.ACTION_UNFOLLOW).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : DisposableObserver<ResponseResult<Boolean>>() {
+                    override fun onNext(value: ResponseResult<Boolean>?) {
+                        if (value!!.Body as Boolean) {
+                        } else {
+                            view.showMessage(context.getString(R.string.unfollow_fail), CTNote.LEVEL_WARNING, CTNote.TIME_SHORT)
+                        }
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        view.showMessage(context.getString(R.string.unfollow_fail), CTNote.LEVEL_WARNING, CTNote.TIME_SHORT)
+                    }
+
+                    override fun onComplete() {
+                    }
+                })
+
+        compositeDisposable.add(disposable)
+
+    }
+
     override fun uploadHeadpic(path: String, uid: String) {
         TalkerProgressHelper.getInstance(context).show("正在上传头像...")
         val file = File(path)

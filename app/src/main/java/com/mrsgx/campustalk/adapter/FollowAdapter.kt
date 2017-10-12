@@ -35,6 +35,11 @@ class FollowAdapter(private val mListFollows: ArrayList<CTUser>) : RecyclerView.
             this.notifyItemInserted(mListFollows.size - 1)
         }
     }
+    fun getChildItemByPos(pos:Int):CTUser?{
+        if(pos>mListFollows.size||pos<0)
+            return null
+        return mListFollows[pos]
+    }
 
     fun deleteFromFollowList(pos: Int) {
         synchronized(this) {

@@ -13,10 +13,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.annotation.RequiresApi
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
@@ -219,5 +216,15 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        when(keyCode){
+            KeyEvent.KEYCODE_BACK->{
+                mAlertDialog.show()
+                return false
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

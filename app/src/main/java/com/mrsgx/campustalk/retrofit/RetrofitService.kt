@@ -42,4 +42,9 @@ interface RetrofitService {
     @POST(Api.API_SERVER_MATCH)
     fun StopMatch(@Query(Api.KEY)key: String?,@Query(Api.API_UID)uid: String?,@Query(Api.API_SCHOOLCODE)schoolcode: String?):Observable<ResponseResult<Boolean>>
 
+    @POST(Api.API_SERVER_COMMON)
+    fun FollowEvents(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?,@Query(Api.API_TID)tid:String?,@Query(Api.API_OP)op:String):Observable<ResponseResult<Boolean>>
+
+    @POST(Api.API_SERVER_COMMON)
+    fun GetFollowList(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
 }

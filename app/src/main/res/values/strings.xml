@@ -44,8 +44,8 @@
     <string name="input_password">请输入密码</string>
     <string name="txt_inc">www.mrsgx.cn © Copyright</string>
     <string name="autologin">自动登录</string>
-    <string name="man">👦男生</string>
-    <string name="female">👩女生</string>
+    <string name="man">男生</string>
+    <string name="female">女生</string>
     <string name="tips_email">请输入电子邮件地址</string>
     <string name="tips_password">请输入密码</string>
     <string name="tips_confirm_password">请确认密码</string>
@@ -62,11 +62,11 @@
     <string name="txt_changepass">修改密码</string>
     <string name="txt_changeprofile">修改资料</string>
     <string name="txt_start_matching">开始匹配</string>
-    <string name="txt_matching">☺在线匹配❤</string>
+    <string name="txt_matching">提示:点击开始匹配即可匹配当前在线校友</string>
     <string name="follow_list">关注列表</string>
     <string name="time_machine">Time Machine ✈</string>
     <string name="find_introduction">功能简介:通过已上传的GPS坐标查找10米范围的异性用户</string>
-    <string name="date">日期：</string>
+    <string name="date">日期设定：</string>
     <string name="begain_time">开始时间：</string>
     <string name="end_time">结束时间：</string>
     <string name="select_date">请选择日期(过去一周内)</string>
@@ -111,4 +111,12 @@
     <string name="tips_network_disconnected">网络连接已断开..</string>
     <string name="tips_signal_disconnect">与服务器链接异常，请重新开始匹配!</string>
     <string name="tips_quit_or_not_match">是否退出匹配?</string>
+    <string name="follow_fail">关注失败，请稍候重试!</string>
+    <string name="unfollow_fail">取消关注失败,请稍候重试..</string>
+    <string name="too_lazy_guy">这家伙太懒了，什么都没填..</string>
+    <string name="gift_ranking">礼物天梯榜</string>
+    <string name="btn_sign">签到</string>
+    <string name="quit">退出</string>
+    <string name="tips_show_navi">是否显示导航栏</string>
+    <string name="tips_network_state">通讯服务器状态:</string>
 </resources>

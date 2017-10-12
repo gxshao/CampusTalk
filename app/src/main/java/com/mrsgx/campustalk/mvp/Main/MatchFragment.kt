@@ -50,8 +50,11 @@ class MatchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        return inflater!!.inflate(R.layout.fragment_match, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_match, container, false)
+        view.setOnTouchListener { view, motionEvent ->
+            true
+        }
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -70,6 +73,7 @@ class MatchFragment : Fragment() {
             throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -81,20 +85,34 @@ class MatchFragment : Fragment() {
         }
     }
 
+    var rootview: MainContract.View? = null
+    var parentContext: Context? = null
+
     private val mAnim_bounce = object : Animation.AnimationListener {
         override fun onAnimationRepeat(p0: Animation?) {
 
         }
 
         override fun onAnimationEnd(p0: Animation?) {
-            val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
-            bounce_anim.setAnimationListener(this)
-            btn_start_match.startAnimation(bounce_anim)
+            if (parentContext != null) {
+                val bounce_anim = AnimationUtils.loadAnimation(parentContext, R.anim.match_btn_flash)
+                bounce_anim.setAnimationListener(this)
+                btn_start_match.startAnimation(bounce_anim)
+            }
         }
 
         override fun onAnimationStart(p0: Animation?) {
 
         }
+    }
+
+    fun setNetworkStateIcon(state: Boolean) {
+        if (icon_net_state != null)
+            if (state)
+                icon_net_state.setBackgroundDrawable(parentContext!!.resources.getDrawable(R.mipmap.wifi_connect))
+            else
+                icon_net_state.setBackgroundDrawable(parentContext!!.resources.getDrawable(R.mipmap.wifi_disconnect))
+
     }
 
     override fun onDetach() {
@@ -140,5 +158,7 @@ class MatchFragment : Fragment() {
             return fragment
         }
     }
+
+
 }// Required empty public constructor
 

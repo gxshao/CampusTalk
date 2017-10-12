@@ -8,7 +8,7 @@ class CTMessage {
          const val MESSAGE_TYPE_TEXT = "0"
          const val MESSAGE_TYPE_EMOJI = "1"
          const val MESSAGE_TYPE_AUDIO = "2"
-         const val MESSAGE_TYPE_PHOTO = "3"
+         const val MESSAGE_TYPE_IMAGE = "3"
     }
     var From: String? = null
     var To: String? = null

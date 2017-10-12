@@ -27,12 +27,17 @@
     <style name="AppTheme.NoActionBar.FadeTransition" parent="android:Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/fade</item>
         <item name="android:windowEnterAnimation">@transition/fade</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">@null</item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">@color/colorAccent</item>
+        <item name="android:colorPrimary" tools:targetApi="lollipop">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
         <item name="android:windowReenterTransition" tools:targetApi="lollipop">@transition/fade</item>
     </style>
     <style name="SplashTheme" parent="AppTheme.NoActionBar.FadeTransition">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
     <style name="ThemeDialog" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
         <item name="android:colorAccent">@color/colorAccent</item>
@@ -61,4 +66,10 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:animation">@android:anim/fade_in</item>
     </style>
+
+    <style name="AnimationFadeBottom" >
+        <item name="android:windowEnterAnimation">@anim/ctnote_enter</item>
+        <item name="android:windowExitAnimation">@anim/ctnote_out</item>
+    </style>
+
 </resources>

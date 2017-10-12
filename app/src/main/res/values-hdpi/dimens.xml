@@ -32,4 +32,9 @@
     <dimen name="radio_width">50dp</dimen>
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_6">6dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+
+    <dimen name="chat_image_maxWidth">250dp</dimen>
+    <dimen name="chat_image_maxHeight">200dp</dimen>
 </resources>

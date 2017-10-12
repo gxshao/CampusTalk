@@ -28,7 +28,7 @@ import java.util.*
  */
 class CTConnection(url: String?, context: Context?, transport: ITransport?) : Connection(url, context, transport) {
 
-    lateinit var mChatListener: ChatInterfaces
+    var mChatListener: ChatInterfaces?=null
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var mConn: CTConnection?=null
@@ -54,12 +54,14 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                 when(msg.DataType){
                     CTData.DATATYPE_REPLY->{
                         val uid=msg.Body as String
-                        mChatListener.onMatched(uid)
+                        if(mChatListener!=null)
+                        mChatListener!!.onMatched(uid)
                     }
                     CTData.DATATYPE_MESSAGE->{
                         val bType = object : TypeToken<CTData<CTMessage>>() {}.type
                         val d=Gson().fromJson<CTData<CTMessage>>(message,bType)
-                        mChatListener.onMessage(d.Body!!)
+                        if(mChatListener!=null)
+                        mChatListener!!.onMessage(d.Body!!)
                     }
                     CTData.DATATYPE_PUSH->{
                         //服务器推送信息
@@ -70,7 +72,8 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                         when(msg.Body){
                             "next"->{
                                 //单向连接断开，重新加载chat activity
-                                mChatListener.onNextMatch()
+                                if(mChatListener!=null)
+                                mChatListener!!.onNextMatch()
                             }
                         }
                     }

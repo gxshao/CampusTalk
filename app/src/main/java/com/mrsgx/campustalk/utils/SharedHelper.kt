@@ -26,5 +26,6 @@ class SharedHelper {
         val KEY_EMAIL = "email"
         val KEY_PWD = "pass"
         val FIRST_LOAD="0"
+        val IS_SHOW_NAVI="navi_show"
     }
 }

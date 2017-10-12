@@ -36,7 +36,6 @@ init {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: DB? = null
-
         fun getInstance(context: Context): DB {
             if (INSTANCE == null) {
                 INSTANCE = DB(context)

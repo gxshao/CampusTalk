@@ -21,11 +21,13 @@ import android.widget.*
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.FragAdapter
 import com.mrsgx.campustalk.data.GlobalVar
+import com.mrsgx.campustalk.data.GlobalVar.Companion.RECONNECT_INTERVAL
 import com.mrsgx.campustalk.data.Local.DB
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.interfaces.NetEventManager
 import com.mrsgx.campustalk.mvp.Profile.ProfileActivity
+import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.service.CTConnection
 import com.mrsgx.campustalk.service.ConnService
 import com.mrsgx.campustalk.service.NetStateListening
@@ -33,14 +35,35 @@ import com.mrsgx.campustalk.utils.SharedHelper
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import com.mrsgx.campustalk.utils.Utils
 import com.mrsgx.campustalk.widget.CTNote
+import com.mrsgx.campustalk.widget.CTProfileCard
 import com.mrsgx.campustalk.widget.MainViewPagerTransform
 import com.zsoft.signala.ConnectionState
-import com.zsoft.signala.transport.StateBase
 import kotlinx.android.synthetic.main.activity_main.*
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
         , FollowFragment.OnFragmentInteractionListener, FindFragment.OnFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener {
+
+
+    override fun setNavigator(state: Int) {
+        frg_navibar.visibility=state
+    }
+
+
+    override fun initFollowData(list: ArrayList<CTUser>) {
+        if (mFollowFrag != null) {
+            mFollowFrag!!.initData(list)
+        }
+    }
+
+    override fun cancelFollow(uid: String) {
+        mainpresenter.cancelFollow(uid)
+    }
+
+    override fun updateFollowList() {
+        mainpresenter.updateFollowList()
+    }
+
     override fun uploadImg(path: String, uid: String) {
         mainpresenter.uploadHeadpic(path, uid)
     }
@@ -55,6 +78,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     private var mNaviState = false
     private var mCONN_SERVICE_STATE = false
+
     override fun OnNetChanged(net: Int) {
         when (net) {
             Utils.NETWORK_NONE -> {
@@ -75,15 +99,21 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     override fun OnSignalRChanged(state: Boolean) {
         if (state) {
-            if (mCONN_SERVICE_STATE!=state)
+            if (mCONN_SERVICE_STATE != state){
                 showMessage(getString(R.string.tips_connected_server), CTNote.LEVEL_TIPS, CTNote.TIME_SHORT)
+            }
+            mMatchFrag!!.setNetworkStateIcon(state)
             mCONN_SERVICE_STATE = state
         } else {
 
-            if (mCONN_SERVICE_STATE!=state)
+            if (mCONN_SERVICE_STATE != state) {
                 showMessage(getString(R.string.tips_reconnect_server), CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
+
+            }
+            mMatchFrag!!.setNetworkStateIcon(state)
+            mHand.postDelayed({  CTConnection.getInstance(this).Start() },RECONNECT_INTERVAL)
+            println("收到断开信息")
             mCONN_SERVICE_STATE = state
-            CTConnection.getInstance(this).Start()
         }
 
     }
@@ -106,20 +136,17 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     override fun setPresenter(presenter: MainContract.Presenter?) {
 
     }
+    override fun showUserProfile(user: CTUser) {
 
+        mProfileDialog!!.showUser(user)
+        setBackgroundAlpha(0.5f)
+    }
     private var rootView: View? = null
-
-    override fun onStop() {
-        CTNote.getInstance(this, rootView!!).hide()
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        TalkerProgressHelper.getInstance(this).hideDialog()
-        super.onDestroy()
-    }
-
+    private var mFollowFrag: FollowFragment? = null
+    private var mMatchFrag: MatchFragment? = null
+    private var mSettingFrag: SettingFragment? = null
     var viewpagerAdapter: FragAdapter? = null
+    private var mProfileDialog:CTProfileCard?=null
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun initViews() {
@@ -136,8 +163,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             Close()
         }).create()
         rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
-        mHand.post({ showMessage("登录成功欢迎回来☺", CTNote.LEVEL_TIPS, CTNote.TIME_SHORT) })
-
         if (GlobalVar.LOCAL_USER!!.State == GlobalVar.USER_STATE_WAITING) {
             AlertDialog.Builder(this).setTitle("提示").setMessage("您当前账户待核验，请您随时关注账户状态。").setPositiveButton("退出", { dialogInterface, i ->
                 this.Close()
@@ -157,14 +182,17 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         find.rootview = this
         find.parentContext = this
 
-        settings.rootview = this
-        settings.parentContext = this
+        match.rootview = this
+        match.parentContext = this
 
-        find.rootview = this
-        find.parentContext = this
+        mMatchFrag=match
+        mFollowFrag = follow
+        mFollowFrag!!.rootview = this
+        mFollowFrag!!.parentContext = this
 
-        find.rootview = this
-        find.parentContext = this
+        mSettingFrag=settings
+        mSettingFrag!!.rootview=this
+        mSettingFrag!!.parentContext=this
         mFragments.add(match)
         mFragments.add(find)
         mFragments.add(follow)
@@ -233,6 +261,14 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             //跳转到资料页面弹出资料修改
             mAlertDailog.show()
         }
+        frg_navibar.visibility=if(SharedHelper.getInstance(this).getBoolean(SharedHelper.IS_SHOW_NAVI,true)) View.VISIBLE else View.INVISIBLE
+        /**
+         * 资料弹窗
+         */
+        mProfileDialog = CTProfileCard(this,rootView!!, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+        mProfileDialog!!.setOnDismissListener {
+            setBackgroundAlpha(1f)
+        }
     }
 
     private val mRadioChanged = RadioGroup.OnCheckedChangeListener { p0, who ->
@@ -266,7 +302,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         initViews()
 
         gestureDetector = GestureDetector(this, listener)
-        val con = CTConnection.getInstance(this)
 
         /**
          * 1.加载用户信息，学生认证校验和资料校验
@@ -274,6 +309,18 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
          * 3.加载导航 done
          * 4.子页业务逻辑
          */
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     *
+     * @param bgAlpha
+     *            屏幕透明度0.0-1.0 1表示完全不透明
+     */
+    fun setBackgroundAlpha(bgAlpha: Float) {
+        val lp = (this).window.attributes;
+        lp.alpha = bgAlpha
+        (this).window.attributes = lp;
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
@@ -400,12 +447,24 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     }
 //动画区}
 
-
     private lateinit var mAlertDailog: AlertDialog
 
     init {
 
     }
+
+    override fun onStop() {
+        CTNote.getInstance(this, rootView!!).hide()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        TalkerProgressHelper.hide()
+        CTConnection.getInstance(this).Stop()
+        stopService(Intent(this, ConnService::class.java))
+        super.onDestroy()
+    }
+
 
     /**
      * A native method that is implemented by the 'native-lib' native library,
@@ -416,8 +475,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     companion object {
 
         // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("native-lib")
-        }
+
     }
 }

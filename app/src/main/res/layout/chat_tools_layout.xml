@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_10"
+    android:minWidth="@dimen/chat_image_maxWidth"
+    android:background="@drawable/chat_tools_bg"
+    android:alpha="180"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/btn_image_select"
+            android:layout_width="@dimen/middle_pic"
+            android:layout_height="@dimen/middle_pic"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@mipmap/pic_select_icon"/>
+        <ImageView
+            android:id="@+id/btn_emoji_select"
+            android:layout_width="@dimen/middle_pic"
+            android:layout_height="@dimen/middle_pic"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@mipmap/emoji_select_icon"/>
+    </LinearLayout>
+</LinearLayout>

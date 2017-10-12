@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_40"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_profile_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10">
+            <!--头像和昵称 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/unpressed_blue"
+                android:orientation="horizontal">
+
+                <com.github.snowdream.android.widget.SmartImageView
+                    android:layout_width="@dimen/middle_pic"
+                    android:layout_height="@dimen/middle_pic"
+                    android:src="@mipmap/headpic" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dp_10">
+                    <TextView
+                        android:id="@+id/txt_card_nickname"
+                        android:text="我的昵称"
+                        android:textAlignment="gravity"
+                        android:textSize="@dimen/TitleSize"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_width="match_parent"
+                        android:layout_weight="0.3"
+                        android:layout_height="match_parent" />
+                   <LinearLayout
+                       android:orientation="horizontal"
+                       android:layout_width="match_parent"
+                       android:layout_weight="0.5"
+                       android:layout_height="match_parent">
+                       <TextView
+                           android:id="@+id/txt_card_sex"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:paddingLeft="@dimen/dp_10"
+                           android:textAlignment="gravity"
+                           android:textColor="@android:color/white"
+                           android:gravity="center_vertical"
+                           android:paddingRight="@dimen/dp_10"
+                           android:layout_weight="1"
+                           android:text="男"/>
+                       <TextView
+                           android:id="@+id/txt_card_age"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:layout_marginLeft="@dimen/dp_10"
+                           android:layout_marginStart="@dimen/dp_10"
+                           android:textAlignment="gravity"
+                           android:textColor="@android:color/white"
+                           android:gravity="center_vertical"
+                           android:layout_weight="0.5"
+                           android:text="29"/>
+                   </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+               <TextView
+                   android:layout_weight="1"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:textSize="@dimen/middle_txt"
+                   android:text="学校:"/>
+                <TextView
+                    android:id="@+id/txt_card_schoolname"
+                    android:layout_weight="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/middle_txt"
+                    android:text="天津理工大学"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/black"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/middle_txt"
+                    android:text="邮箱:"/>
+                <TextView
+                    android:id="@+id/txt_card_email"
+                    android:layout_weight="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/middle_txt"
+                    android:text="***************"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+             >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/userexplain"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_5"
+                    android:textColor="@android:color/white"
+                    android:background="@color/unpressed_blue"
+                    android:textSize="@dimen/middle_txt" />
+
+                <TextView
+                    android:id="@+id/txt_card_userexplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:maxLines="5"
+                    android:minLines="5"
+                    android:text="@string/too_lazy_guy"
+                  />
+            </LinearLayout>
+            <TextView
+                android:text="@string/gift_ranking"
+                android:paddingBottom="@dimen/dp_5"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_5"
+                android:textColor="@android:color/white"
+                android:background="@color/unpressed_blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/middle_txt"/>
+            <ListView
+                android:id="@+id/list_card_rank"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

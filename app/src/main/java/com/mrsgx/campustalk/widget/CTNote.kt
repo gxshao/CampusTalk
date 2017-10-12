@@ -41,7 +41,6 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                 INSTANCE = CTNote(context)
             }
             rootview = r
-
             return INSTANCE!!
         }
     }
@@ -59,21 +58,25 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private var Title_Notify=""
 
     init {
-        view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
-        this.contentView = view
-        this.background.alpha = 0
-        this.isTouchable = true
-        this.isOutsideTouchable = false
-        this.animationStyle = R.style.anim_ctnote
-        this.width = ViewGroup.LayoutParams.WRAP_CONTENT
-        this.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        if (view != null) {
-            mTitle = view!!.findViewById(R.id.txt_title_cnote)
-            mContent = view!!.findViewById(R.id.txt_note_cnote)
-            mBtnClose = view!!.findViewById(R.id.btn_close_cnote)
-            mBtnClose!!.setOnClickListener {
-                this.dismiss()
+        try {
+            view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
+            this.contentView = view
+            this.background.alpha = 0
+            this.isTouchable = true
+            this.isOutsideTouchable = false
+            this.animationStyle = R.style.anim_ctnote
+            this.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            this.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            if (view != null) {
+                mTitle = view!!.findViewById(R.id.txt_title_cnote)
+                mContent = view!!.findViewById(R.id.txt_note_cnote)
+                mBtnClose = view!!.findViewById(R.id.btn_close_cnote)
+                mBtnClose!!.setOnClickListener {
+                    this.dismiss()
+                }
             }
+        }catch (e:Exception){
+            println(e)
         }
         Title_Tips=context.resources.getString(R.string.tips)
         Title_Error=context.resources.getString(R.string.error)
@@ -114,8 +117,13 @@ class CTNote(private val context: Context) : PopupWindow(context) {
             this.update()
         } else {
             //从上面弹出
-            if(!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing)
+            try{
+            if(!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing){
                   this.showAtLocation(rootview, android.view.Gravity.TOP, 0, 0)
+            }
+            }catch (e:Exception){
+                println(e)
+            }
         }
         if (!isRunning) {
             mTimer.purge()
@@ -146,18 +154,29 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private val mHandler= @SuppressLint("HandlerLeak")
     object : Handler(){
         override fun dispatchMessage(msg: Message?) {
-            if(INSTANCE!=null&&!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing)
+            if(INSTANCE!=null&&!(context as Activity).isDestroyed&&!(context).isFinishing)
                 INSTANCE!!.hide()
             super.dispatchMessage(msg)
         }
 
     }
-    /**
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+            /**
      * 手动退出方法
      */
     fun hide() {
-        this.dismiss()
-        INSTANCE = null
+        try {
+            if(!(context as Activity).isDestroyed&&!(context).isFinishing)
+                this.dismiss()
+            rootview=null
+
+        } catch (e: IllegalArgumentException) {
+            // Handle or log or ignore
+        } catch (e: Exception) {
+            // Handle or log or ignore
+        } finally {
+            INSTANCE = null
+        }
     }
 
 }

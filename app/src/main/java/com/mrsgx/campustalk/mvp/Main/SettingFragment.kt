@@ -21,8 +21,11 @@ import android.view.ViewGroup
 
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
+import com.mrsgx.campustalk.data.GlobalVar.Companion.CHANGE_SETTING
+import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
 import com.mrsgx.campustalk.data.Local.DB
 import com.mrsgx.campustalk.mvp.Profile.ProfileActivity
+import com.mrsgx.campustalk.mvp.Setting.SettingActivity
 import com.mrsgx.campustalk.retrofit.Api
 import com.mrsgx.campustalk.utils.SharedHelper
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
@@ -47,8 +50,8 @@ class SettingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    var rootview:MainContract.View?=null
-    var parentContext:Context?=null
+    var rootview: MainContract.View? = null
+    var parentContext: Context? = null
     private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +62,6 @@ class SettingFragment : Fragment() {
         }
     }
 
-    private val CHOOSE_PHOTO: Int=1
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -81,22 +83,30 @@ class SettingFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            CHOOSE_PHOTO->{
-                if(resultCode== Activity.RESULT_OK)
-                {
+        when (requestCode) {
+            CHOOSE_PHOTO -> {
+                if (resultCode == Activity.RESULT_OK) {
                     onStucardChanged(data!!)
                 }
             }
+            CHANGE_SETTING->{
+                println("读取配置")
+                if(rootview!=null)
+                rootview!!.setNavigator(if(data!!.getBooleanExtra(SharedHelper.IS_SHOW_NAVI,true)) View.VISIBLE else View.INVISIBLE)
+
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
     private fun onStucardChanged(data: Intent) {
 
-        val imagepath= Utils.onSelectedImage(data,parentContext!!)
+        val imagepath = Utils.onSelectedImage(data, parentContext!!)
         btn_change_headpic.setImagePath(imagepath, Rect())
-        rootview!!.uploadImg(imagepath!!,GlobalVar.LOCAL_USER!!.Uid!!)
+        rootview!!.uploadImg(imagepath!!, GlobalVar.LOCAL_USER!!.Uid!!)
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
@@ -116,18 +126,31 @@ class SettingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btn_logout.setOnClickListener {
-            AlertDialog.Builder(parentContext).setTitle("退出").setMessage("注销并退出请点击确定！").setPositiveButton("确定", { dialogInterface, i ->
+            AlertDialog.Builder(parentContext).setTitle("退出").setMessage("注销并退出请点击确定！").setPositiveButton(context.getString(R.string.yes), { dialogInterface, i ->
                 TalkerProgressHelper.getInstance(parentContext!!).show("正在注销..")
-                val ed=SharedHelper.getInstance(parentContext!!).edit()
-                ed.putString(SharedHelper.KEY_EMAIL,"")
-                ed.putString(SharedHelper.KEY_PWD,"")
-                ed.putBoolean(SharedHelper.FIRST_LOAD,true)
+                val ed = SharedHelper.getInstance(parentContext!!).edit()
+                ed.putString(SharedHelper.KEY_EMAIL, "")
+                ed.putString(SharedHelper.KEY_PWD, "")
+                ed.putBoolean(SharedHelper.FIRST_LOAD, true)
                 ed.apply()
                 rootview!!.Close()
-            }).setNegativeButton("取消",null).show()
+            }).setNegativeButton("取消", null).show()
         }
-        if(!GlobalVar.LOCAL_USER!!.Headpic.isNullOrEmpty())
-        btn_change_headpic.setImageUrl(Api.API_HEADPIC_BASE+GlobalVar.LOCAL_USER!!.Headpic,Rect())
+        btn_change_pass.setOnClickListener {
+            val intent = Intent()
+            intent.action = "android.intent.action.VIEW"
+            val content_url = Uri.parse("http://www.mrsgx.cn")
+            intent.data = content_url
+            startActivity(intent)
+        }
+        btn_about.setOnClickListener {
+            AlertDialog.Builder(context).setTitle(context.getString(R.string.txt_about)).setMessage("CampusTalk小组作品，欢迎访问www.mrsgx.cn获取更多资讯").setNegativeButton(context.getString(R.string.quit), null).show()
+        }
+        btn_settings.setOnClickListener {
+            startActivityForResult(Intent(context,SettingActivity::class.java), CHANGE_SETTING)
+        }
+        if (!GlobalVar.LOCAL_USER!!.Headpic.isNullOrEmpty())
+            btn_change_headpic.setImageUrl(Api.API_HEADPIC_BASE + GlobalVar.LOCAL_USER!!.Headpic, Rect())
         btn_change_profile.setOnClickListener {
             rootview!!.startNewPage(ProfileActivity::class.java)
         }
@@ -162,7 +185,9 @@ class SettingFragment : Fragment() {
             //开始选择
             startActivityForResult(intent, CHOOSE_PHOTO)
         }
+        txt_settings_nickname.text = GlobalVar.LOCAL_USER!!.Nickname
     }
+
     override fun onDetach() {
         super.onDetach()
         mListener = null

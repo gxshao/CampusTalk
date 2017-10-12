@@ -24,6 +24,8 @@ class   Api{
         const val API_QUIT="quit"
         const val API_SCHOOLCODE="schoolcode"
 
+        const val API_TID="tid" //被关注目标ID
+        const val API_OP="op" //操作 0 或 1
         const val API_GET_DATA="schoolinfo"
         const val API_UPDATE_PROFILE="updateprofile"
     }

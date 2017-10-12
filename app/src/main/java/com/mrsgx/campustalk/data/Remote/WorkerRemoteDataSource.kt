@@ -14,6 +14,14 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRemoteDataSource : DataSource {
+    override fun GetFollowList(uid: String?): Observable<ResponseResult<ArrayList<CTUser>>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetFollowList("followlist",uid)
+    }
+
+    override fun FollowEvents(uid: String?, tid: String?, op: String): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).FollowEvents("follow",uid,tid,op)
+    }
+
     override fun StopMatch(uid: String?, schoolcode: String?): Observable<ResponseResult<Boolean>> {
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).StopMatch(Api.API_QUIT,uid,schoolcode)
     }
@@ -27,7 +35,6 @@ class WorkerRemoteDataSource : DataSource {
 
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetUserInfoById("getUserProfile",uid)
     }
-
 
     override fun UploadFile(key:String,file: MultipartBody.Part, uid: String): Observable<ResponseResult<String>> {
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).UploadFile(key,file,uid)

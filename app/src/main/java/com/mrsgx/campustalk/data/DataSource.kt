@@ -21,6 +21,9 @@ interface DataSource {
     fun GetUserInfoById(uid: String?):Observable<ResponseResult<CTUser>>
     fun StartMatch(uid: String?,schoolcode: String?):Observable<ResponseResult<Boolean>>
     fun StopMatch(uid: String?,schoolcode: String?):Observable<ResponseResult<Boolean>>
+    fun FollowEvents(uid:String?,tid:String?,op:String):Observable<ResponseResult<Boolean>>
+    fun GetFollowList(uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
+
 
 
 }
