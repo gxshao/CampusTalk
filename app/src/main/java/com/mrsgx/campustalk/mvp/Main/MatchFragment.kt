@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils
 
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.mvp.Chat.ChatActivity
+import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_match.*
 import java.util.*
@@ -81,13 +82,23 @@ class MatchFragment : Fragment() {
         anim_match.setAnimationListener(mAnim_bounce)
         btn_start_match.startAnimation(anim_match)
         btn_start_match.setOnClickListener {
-            startActivity(Intent(context, ChatActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+            TalkerProgressHelper.getInstance(parentContext!!).show("正在准备匹配..")
+            mHand.postDelayed({
+                startActivity(Intent(context, ChatActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+                mHand.sendMessage(mHand.obtainMessage())
+            },1500)
         }
     }
 
     var rootview: MainContract.View? = null
     var parentContext: Context? = null
-
+    val mHand:Handler by lazy { @SuppressLint("HandlerLeak")
+    object :Handler(){
+        override fun dispatchMessage(msg: Message?) {
+            TalkerProgressHelper.getInstance(parentContext!!).hideDialog()
+            super.dispatchMessage(msg)
+        }
+    } }
     private val mAnim_bounce = object : Animation.AnimationListener {
         override fun onAnimationRepeat(p0: Animation?) {
 

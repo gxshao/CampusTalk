@@ -10,6 +10,10 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRepository(private val workerRemoteDataSource: DataSource) : DataSource {
+    override fun uploadGpsInfo(location: String): Observable<ResponseResult<Boolean>> {
+        return workerRemoteDataSource.uploadGpsInfo(location)
+    }
+
     override fun GetFollowList( uid: String?): Observable<ResponseResult<ArrayList<CTUser>>> {
         return workerRemoteDataSource.GetFollowList(uid)
     }

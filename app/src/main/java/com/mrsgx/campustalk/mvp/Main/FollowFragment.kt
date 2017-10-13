@@ -37,7 +37,7 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     private var mCurrenSelectItem = 0
     override fun onItemClick(view: View, pos: Int) {
         mCurrenSelectItem = pos
-        val user=mAdataper!!.getChildItemByPos(pos)
+        val user = mAdataper!!.getChildItemByPos(pos)
         rootview!!.showUserProfile(user!!)
     }
 
@@ -64,8 +64,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     val mArray = ArrayList<CTUser>()
     var layoutManager: LinearLayoutManager? = null
     var mAdataper: FollowAdapter? = null
-     var rootview:  MainContract.View?=null
-     var parentContext: Context?=null
+    var rootview: MainContract.View? = null
+    var parentContext: Context? = null
 
     @SuppressLint("ResourceAsColor")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -79,7 +79,7 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
         swipe_refresh.setOnRefreshListener({
             mHandler.postDelayed({
                 mArray.clear()
-                if(rootview!=null)
+                if (rootview != null)
                     rootview!!.updateFollowList()
             }, 1000)
         })
@@ -91,8 +91,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
         follw_recyler.addOnScrollListener(mOnScrollListener)
         mHandler.postDelayed({
             mArray.clear()
-            if(rootview!=null)
-            rootview!!.updateFollowList()
+            if (rootview != null)
+                rootview!!.updateFollowList()
         }, 1500)
     }
 
@@ -102,20 +102,20 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
             super.onScrollStateChanged(recyclerView, newState)
             when (newState) {
                 RecyclerView.SCROLL_STATE_DRAGGING -> {
-                    synchronized(this){
-                    val lvip = layoutManager!!.findLastVisibleItemPosition()
-                    println(lvip)
-                    if (lvip + 1 == mAdataper!!.itemCount) {
-                        if (swipe_refresh.isRefreshing) {
-                            mAdataper!!.notifyItemRemoved(mAdataper!!.itemCount)
-                        }else if (!isLoading) {
-                            isLoading = true
-                            mHandler.postDelayed({
-                                rootview!!.updateFollowList()
-                                isLoading = false
-                            }, 1000)
+                    synchronized(this) {
+                        val lvip = layoutManager!!.findLastVisibleItemPosition()
+                        println(lvip)
+                        if (lvip + 1 == mAdataper!!.itemCount) {
+                            if (swipe_refresh.isRefreshing) {
+                                mAdataper!!.notifyItemRemoved(mAdataper!!.itemCount)
+                            } else if (!isLoading) {
+                                isLoading = true
+                                mHandler.postDelayed({
+                                    rootview!!.updateFollowList()
+                                    isLoading = false
+                                }, 1000)
+                            }
                         }
-                    }
                     }
                 }
             }
@@ -131,33 +131,15 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
 
     fun initData(arrayList: ArrayList<CTUser>) {
         mArray.clear()
-        if(arrayList.isEmpty()){
-            tips_empty_list.visibility=View.VISIBLE
-        }else
-            tips_empty_list.visibility=View.INVISIBLE
+        if (arrayList.isEmpty()) {
+            tips_empty_list.visibility = View.VISIBLE
+        } else
+            tips_empty_list.visibility = View.INVISIBLE
         mArray.addAll(arrayList)
-        ///待删除的备注
-//        var usr = CTUser()
-//        usr.Nickname = "sadasdasdas"
-//        usr.Userexplain = "这是一个简单的说明而已"
-//        val school=CTSchool()
-//        school.SName="添加剂"
-//        school.SCode="2212"
-//        usr.School=school
-//        usr.Headpic = "http://img.blog.csdn.net/20151123180331708"
-//        var usr1 = CTUser()
-//        usr1.Nickname = "哈哈哈哈哈"
-//        usr1.Userexplain = "这是一个简单的说明而已"
-//        usr1.School=school
-//        usr1.Headpic = "http://img.blog.csdn.net/20151123180331708"
-//        mArray.add(usr)
-//        mArray.add(usr1)
-//////////////////////////////////////////////////
-
         mAdataper!!.notifyDataSetChanged()
         mAdataper!!.notifyItemRemoved(mArray.size - 1)
-        if(swipe_refresh!=null)
-             swipe_refresh.isRefreshing = false
+        if (swipe_refresh != null)
+            swipe_refresh.isRefreshing = false
     }
 
     var btnListener = View.OnClickListener { view ->
@@ -165,8 +147,8 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
             //网络删除
 
             //本地删除
-            val pos=follw_recyler.indexOfChild(view.tag as View)
-            val user=mAdataper!!.getChildItemByPos(pos)
+            val pos = follw_recyler.indexOfChild(view.tag as View)
+            val user = mAdataper!!.getChildItemByPos(pos)
             rootview!!.cancelFollow(user!!.Uid)
             mAdataper!!.deleteFromFollowList(pos)
         }

@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_welcome.*
 import java.util.*
 
 class WelcomeActivity : Activity(), WelcomeContract.View {
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this,rootView!!).show(msg,level,time)
     }
@@ -41,7 +42,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
     override fun initViews() {
         val timer = Timer()
-        var count = 2
+        var count = 3  //等待秒数
         val context = this
         txt_count.text=getString(R.string.loading)
         timer.schedule(object : TimerTask() {
@@ -80,8 +81,9 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun startNewPage(target: Class<*>?) {
-        startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-        this.finish()
+        startActivity(Intent(this, target))
+        mHand.postDelayed({this.finish()},200)
+
     }
 
     private var welpresenter:WelcomePresenter?=null
@@ -130,66 +132,9 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         }
     }
 
-/*
-        var con = CTConnection.getInstance(this)
-        send.setOnClickListener {
-            object : Thread() {
-                override fun run() {
-                  /*  var json = Gson()
-                    var school = CTSchool()
-                    school.sCode = "111"
-                    school.sName = "123456"
-
-
-                    var user = CTUser()
-                    user.school = school
-                    user.sex = "0"
-                    user.uid = "1230"
-
-
-                    var text = CTData<CTUser>()
-                    text.DataType = "0"
-                    text.Body = user
-                    var t = json.toJson(text).toString()
-                    println(t)
-                    var da=json.fromJson(t, CTData::class.java)
-                    println(da.Body)
-
-                    con.Send(json.toJson(text).toString().trim(), object : SendCallback() {
-                        override fun OnError(ex: Exception?) {
-                        }
-
-                        override fun OnSent(messageSent: CharSequence?) {
-
-                        }
-                    })*/
-                    super.run()
-                }
-            }.start()
-        }
-        disconnect.setOnClickListener {
-            object : Thread() {
-                override fun run() {
-                    try {
-                       con.Stop()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    super.run()
-                }
-            }.start()
-        }
-        connect.setOnClickListener {
-            object : Thread() {
-                override fun run() {
-                    try {
-                        con.Start()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    super.run()
-                }
-            }.start()
-        }*/
+    override fun onDestroy() {
+            welpresenter=null
+        super.onDestroy()
+    }
 
 }

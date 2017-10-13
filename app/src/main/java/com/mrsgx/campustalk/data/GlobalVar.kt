@@ -8,7 +8,7 @@ import com.mrsgx.campustalk.obj.CTUser
 class GlobalVar {
     companion object {
         //const val IP="10.2.2.231"
-        const val IP="192.168.2.125"
+        const val IP="10.2.2.46"
         val SERVER_URL= "http://$IP:13614/MyConnection"
         var LOCAL_USER:CTUser?=CTUser()
         val LOCAL_DIRECTORY="/campustalk/"
@@ -23,6 +23,7 @@ class GlobalVar {
         val SPILTER="$" //数据分隔符
         val AUTOLOGIN="AUTOLOGIN" //自动登录关键字
         val RECONNECT_INTERVAL=5000L //发起重连间隔
+        val UPLOAD_SPAN=180000L //半小时上传一次
         val ACTION_FOLLOW="1"//关注
         val ACTION_UNFOLLOW="0" //取消关注
         val CHOOSE_PHOTO: Int = 1

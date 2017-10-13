@@ -31,6 +31,7 @@
                 android:orientation="horizontal">
 
                 <com.github.snowdream.android.widget.SmartImageView
+                    android:id="@+id/pic_card_headpic"
                     android:layout_width="@dimen/middle_pic"
                     android:layout_height="@dimen/middle_pic"
                     android:src="@mipmap/headpic" />

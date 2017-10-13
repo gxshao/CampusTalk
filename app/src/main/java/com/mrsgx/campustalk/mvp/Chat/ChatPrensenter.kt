@@ -50,7 +50,7 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
 
     override fun unregsiter() {
             NetEventManager.getInstance().cancelSubscribe(this)
-            compositeDisposable.dispose()
+            //compositeDisposable.dispose()
     }
 
     override fun followPartner(uid: String) {
@@ -99,6 +99,7 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
 
 
     override fun startMatch() {
+        view.setCurrentState(1)
         val disposiable=workerRepository.StartMatch(GlobalVar.LOCAL_USER!!.Uid,GlobalVar.LOCAL_USER!!.School!!.SCode).observeOn(AndroidSchedulers.mainThread()!!)
                 .subscribeOn(Schedulers.io()!!)
                 .subscribeWith(object : DisposableObserver<ResponseResult<Boolean>>() {
@@ -108,12 +109,14 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
                             view.setCurrentState(1)
                         }else
                         {
+                            view.setCurrentState(0)
                             view.showMessage(context.getString(R.string.start_match_failed))
                             view.Close()
                         }
                     }
 
                     override fun onError(e: Throwable?) {
+                        view.setCurrentState(0)
                         view.showMessage(context.getString(R.string.start_match_failed))
                         view.Close()
                     }
@@ -125,7 +128,8 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
     }
 
     override fun stopMatch() {
-        val disposiable=workerRepository.StopMatch(GlobalVar.LOCAL_USER!!.Uid,GlobalVar.LOCAL_USER!!.School!!.SCode).observeOn(AndroidSchedulers.mainThread()!!)
+        val disposiable=workerRepository.StopMatch(GlobalVar.LOCAL_USER!!.Uid,GlobalVar.LOCAL_USER!!.School!!.SCode)
+                .observeOn(AndroidSchedulers.mainThread()!!)
                 .subscribeOn(Schedulers.io()!!)
                 .subscribeWith(object : DisposableObserver<ResponseResult<Boolean>>() {
                     override fun onNext(value: ResponseResult<Boolean>?) {
@@ -136,11 +140,13 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
                         }else
                         {
                             view.showMessage(context.getString(R.string.stop_matching_failed))
+                            compositeDisposable.dispose()
                         }
                     }
 
                     override fun onError(e: Throwable?) {
                         view.showMessage(context.getString(R.string.stop_matching_failed))
+                        compositeDisposable.dispose()
                     }
 
                     override fun onComplete() {

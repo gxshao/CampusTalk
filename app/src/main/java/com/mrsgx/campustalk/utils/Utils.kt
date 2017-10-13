@@ -172,7 +172,6 @@ class Utils {
                 val buffer = ByteArray(file.length().toInt())
                 inputFile.read(buffer)
                 inputFile.close()
-                App.Watcher.watch(buffer)
                 result = NativeUtils().encode(buffer)
                 println("图片大小："+result.length)
             } else {
@@ -206,6 +205,10 @@ class Utils {
          */
         fun compressImage(filepath: String, context: Context): String {
             val newfilepath = "" + Environment.getExternalStorageDirectory() + "/campustalk/" + GlobalVar.LOCAL_USER!!.Uid + "/" + getFormatDate() + ".jpg"
+            val folder=File(GlobalVar.LOCAL_USER!!.Uid )
+            if(!folder.exists()){
+                folder.mkdirs()
+            }
             val newOpts = BitmapFactory.Options()
             // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
             newOpts.inJustDecodeBounds = true
@@ -235,6 +238,11 @@ class Utils {
         fun saveBitmap(bm: ByteArray, filepath: String) {
             Log.e(TAG, "保存图片")
             try {
+                val file=File(filepath)
+                if(file.exists()){
+                    file.delete()
+                }
+                file.createNewFile()
                 val buffer = ByteBuffer.wrap(bm)
                 val out = FileOutputStream(filepath).channel
                 out.write(buffer)

@@ -2,6 +2,7 @@ package com.mrsgx.campustalk.mvp.Main
 
 import com.mrsgx.campustalk.mvp.BasePresenter
 import com.mrsgx.campustalk.mvp.BaseView
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 
 /**
@@ -23,6 +24,6 @@ class MainContract{
         fun uploadHeadpic(path:String,uid:String)
         fun updateFollowList()
         fun cancelFollow(uid:String)
-
+        fun uploadLocationInfo(list:ArrayList<CTLocation>)
     }
 }

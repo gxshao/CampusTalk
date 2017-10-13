@@ -47,4 +47,7 @@ interface RetrofitService {
 
     @POST(Api.API_SERVER_COMMON)
     fun GetFollowList(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
+
+    @POST(Api.API_SERVER_GPSINFO)
+    fun uploadGpsInfo(@Query(Api.KEY)key:String?,@Query(Api.API_GPS)location:String):Observable<ResponseResult<Boolean>>
 }

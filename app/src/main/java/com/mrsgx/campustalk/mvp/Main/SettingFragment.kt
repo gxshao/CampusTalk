@@ -102,9 +102,10 @@ class SettingFragment : Fragment() {
 
     private fun onStucardChanged(data: Intent) {
 
-        val imagepath = Utils.onSelectedImage(data, parentContext!!)
+        var imagepath = Utils.onSelectedImage(data, parentContext!!)
+        imagepath=Utils.compressImage(imagepath!!,parentContext!!)
         btn_change_headpic.setImagePath(imagepath, Rect())
-        rootview!!.uploadImg(imagepath!!, GlobalVar.LOCAL_USER!!.Uid!!)
+        rootview!!.uploadImg(imagepath, GlobalVar.LOCAL_USER!!.Uid)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

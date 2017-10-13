@@ -14,7 +14,7 @@ class SQLiteHelper(context: Context,name:String): SQLiteOpenHelper(context,name,
         createUserDB(db)
         createAreaDB(db)
         createSchoolDB(db)
-
+        createLocationDB(db)
     }
     //创建用户表
     private fun createUserDB(db: SQLiteDatabase) {
@@ -56,6 +56,18 @@ class SQLiteHelper(context: Context,name:String): SQLiteOpenHelper(context,name,
         db.execSQL(sql)
     }
 
+    //创建坐标表
+    private fun createLocationDB(db: SQLiteDatabase){
+        val sql = "CREATE TABLE " + TableLocation.TABLE_LOCATION_NAME +
+                "(" +
+                TableLocation.LATITUDE + " text ," +
+                TableLocation.LONGITUDE + " text ," +
+                TableLocation.UID + " text, " +
+                TableLocation.TIME + " text " +
+                ")"
+        println(sql)
+        db.execSQL(sql)
+    }
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -64,7 +76,7 @@ class SQLiteHelper(context: Context,name:String): SQLiteOpenHelper(context,name,
 class TableUser {
     companion object {
         var TABLE_USER_NAME = "users"
-        val UID = "uid"
+        val UID = "Uid"
         val EMAIL = "email"
         val NICKNAME = "nickname"
         val PASSWORD = "password"
@@ -90,5 +102,14 @@ class TableSchool {
         var SCHOOL_CODE="SchoolCode"
         var SCHOOL_NAME="SchoolName"
         var AREACODE="AreaCode"
+    }
+}
+class TableLocation {
+    companion object {
+        var TABLE_LOCATION_NAME = "Location"
+        var LATITUDE="Latitude"
+        var LONGITUDE="Longitude"
+        var UID="Uid"
+        var TIME="time"
     }
 }

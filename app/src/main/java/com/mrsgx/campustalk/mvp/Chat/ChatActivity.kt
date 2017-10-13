@@ -483,6 +483,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     //导入ActionBar
     private fun loadActionBar() {
+        mMatchingState=2
         this.actionBar.setDisplayShowHomeEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)
         this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.actionbar_head))
@@ -571,6 +572,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     override fun Close() {
         //退出匹配 发出空闲状态
         if (chatpresenter != null) {
+            println("当前状态"+mMatchingState)
             when (mMatchingState) {
                 0 -> {//空闲
 

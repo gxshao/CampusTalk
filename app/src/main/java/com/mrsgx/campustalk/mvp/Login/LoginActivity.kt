@@ -91,6 +91,7 @@ class LoginActivity : Activity(), LoginContract.View {
         startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
     //自定义提示
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this,rootView!!).show(msg,level,time)
     }
@@ -98,12 +99,14 @@ class LoginActivity : Activity(), LoginContract.View {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         CTNote.getInstance(this,rootView!!).hide()
         super.onStop()
     }
     override fun onDestroy() {
         STOP_TEXT_ANIM=true
+        loginpresenter=null
         super.onDestroy()
     }
     var text:Array<String>?=null

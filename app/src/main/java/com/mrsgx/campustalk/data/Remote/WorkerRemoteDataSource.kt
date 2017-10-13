@@ -14,6 +14,11 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRemoteDataSource : DataSource {
+    override fun uploadGpsInfo(location: String): Observable<ResponseResult<Boolean>> {
+
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).uploadGpsInfo("s",location)
+    }
+
     override fun GetFollowList(uid: String?): Observable<ResponseResult<ArrayList<CTUser>>> {
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetFollowList("followlist",uid)
     }

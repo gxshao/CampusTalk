@@ -300,7 +300,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         startService(Intent(this, ConnService::class.java))
         mainpresenter = MainPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         initViews()
-
         gestureDetector = GestureDetector(this, listener)
 
         /**

@@ -17,16 +17,17 @@
         <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/shape_big_headpic"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:paddingTop="@dimen/dp_10"
             android:layout_height="@dimen/settings_pic_height">
             <com.github.snowdream.android.widget.SmartImageView
                 android:id="@+id/btn_change_headpic"
-                android:background="@drawable/shape_big_headpic"
                 android:src="@mipmap/headpic"
                 android:soundEffectsEnabled="true"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:scaleType="centerCrop"
+
                 android:layout_height="@dimen/settings_pic_height" />
 
         </LinearLayout>

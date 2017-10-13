@@ -4,6 +4,8 @@
     <item>
         <shape>
             <corners android:radius="10dp" />
+            <solid android:color="@color/pressed_blue"/>
+            <stroke android:color="@color/dark_gary_strok" android:width="0.5dp"/>
         </shape>
     </item>
 </layer-list>

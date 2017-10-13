@@ -14,15 +14,16 @@ class   Api{
         const val API_SERVER_VALIEDATE = API_BASE+"/events/ctValidate.ashx"
         const val API_SERVER_COMMON = API_BASE+"/events/ctCommon.ashx"
         const val API_SERVER_MATCH= API_BASE+"/events/ctMatch.ashx"
-
+        const val API_SERVER_GPSINFO="events/ctGpsInfo.ashx"
         const val API_EMAIL="email"
         const val API_CTUSER="user"
         const val API_PWD="pass"
         const val API_CODE="code" //验证码
-        const val API_UID="uid"
+        const val API_UID="Uid"
         const val API_MATCH="match"
         const val API_QUIT="quit"
         const val API_SCHOOLCODE="schoolcode"
+        const val API_GPS="gps"
 
         const val API_TID="tid" //被关注目标ID
         const val API_OP="op" //操作 0 或 1

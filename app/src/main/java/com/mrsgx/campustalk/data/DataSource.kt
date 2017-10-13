@@ -23,6 +23,7 @@ interface DataSource {
     fun StopMatch(uid: String?,schoolcode: String?):Observable<ResponseResult<Boolean>>
     fun FollowEvents(uid:String?,tid:String?,op:String):Observable<ResponseResult<Boolean>>
     fun GetFollowList(uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
+    fun uploadGpsInfo(location:String):Observable<ResponseResult<Boolean>>
 
 
 

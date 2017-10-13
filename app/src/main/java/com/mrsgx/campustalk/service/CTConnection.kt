@@ -98,11 +98,9 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                     data.Body=GlobalVar.LOCAL_USER
                     CTConnection.getInstance(context).Send(Gson().toJson(data),object :SendCallback(){
                         override fun OnError(ex: java.lang.Exception?) {
-
                         }
 
                         override fun OnSent(messageSent: CharSequence?) {
-                            println("用户验证信息已发送:"+messageSent)
                         }
                     })
                 }

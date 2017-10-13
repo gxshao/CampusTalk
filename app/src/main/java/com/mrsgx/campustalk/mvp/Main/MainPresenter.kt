@@ -1,11 +1,13 @@
 package com.mrsgx.campustalk.mvp.Main
 
 import android.content.Context
+import com.google.gson.Gson
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.Local.DB
 import com.mrsgx.campustalk.data.ResponseResult
 import com.mrsgx.campustalk.data.WorkerRepository
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import com.mrsgx.campustalk.widget.CTNote
@@ -22,6 +24,8 @@ import java.io.File
  * Created by Shao on 2017/9/4.
  */
 class MainPresenter(private val view: MainContract.View, private val workerRepository: WorkerRepository, private val context: Context) : MainContract.Presenter {
+
+
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -72,7 +76,26 @@ class MainPresenter(private val view: MainContract.View, private val workerRepos
         compositeDisposable.add(disposable)
 
     }
+    ///废弃的方法
+    override fun uploadLocationInfo(list: ArrayList<CTLocation>) {
+        val disposiable=workerRepository.uploadGpsInfo(Gson().toJson(list)).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object :DisposableObserver<ResponseResult<Boolean>>(){
+                    override fun onComplete() {
 
+                    }
+
+                    override fun onNext(value: ResponseResult<Boolean>?) {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+
+                    }
+                })
+        compositeDisposable.add(disposiable)
+
+    }
     override fun uploadHeadpic(path: String, uid: String) {
         TalkerProgressHelper.getInstance(context).show("正在上传头像...")
         val file = File(path)
