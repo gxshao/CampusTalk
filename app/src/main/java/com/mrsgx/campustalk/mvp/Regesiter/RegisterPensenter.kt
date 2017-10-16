@@ -79,7 +79,11 @@ class RegisterPensenter(private val view: RegisterContract.View, private val wor
                                 edit.putBoolean(GlobalVar.AUTOLOGIN,false)
                                 edit.apply()
                                 view.startNewPage(MainActivity::class.java)
-                                LoginActivity.LOGIN_INSTANCE!!.finish()
+                                if(LoginActivity.LOGIN_INSTANCE!=null){
+                                    val activity=LoginActivity.LOGIN_INSTANCE!!.get()
+                                    activity?.finish()
+                                }
+
                                 view.Close()
                             }
                         }else

@@ -30,6 +30,7 @@ import com.mrsgx.campustalk.obj.CTArea
 import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTSchool
 import com.mrsgx.campustalk.obj.CTUser
+import java.lang.ref.WeakReference
 
 /**
  * Created by Shao on 2017/10/1.
@@ -43,14 +44,12 @@ class DB(private val context: Context) {
     }
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var INSTANCE: DB? = null
-
+        private var INSTANCE: WeakReference<DB>? = null
         fun getInstance(context: Context): DB {
             if (INSTANCE == null) {
-                INSTANCE = DB(context)
+                INSTANCE = WeakReference(DB(context))
             }
-            return INSTANCE!!
+            return INSTANCE?.get()!!
         }
     }
 

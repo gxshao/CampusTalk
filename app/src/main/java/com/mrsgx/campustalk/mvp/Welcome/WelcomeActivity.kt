@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.R.id.txt_count
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
@@ -22,6 +23,7 @@ import com.mrsgx.campustalk.mvp.Login.LoginActivity
 import com.mrsgx.campustalk.utils.SharedHelper
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_welcome.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 class WelcomeActivity : Activity(), WelcomeContract.View {
@@ -31,9 +33,9 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
     }
 
     override fun loadingPost() {
-        val msg=mHand.obtainMessage()
-        msg.what=3
-        mHand.sendMessage(msg)
+        runOnUiThread {
+            initViews()
+        }
     }
 
     override fun setPresenter(presenter: WelcomeContract.Presenter?) {
@@ -46,6 +48,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         val context = this
         txt_count.text=getString(R.string.loading)
         timer.schedule(object : TimerTask() {
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun run() {
                 val msg = mHand.obtainMessage()
                 if (count == 0) {
@@ -55,8 +58,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
                     val pwd = shared.getString(SharedHelper.KEY_PWD, null)
                     if (email == null || email == "" || pwd == null || pwd == ""&&!shared.getBoolean(GlobalVar.AUTOLOGIN,false)) {
                         //初次登录或账号注销
-                        msg.what = 2
-                        mHand.sendMessage(msg)
+                        runOnUiThread { startNewPage(LoginActivity::class.java) }
                     } else {
                         //登录校验
                         welpresenter!!.Login(email, pwd)
@@ -64,8 +66,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
                     timer.cancel()
                 } else {
                     count--
-                    msg.what = 1
-                    mHand.sendMessage(msg)
+                    runOnUiThread { txt_count.append(".") }
                 }
             }
 
@@ -88,11 +89,13 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
     private var welpresenter:WelcomePresenter?=null
     private var rootView: View?=null
+    private lateinit var mHand:MyHandler
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_welcome)
+        mHand= MyHandler(this)
         rootView=LayoutInflater.from(this).inflate(R.layout.activity_welcome,null)
         welpresenter = WelcomePresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         val anim = AnimatorInflater.loadAnimator(this, R.animator.anim_appname)
@@ -113,28 +116,15 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         return super.onKeyDown(keyCode, event)
     }
 
-    var mHand = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun dispatchMessage(msg: Message) {
-            when (msg.what) {
-                1 -> {
-                    txt_count.append(".")
-                }
-                2 -> {
-                    startNewPage(LoginActivity::class.java)
-                }
-                 //首次加载完成
-                3 -> {
-                    initViews()
-                }
-            }
-            super.dispatchMessage(msg)
-        }
-    }
 
     override fun onDestroy() {
             welpresenter=null
         super.onDestroy()
     }
+    class MyHandler(activity: WelcomeActivity): Handler() {
+        private val mActivty: WeakReference<WelcomeActivity> by lazy {
+            WeakReference<WelcomeActivity>(activity)
+        }
 
+    }
 }

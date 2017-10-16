@@ -1,17 +1,11 @@
 package com.mrsgx.campustalk.service;
 
-import android.annotation.SuppressLint
-import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.provider.Settings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.ChatInterfaces
-import com.mrsgx.campustalk.interfaces.NetEventManager
-import com.mrsgx.campustalk.obj.CTArea
 import com.mrsgx.campustalk.obj.CTData
 import com.mrsgx.campustalk.obj.CTMessage
 import com.mrsgx.campustalk.obj.CTUser
@@ -21,7 +15,7 @@ import com.zsoft.signala.SendCallback
 import com.zsoft.signala.transport.ITransport
 import com.zsoft.signala.transport.StateBase
 import com.zsoft.signala.transport.longpolling.LongPollingTransport
-import java.util.*
+import java.lang.ref.WeakReference
 
 /**
  * Created by Shao on 2017/9/6.
@@ -30,13 +24,11 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
 
     var mChatListener: ChatInterfaces?=null
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var mConn: CTConnection?=null
-
+        private var mConn: WeakReference<CTConnection>?=null
         fun getInstance(context: Context?): CTConnection {
             if(mConn==null)
-                mConn = CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport())
-            return mConn!!
+                mConn = WeakReference(CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport()))
+            return mConn?.get()!!
         }
     }
 
@@ -108,6 +100,7 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                 ConnectionState.Connecting ->{}
                 ConnectionState.Reconnecting -> {}
                 ConnectionState.Disconnecting -> {}
+                null->{}
             }
         context.sendBroadcast(intent)
 

@@ -4,21 +4,20 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import java.lang.ref.WeakReference
 
 /**
  * Created by Shao on 2017/9/18.
  */
 class SharedHelper {
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var instance: SharedPreferences?=null
-
+        private var instance: WeakReference<SharedPreferences>?=null
         fun getInstance(context: Context): SharedPreferences {
             synchronized(this) {
                 if(instance==null)
-                instance = context.getSharedPreferences(SHARED_NAME, Activity.MODE_PRIVATE)
+                instance =WeakReference(context.getSharedPreferences(SHARED_NAME, Activity.MODE_PRIVATE))
             }
-            return instance!!
+            return instance?.get()!!
         }
 
 

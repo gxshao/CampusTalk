@@ -123,7 +123,7 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
             }
 
             //转换成Uri
-            var imageUri = Uri.fromFile(imageFile)
+            val imageUri = Uri.fromFile(imageFile)
             //开启选择呢绒界面
             val intent = Intent("android.intent.action.GET_CONTENT")
             //设置可以缩放
@@ -204,7 +204,6 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
 
     }

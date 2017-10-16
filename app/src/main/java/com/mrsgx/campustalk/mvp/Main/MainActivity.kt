@@ -39,6 +39,7 @@ import com.mrsgx.campustalk.widget.CTProfileCard
 import com.mrsgx.campustalk.widget.MainViewPagerTransform
 import com.zsoft.signala.ConnectionState
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.ref.WeakReference
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
@@ -147,8 +148,8 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     private var mSettingFrag: SettingFragment? = null
     var viewpagerAdapter: FragAdapter? = null
     private var mProfileDialog:CTProfileCard?=null
-    @SuppressLint("NewApi")
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private lateinit var mHand:MainHandler
+    @SuppressLint("InflateParams")
     override fun initViews() {
         /**
          * 登录信息校验
@@ -296,6 +297,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_main)
+        mHand= MainHandler(this)
         NetEventManager.getInstance().subscribe(this) //订阅网络消息
         startService(Intent(this, ConnService::class.java))
         mainpresenter = MainPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
@@ -342,15 +344,21 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         super.onResume()
     }
 
-    private var mHand = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun dispatchMessage(msg: Message?) {
-            when (msg!!.what) {
-                1 -> {
-                    Close()
+    class MainHandler(activity: MainActivity):Handler(){
+        private val mMainHand:WeakReference<MainActivity> by lazy {
+            WeakReference<MainActivity>(activity)
+        }
+
+        override fun handleMessage(msg: Message?) {
+            val activity=mMainHand.get()
+            if(activity!=null){
+                when (msg!!.what) {
+                    1 -> {
+                        activity.Close()
+                    }
                 }
             }
-            super.dispatchMessage(msg)
+            super.handleMessage(msg)
         }
     }
 

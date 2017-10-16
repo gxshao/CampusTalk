@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.mrsgx.campustalk.R
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -31,17 +32,15 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         const val TIME_SHORT = 4
         const val TIME_LONG = 20
 
-        @SuppressLint("StaticFieldLeak")
-        private var INSTANCE: CTNote? = null
-        @SuppressLint("StaticFieldLeak")
-        private var rootview: View? = null
+        private var INSTANCE:WeakReference<CTNote>? = null
+        private var rootview: WeakReference<View>? = null
 
         fun getInstance(context: Context, r: View): CTNote {
             if (INSTANCE == null) {
-                INSTANCE = CTNote(context)
+                INSTANCE = WeakReference(CTNote(context))
             }
-            rootview = r
-            return INSTANCE!!
+            rootview = WeakReference(r)
+            return INSTANCE?.get()!!
         }
     }
 
@@ -56,7 +55,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private var Title_Warning=""
     private var Title_Error=""
     private var Title_Notify=""
-
+    private lateinit var mHandler:CtnoteHandler
     init {
         try {
             view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
@@ -75,6 +74,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                     this.dismiss()
                 }
             }
+            mHandler=CtnoteHandler(this)
         }catch (e:Exception){
             println(e)
         }
@@ -85,7 +85,6 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @SuppressLint("ResourceType")
             /***
      * 显示通知
      */
@@ -118,8 +117,8 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         } else {
             //从上面弹出
             try{
-            if(!(rootview!!.context as Activity).isDestroyed&&!(rootview!!.context as Activity).isFinishing){
-                  this.showAtLocation(rootview, android.view.Gravity.TOP, 0, 0)
+            if(!(rootview?.get()!!.context as Activity).isDestroyed&&!(rootview?.get()!!.context as Activity).isFinishing){
+                  this.showAtLocation(rootview?.get(), android.view.Gravity.TOP, 0, 0)
             }
             }catch (e:Exception){
                 println(e)
@@ -151,17 +150,24 @@ class CTNote(private val context: Context) : PopupWindow(context) {
            }
        }
     }
-    private val mHandler= @SuppressLint("HandlerLeak")
-    object : Handler(){
-        override fun dispatchMessage(msg: Message?) {
-            if(INSTANCE!=null&&!(context as Activity).isDestroyed&&!(context).isFinishing)
-                INSTANCE!!.hide()
-            super.dispatchMessage(msg)
+    class CtnoteHandler(note:CTNote):Handler(){
+        private val mHand:WeakReference<CTNote> by lazy {
+            WeakReference<CTNote>(note)
         }
 
+        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+        override fun handleMessage(msg: Message?) {
+            val ct=mHand.get()
+            if(ct!=null){
+                if((ct.context as Activity).isDestroyed&&!(ct.context).isFinishing)
+                    ct.hide()
+            }
+            super.handleMessage(msg)
+        }
     }
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-            /**
+
+            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    /**
      * 手动退出方法
      */
     fun hide() {

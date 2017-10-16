@@ -16,7 +16,6 @@ import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import android.support.annotation.RequiresApi
-import android.support.annotation.UiThread
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,32 +28,29 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.ChatAdapter
-import com.mrsgx.campustalk.app.App
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.interfaces.OnAudioRecoredStatusListener
-import com.mrsgx.campustalk.obj.CTMessage
 import com.mrsgx.campustalk.obj.CTUser
-import com.mrsgx.campustalk.utils.*
+import com.mrsgx.campustalk.utils.AndroidBugSolver
+import com.mrsgx.campustalk.utils.AudioRecoredUtils
+import com.mrsgx.campustalk.utils.Utils
 import com.mrsgx.campustalk.widget.CTNote
 import com.mrsgx.campustalk.widget.CTProfileCard
-import com.squareup.leakcanary.RefWatcher
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.fragment_setting.*
 import java.io.File
-import java.util.zip.Inflater
+import java.lang.ref.WeakReference
 
 
 class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener {
 
 
-    @SuppressLint("SetTextI18n")
     override fun onRecording(db: Double, time: Long) {
         val mAudioLong = (time / 1000).toInt()
-        btn_audio.text = context!!.resources.getString(R.string.realse_to_send) + "(" + mAudioLong + "s)"
+        btn_audio.text =String.format(context!!.resources.getString(R.string.rest_audio_time) ,60-mAudioLong)
     }
 
     override fun onStop(audio: String) {
@@ -90,7 +86,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     }
 
-
+    private lateinit var mHand: Handler
     private var context: Context? = null
     private var INPUTMODE = true
     private var mPartner: CTUser? = CTUser()
@@ -153,26 +149,33 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     }
     private var mProfileDialog: CTProfileCard? = null
     private var rootView: View? = null
-    val mHand: Handler = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun dispatchMessage(msg: Message?) {
-            when (msg!!.what) {
-                1 -> {
-                    //匹配成功
-                    frm_mask.visibility = View.INVISIBLE
-                    loadActionBar()
+
+    class ChatHandler(activity: ChatActivity):Handler(){
+        private val mChatHand:WeakReference<ChatActivity> by lazy {
+            WeakReference<ChatActivity>(activity)
+        }
+
+        override fun handleMessage(msg: Message?) {
+            val activity=mChatHand.get()
+            if(activity!=null && msg!=null){
+                when (msg.what) {
+                    1 -> {
+                        //匹配成功
+                        activity.frm_mask.visibility = View.INVISIBLE
+                        activity.loadActionBar()
+                    }
                 }
             }
-            super.dispatchMessage(msg)
+            super.handleMessage(msg)
         }
     }
-
     //显示用户资料卡
     private fun showUserProfile(user: CTUser) {
         mProfileDialog!!.showUser(user)
         setBackgroundAlpha(0.5f)
     }
 
+    @SuppressLint("InflateParams")
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun initViews() {
@@ -462,11 +465,13 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         return mChatLogPath
     }
 
+    @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_chat)
+        mHand=ChatHandler(this)
         chatpresenter = ChatPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         mView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
         AndroidBugSolver.addLayoutListener(chat_father, main_tool)
@@ -529,9 +534,9 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             R.id.menu_follow -> {
                 synchronized(this) {
                     if (!item.isChecked) {
-                        chatpresenter!!.followPartner(mPartner!!.Uid!!)
+                        chatpresenter!!.followPartner(mPartner!!.Uid)
                     } else {
-                        chatpresenter!!.unfollowPartner(mPartner!!.Uid!!)
+                        chatpresenter!!.unfollowPartner(mPartner!!.Uid)
                     }
                     item.isChecked = !item.isChecked
                 }

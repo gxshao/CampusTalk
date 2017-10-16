@@ -32,6 +32,7 @@ import com.mrsgx.campustalk.utils.RegMatchs
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_login.view.*
 import kotlinx.android.synthetic.main.activity_regesiter.*
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -53,6 +54,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this, rootView!!).show(msg, level, time)
     }
@@ -72,6 +74,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
     var mSchoolAdatpter: SpinnerAdapter? = null
     var mAreaList: ArrayList<HashMap<String, String>>? = null
     var mSchoolList: ArrayList<HashMap<String, String>>? = null
+    lateinit var mHand:RegisterHandler
     private fun initData() {
         //加载地区到内存
         mAreaList = ArrayList()
@@ -228,6 +231,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         CTNote.getInstance(this,rootView!!).hide()
         super.onStop()
@@ -237,30 +241,39 @@ class RegisterActivity : Activity(), RegisterContract.View {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_regesiter)
+        mHand= RegisterHandler(this)
         initViews()
         context = this
         presenter = RegisterPensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onDestroy() {
         CTNote.getInstance(this, rootView!!).hide()
         super.onDestroy()
     }
 
-    val mHand = @SuppressLint("HandlerLeak")
-    object : Handler() {
-        override fun dispatchMessage(msg: Message) {
-            if (msg.what == 1) {
-                val value = msg.obj as Int
-                if (value == 0) {
-                    btn_getcode.isClickable = true
-                    btn_getcode.text = context!!.getString(R.string.getvalidatecode)
-                } else {
-                    btn_getcode.text = context!!.getString(R.string.getvalidatecode) + "(" + value + ")"
+    class RegisterHandler(activity: RegisterActivity):Handler(){
+        private val register:WeakReference<RegisterActivity> by lazy{
+            WeakReference<RegisterActivity>(activity)
+        }
+
+        override fun handleMessage(msg: Message?) {
+            val activity=register.get()
+            if(activity!=null){
+                if (msg!!.what == 1) {
+                    val value = msg.obj as Int
+                    if (value == 0) {
+                        activity.btn_getcode.isClickable = true
+                        activity.btn_getcode.text = activity.context!!.getString(R.string.getvalidatecode)
+                    } else {
+                        activity.btn_getcode.text =String.format(activity.context!!.getString(R.string.resttime),value)
+                    }
                 }
             }
-            super.dispatchMessage(msg)
+
+            super.handleMessage(msg)
         }
     }
 

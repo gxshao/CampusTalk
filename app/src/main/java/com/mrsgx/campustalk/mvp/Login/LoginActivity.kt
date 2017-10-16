@@ -21,6 +21,7 @@ import com.mrsgx.campustalk.mvp.Regesiter.RegisterActivity
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_login.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 class LoginActivity : Activity(), LoginContract.View {
@@ -31,8 +32,9 @@ class LoginActivity : Activity(), LoginContract.View {
     var STOP_TEXT_ANIM = false
     var loginpresenter: LoginPresenter? = null
     var rootView: View?=null
-    companion object {
-        var LOGIN_INSTANCE: LoginActivity? = null
+    lateinit var mHandler:LoginHandler
+    companion object{
+         var LOGIN_INSTANCE:WeakReference<LoginActivity>?=null
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -66,12 +68,15 @@ class LoginActivity : Activity(), LoginContract.View {
         }
 
     }
-    val mHandler= @SuppressLint("HandlerLeak")
-    object : Handler(){
 
-        override fun dispatchMessage(msg: Message?) {
-            anim_title.animateText(text!![msg!!.obj as Int])
-            super.dispatchMessage(msg)
+    class LoginHandler(activity: LoginActivity):Handler(){
+        private val loginHandler:WeakReference<LoginActivity> by lazy {
+             WeakReference<LoginActivity>(activity)
+        }
+        override fun handleMessage(msg: Message?) {
+            val activity= loginHandler.get() ?: return
+            activity.anim_title.animateText(activity.text!![msg!!.obj as Int])
+            super.handleMessage(msg)
         }
     }
     override fun Close() {
@@ -117,7 +122,7 @@ class LoginActivity : Activity(), LoginContract.View {
         setContentView(R.layout.activity_login)
         initViews()
         text= arrayOf(this.resources.getString(R.string.app_name),this.resources.getString(R.string.sign_in)+"☺")
-        LOGIN_INSTANCE = this
+        LOGIN_INSTANCE = WeakReference(this)
         loginpresenter = LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
 
     }
