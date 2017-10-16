@@ -11,21 +11,19 @@ import java.lang.ref.WeakReference
 class TalkerProgressHelper {
     companion object {
         private var instance: WeakReference<TalkerProgressDialog>?=null
-        private var O_context:WeakReference<Context>?=null
         fun getInstance(context: Context): TalkerProgressDialog {
             synchronized(this) {
-                if(O_context!=context)
+                if(instance==null|| instance!!.get()==null){
                      instance = WeakReference(TalkerProgressDialog(context, R.style.BeanDialog))
-                O_context=WeakReference(context)
+                }
                 return instance?.get()!!
             }
         }
         fun hide(){
-            if(instance!=null){
+            if(instance!=null&& instance!!.get()!=null){
                 instance?.get()!!.hideDialog()
             }
             instance=null
-            O_context=null
         }
     }
 }

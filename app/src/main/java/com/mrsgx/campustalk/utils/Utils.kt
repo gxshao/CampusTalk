@@ -204,11 +204,12 @@ class Utils {
          * 缩放图片
          */
         fun compressImage(filepath: String, context: Context): String {
-            val newfilepath = "" + Environment.getExternalStorageDirectory() + "/campustalk/" + GlobalVar.LOCAL_USER!!.Uid + "/" + getFormatDate() + ".jpg"
-            val folder=File(GlobalVar.LOCAL_USER!!.Uid )
+            var newfilepath = "" + Environment.getExternalStorageDirectory() + "/campustalk/" + GlobalVar.LOCAL_USER!!.Uid + "/"
+            val folder=File(newfilepath)
             if(!folder.exists()){
                 folder.mkdirs()
             }
+            newfilepath+=getFormatDate() + ".jpg"
             val newOpts = BitmapFactory.Options()
             // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
             newOpts.inJustDecodeBounds = true
@@ -239,10 +240,10 @@ class Utils {
             Log.e(TAG, "保存图片")
             try {
                 val file=File(filepath)
-                if(file.exists()){
-                    file.delete()
+                if(!file.exists()){
+                    file.createNewFile()
                 }
-                file.createNewFile()
+
                 val buffer = ByteBuffer.wrap(bm)
                 val out = FileOutputStream(filepath).channel
                 out.write(buffer)

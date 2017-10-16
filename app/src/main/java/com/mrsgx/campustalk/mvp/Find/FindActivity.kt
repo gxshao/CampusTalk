@@ -40,7 +40,6 @@ class FindActivity : Activity(),FindContract.View {
     }
 
     override fun showMessage(msg: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun startNewPage(target: Class<*>?) {

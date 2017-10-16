@@ -47,7 +47,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
 
     override fun setNavigator(state: Int) {
-        frg_navibar.visibility=state
+        frg_navibar.visibility = state
     }
 
 
@@ -100,7 +100,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     override fun OnSignalRChanged(state: Boolean) {
         if (state) {
-            if (mCONN_SERVICE_STATE != state){
+            if (mCONN_SERVICE_STATE != state) {
                 showMessage(getString(R.string.tips_connected_server), CTNote.LEVEL_TIPS, CTNote.TIME_SHORT)
             }
             mMatchFrag!!.setNetworkStateIcon(state)
@@ -112,7 +112,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
             }
             mMatchFrag!!.setNetworkStateIcon(state)
-            mHand.postDelayed({  CTConnection.getInstance(this).Start() },RECONNECT_INTERVAL)
+            mHand.postDelayed({ CTConnection.getInstance(this).Start() }, RECONNECT_INTERVAL)
             println("收到断开信息")
             mCONN_SERVICE_STATE = state
         }
@@ -137,18 +137,20 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     override fun setPresenter(presenter: MainContract.Presenter?) {
 
     }
+
     override fun showUserProfile(user: CTUser) {
 
         mProfileDialog!!.showUser(user)
         setBackgroundAlpha(0.5f)
     }
+
     private var rootView: View? = null
     private var mFollowFrag: FollowFragment? = null
     private var mMatchFrag: MatchFragment? = null
     private var mSettingFrag: SettingFragment? = null
     var viewpagerAdapter: FragAdapter? = null
-    private var mProfileDialog:CTProfileCard?=null
-    private lateinit var mHand:MainHandler
+    private var mProfileDialog: CTProfileCard? = null
+    private lateinit var mHand: MainHandler
     @SuppressLint("InflateParams")
     override fun initViews() {
         /**
@@ -186,14 +188,14 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         match.rootview = this
         match.parentContext = this
 
-        mMatchFrag=match
+        mMatchFrag = match
         mFollowFrag = follow
         mFollowFrag!!.rootview = this
         mFollowFrag!!.parentContext = this
 
-        mSettingFrag=settings
-        mSettingFrag!!.rootview=this
-        mSettingFrag!!.parentContext=this
+        mSettingFrag = settings
+        mSettingFrag!!.rootview = this
+        mSettingFrag!!.parentContext = this
         mFragments.add(match)
         mFragments.add(find)
         mFragments.add(follow)
@@ -202,6 +204,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
         viewpagerAdapter = FragAdapter(fm, mFragments)
         viewpager.adapter = viewpagerAdapter
+        viewpager.offscreenPageLimit=0
         /**
          * 页面滑动事件
          */
@@ -245,31 +248,33 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         colorAnimationView.setmViewPager(viewpager, 4, 0xffB1D3EC.toInt(), 0xff6CAAD9.toInt(), 0xff0066B2.toInt(), 0xff285577.toInt())
         radio_navi.setOnCheckedChangeListener(mRadioChanged)
         val mWidth = this.resources.getDimension(R.dimen.radio_width).toInt()
-        val icon_match = this.resources.getDrawable(R.mipmap.icon_match)
+        val icon_match = this.getDrawable(R.mipmap.icon_match)
         icon_match.setBounds(0, 0, mWidth, mWidth)
-        val icon_find = this.resources.getDrawable(R.mipmap.icon_find)
+        val icon_find = this.getDrawable(R.mipmap.icon_find)
         icon_find.setBounds(0, 0, mWidth, mWidth)
-        val icon_follow = this.resources.getDrawable(R.mipmap.icon_follow)
+        val icon_follow = this.getDrawable(R.mipmap.icon_follow)
         icon_follow.setBounds(0, 0, mWidth, mWidth)
-        val icon_my = this.resources.getDrawable(R.mipmap.icon_my)
+        val icon_my = this.getDrawable(R.mipmap.icon_my)
         icon_my.setBounds(0, 0, mWidth, mWidth)
 
         radio_match.setCompoundDrawables(null, icon_match, null, null)
         radio_find.setCompoundDrawables(null, icon_find, null, null)
         radio_follow.setCompoundDrawables(null, icon_follow, null, null)
         radio_setting.setCompoundDrawables(null, icon_my, null, null)
-        if (DB.getInstance(this).getUserState(GlobalVar.LOCAL_USER!!.Uid!!) == GlobalVar.USER_STATE_UNATH) {
+        if (DB.getInstance(this).getUserState(GlobalVar.LOCAL_USER!!.Uid) == GlobalVar.USER_STATE_UNATH) {
             //跳转到资料页面弹出资料修改
             mAlertDailog.show()
+            TalkerProgressHelper.getInstance(this).hideDialog()
         }
-        frg_navibar.visibility=if(SharedHelper.getInstance(this).getBoolean(SharedHelper.IS_SHOW_NAVI,true)) View.VISIBLE else View.INVISIBLE
+        frg_navibar.visibility = if (SharedHelper.getInstance(this).getBoolean(SharedHelper.IS_SHOW_NAVI, true)) View.VISIBLE else View.INVISIBLE
         /**
          * 资料弹窗
          */
-        mProfileDialog = CTProfileCard(this,rootView!!, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+        mProfileDialog = CTProfileCard(this, rootView!!, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         mProfileDialog!!.setOnDismissListener {
             setBackgroundAlpha(1f)
         }
+        TalkerProgressHelper.getInstance(this).hideDialog()
     }
 
     private val mRadioChanged = RadioGroup.OnCheckedChangeListener { p0, who ->
@@ -297,7 +302,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_main)
-        mHand= MainHandler(this)
+        mHand = MainHandler(this)
         NetEventManager.getInstance().subscribe(this) //订阅网络消息
         startService(Intent(this, ConnService::class.java))
         mainpresenter = MainPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
@@ -321,7 +326,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     fun setBackgroundAlpha(bgAlpha: Float) {
         val lp = (this).window.attributes;
         lp.alpha = bgAlpha
-        (this).window.attributes = lp;
+        (this).window.attributes = lp
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
@@ -340,18 +345,18 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         } else if (GlobalVar.LOCAL_USER!!.State == GlobalVar.USER_STATE_UNATH) {
             mAlertDailog.show()
         }
-        TalkerProgressHelper.getInstance(this).hideDialog()
+        TalkerProgressHelper.hide()
         super.onResume()
     }
 
-    class MainHandler(activity: MainActivity):Handler(){
-        private val mMainHand:WeakReference<MainActivity> by lazy {
+    class MainHandler(activity: MainActivity) : Handler() {
+        private val mMainHand: WeakReference<MainActivity> by lazy {
             WeakReference<MainActivity>(activity)
         }
 
         override fun handleMessage(msg: Message?) {
-            val activity=mMainHand.get()
-            if(activity!=null){
+            val activity = mMainHand.get()
+            if (activity != null) {
                 when (msg!!.what) {
                     1 -> {
                         activity.Close()
@@ -466,22 +471,11 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     }
 
     override fun onDestroy() {
+        NetEventManager.getInstance().cancelSubscribe(this)
         TalkerProgressHelper.hide()
         CTConnection.getInstance(this).Stop()
         stopService(Intent(this, ConnService::class.java))
+        System.gc()
         super.onDestroy()
-    }
-
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    external fun stringFromJNI(): String
-
-    companion object {
-
-        // Used to load the 'native-lib' library on application startup.
-
     }
 }

@@ -46,7 +46,7 @@ class DB(private val context: Context) {
     companion object {
         private var INSTANCE: WeakReference<DB>? = null
         fun getInstance(context: Context): DB {
-            if (INSTANCE == null) {
+            if (INSTANCE == null|| INSTANCE!!.get()==null) {
                 INSTANCE = WeakReference(DB(context))
             }
             return INSTANCE?.get()!!
@@ -248,6 +248,10 @@ class DB(private val context: Context) {
 
     //增查位置信息
     fun insertLocation(loc: CTLocation) {
+        if(loc.Uid.isEmpty())
+        {
+            return
+        }
         val sql = "insert into $TABLE_LOCATION_NAME ($LATITUDE,$LONGITUDE,${TableLocation.UID},$TIME) values ('${loc.Latitude}','${loc.Longitude}','${loc.Uid}','${loc.Datetime}')"
         exesql(sql)
     }

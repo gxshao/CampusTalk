@@ -2,17 +2,20 @@ package com.mrsgx.campustalk.interfaces
 
 import com.mrsgx.campustalk.service.NetStateListening
 import com.zsoft.signala.transport.StateBase
+import java.lang.ref.WeakReference
 
 /**
  * Created by Shao on 2017/9/20.
  */
 class NetEventManager {
+
+
     companion object {
-        private  var mNetEvents: NetEventManager?=null
+        private val mNetEvents: NetEventManager by lazy{
+            NetEventManager()
+        }
         fun getInstance(): NetEventManager {
-            if(mNetEvents==null)
-             mNetEvents = NetEventManager()
-            return mNetEvents!!
+            return mNetEvents
         }
     }
 
@@ -55,6 +58,7 @@ class NetEventManager {
 
     fun broadcastOnSignalRChanged(state: Boolean) {
         synchronized(this) {
+            println("广播事件")
             for (event in mList) {
                 event.OnSignalRChanged(state)
             }

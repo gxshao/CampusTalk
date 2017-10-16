@@ -112,6 +112,7 @@ class LoginActivity : Activity(), LoginContract.View {
     override fun onDestroy() {
         STOP_TEXT_ANIM=true
         loginpresenter=null
+        System.gc()
         super.onDestroy()
     }
     var text:Array<String>?=null
@@ -120,6 +121,7 @@ class LoginActivity : Activity(), LoginContract.View {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_login)
+        mHandler=LoginHandler(this)
         initViews()
         text= arrayOf(this.resources.getString(R.string.app_name),this.resources.getString(R.string.sign_in)+"☺")
         LOGIN_INSTANCE = WeakReference(this)

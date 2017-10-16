@@ -204,6 +204,7 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
     }
 
     override fun onDestroy() {
+        NetEventManager.getInstance().cancelSubscribe(this)
         super.onDestroy()
 
     }

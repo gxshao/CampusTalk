@@ -65,7 +65,7 @@
     <string name="txt_changeprofile">修改资料</string>
     <string name="txt_start_matching">开始匹配</string>
     <string name="txt_matching">提示:点击开始匹配即可匹配当前在线校友</string>
-    <string name="follow_list">关注列表</string>
+    <string name="follow_list">Follow List ☰</string>
     <string name="time_machine">Time Machine ✈</string>
     <string name="find_introduction">功能简介:通过已上传的GPS坐标查找10米范围的异性用户</string>
     <string name="date">日期设定：</string>

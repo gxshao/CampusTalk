@@ -41,6 +41,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -89,14 +90,14 @@
 
         <activity
             android:name=".mvp.Chat.ChatActivity"
-            android:launchMode="singleTop"
+            android:launchMode="standard"
             android:theme="@style/AppTheme.FadeTransition" >
 
 
         </activity>
         <activity
             android:name=".mvp.Find.FindActivity"
-            android:launchMode="singleTop"
+            android:launchMode="standard"
             android:theme="@style/AppTheme.FadeTransition" />
         <activity android:name=".mvp.Profile.ProfileActivity" />
         <activity android:name=".mvp.Setting.SettingActivity"></activity>

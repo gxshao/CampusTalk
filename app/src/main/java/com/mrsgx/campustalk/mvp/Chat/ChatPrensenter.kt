@@ -50,7 +50,7 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
 
     override fun unregsiter() {
             NetEventManager.getInstance().cancelSubscribe(this)
-            //compositeDisposable.dispose()
+             CTConnection.getInstance(context).mChatListener=null
     }
 
     override fun followPartner(uid: String) {
@@ -113,12 +113,14 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
                             view.showMessage(context.getString(R.string.start_match_failed))
                             view.Close()
                         }
+                        println("匹配结果:"+value.Body!!)
                     }
 
                     override fun onError(e: Throwable?) {
                         view.setCurrentState(0)
                         view.showMessage(context.getString(R.string.start_match_failed))
                         view.Close()
+                        println("匹配遇到错误"+e)
                     }
 
                     override fun onComplete() {

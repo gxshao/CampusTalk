@@ -26,7 +26,7 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
     companion object {
         private var mConn: WeakReference<CTConnection>?=null
         fun getInstance(context: Context?): CTConnection {
-            if(mConn==null)
+            if(mConn==null|| mConn!!.get()==null)
                 mConn = WeakReference(CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport()))
             return mConn?.get()!!
         }

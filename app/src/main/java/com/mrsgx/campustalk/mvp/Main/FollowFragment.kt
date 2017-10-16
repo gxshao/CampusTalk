@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.FollowAdapter
+import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.RecyclerViewClickListener
 import com.mrsgx.campustalk.obj.CTSchool
 import com.mrsgx.campustalk.obj.CTUser
@@ -70,6 +71,7 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     @SuppressLint("ResourceAsColor")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        follow_title.typeface=GlobalVar.TYPEFACE_HUAKANG
         layoutManager = LinearLayoutManager(context)
         mAdataper = FollowAdapter(mArray)
         mAdataper!!.mUnfollowListener = btnListener

@@ -36,7 +36,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         private var rootview: WeakReference<View>? = null
 
         fun getInstance(context: Context, r: View): CTNote {
-            if (INSTANCE == null) {
+            if (INSTANCE == null|| INSTANCE!!.get()==null) {
                 INSTANCE = WeakReference(CTNote(context))
             }
             rootview = WeakReference(r)
@@ -74,7 +74,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                     this.dismiss()
                 }
             }
-            mHandler=CtnoteHandler(this)
+            mHandler= CtnoteHandler(this)
         }catch (e:Exception){
             println(e)
         }
@@ -159,7 +159,6 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         override fun handleMessage(msg: Message?) {
             val ct=mHand.get()
             if(ct!=null){
-                if((ct.context as Activity).isDestroyed&&!(ct.context).isFinishing)
                     ct.hide()
             }
             super.handleMessage(msg)

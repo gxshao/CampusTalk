@@ -118,7 +118,8 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
 
     override fun onDestroy() {
-            welpresenter=null
+        welpresenter=null
+        System.gc()
         super.onDestroy()
     }
     class MyHandler(activity: WelcomeActivity): Handler() {

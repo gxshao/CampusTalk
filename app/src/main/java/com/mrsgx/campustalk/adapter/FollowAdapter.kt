@@ -10,8 +10,10 @@ import android.widget.Button
 import android.widget.TextView
 import com.github.snowdream.android.widget.SmartImageView
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.RecyclerViewClickListener
 import com.mrsgx.campustalk.obj.CTUser
+import com.mrsgx.campustalk.retrofit.Api
 import kotlinx.android.synthetic.main.item_follow_list.view.*
 import java.util.*
 
@@ -53,10 +55,9 @@ class FollowAdapter(private val mListFollows: ArrayList<CTUser>) : RecyclerView.
         if (holder != null) {
             holder.txt_nickname!!.text = mListFollows[position].Nickname
             holder.txt_explan!!.text = mListFollows[position].Userexplain
-            holder.img_headpic!!.setImageUrl(mListFollows[position].Headpic, Rect())
+            holder.img_headpic!!.setImageUrl(Api.API_HEADPIC_BASE+mListFollows[position].Headpic, Rect())
             holder.btn_unfollow!!.setTag(R.id.btn_unfollow, position)
-            if (mUnfollowListener != null)
-                holder.btn_unfollow!!.setOnClickListener(mUnfollowListener)
+            holder.btn_unfollow!!.setOnClickListener(mUnfollowListener)
         }
     }
 

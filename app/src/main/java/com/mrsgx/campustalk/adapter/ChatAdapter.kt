@@ -40,7 +40,6 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     var Partner: CTUser = CTUser()
     var OnAudioPlayerListener:View.OnClickListener?=null
     var OnHeadPicClickListener:View.OnClickListener?=null
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ChatHolder?, position: Int) {
         if (holder != null) {
             if (mListRoles[position] == TYPE_MY) {
@@ -75,7 +74,7 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
                     holder.image!!.layoutParams=lp
                     holder.image!!.setImagePath("",Rect())
                     holder.text!!.setTextColor(holder.context!!.resources.getColor(R.color.unpressed_blue))
-                    holder.text!!.text="[语音消息] "+(com.mrsgx.campustalk.utils.Utils.getfileDuration(mListChat[position].toString())/1000)+"s"
+                    holder.text!!.text=String.format("[语音消息] %ds",(com.mrsgx.campustalk.utils.Utils.getfileDuration(mListChat[position].toString())/1000))
                     holder.text!!.tag=mListChat[position]  //语音文件
 
                     holder.text!!.setOnClickListener(OnAudioPlayerListener)
@@ -165,6 +164,7 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     fun clearAll() {
         mListChat.clear()
         mListRoles.clear()
+        mListChatType.clear()
         this.notifyDataSetChanged()
     }
 

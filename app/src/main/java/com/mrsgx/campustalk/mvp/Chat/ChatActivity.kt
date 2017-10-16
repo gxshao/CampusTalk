@@ -11,7 +11,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
@@ -30,11 +29,11 @@ import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.ChatAdapter
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
+import com.mrsgx.campustalk.data.GlobalVar.Companion.TYPEFACE_HUAKANG
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.interfaces.OnAudioRecoredStatusListener
 import com.mrsgx.campustalk.obj.CTUser
-import com.mrsgx.campustalk.utils.AndroidBugSolver
 import com.mrsgx.campustalk.utils.AudioRecoredUtils
 import com.mrsgx.campustalk.utils.Utils
 import com.mrsgx.campustalk.widget.CTNote
@@ -50,7 +49,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     override fun onRecording(db: Double, time: Long) {
         val mAudioLong = (time / 1000).toInt()
-        btn_audio.text =String.format(context!!.resources.getString(R.string.rest_audio_time) ,60-mAudioLong)
+        btn_audio.text = String.format(applicationContext!!.resources.getString(R.string.rest_audio_time), 60 - mAudioLong)
     }
 
     override fun onStop(audio: String) {
@@ -82,12 +81,12 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     override fun reset() {
         this.actionBar.hide()
         frm_mask.visibility = View.VISIBLE
+        txt_matching.startAnimation(bounce_anim)
         mAdapter.clearAll()
 
     }
 
     private lateinit var mHand: Handler
-    private var context: Context? = null
     private var INPUTMODE = true
     private var mPartner: CTUser? = CTUser()
     private var mView: View? = null
@@ -97,6 +96,9 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     private var mAudioRecorder: AudioRecoredUtils? = null
     private var mChatToolWindow: PopupWindow? = null
     private var mChatLogPath: String = ""
+    private val bounce_anim:Animation by lazy{
+        AnimationUtils.loadAnimation(applicationContext, R.anim.matching_bounce)
+    }
     private val mAudioPlaerListener = View.OnClickListener { view ->
         val tag = view.tag
         if (tag != null) {
@@ -105,7 +107,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
     }
     private val mHeadPicClickListener = View.OnClickListener { view ->
-        var who: Int = 1
+        var who = 1
         if (view.tag != null) {
             who = view.tag as Int
         }
@@ -118,7 +120,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     }
     private val mAnim_bounce = object : AnimatorListener, Animation.AnimationListener {
         override fun onAnimationEnd(p0: Animator?) {
-            val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.matching_bounce)
+
             bounce_anim.setAnimationListener(this)
             txt_matching.startAnimation(bounce_anim)
         }
@@ -134,7 +136,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
 
         override fun onAnimationEnd(p0: Animation?) {
-            val bounce_anim = AnimationUtils.loadAnimation(context, R.anim.matching_bounce)
             bounce_anim.setAnimationListener(this)
             txt_matching.startAnimation(bounce_anim)
         }
@@ -148,20 +149,20 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     }
     private var mProfileDialog: CTProfileCard? = null
-    private var rootView: View? = null
 
-    class ChatHandler(activity: ChatActivity):Handler(){
-        private val mChatHand:WeakReference<ChatActivity> by lazy {
+    class ChatHandler(activity: ChatActivity) : Handler() {
+        private val mChatHand: WeakReference<ChatActivity> by lazy {
             WeakReference<ChatActivity>(activity)
         }
 
         override fun handleMessage(msg: Message?) {
-            val activity=mChatHand.get()
-            if(activity!=null && msg!=null){
+            val activity = mChatHand.get()
+            if (activity != null && msg != null) {
                 when (msg.what) {
                     1 -> {
                         //匹配成功
                         activity.frm_mask.visibility = View.INVISIBLE
+                        activity.frm_mask.clearAnimation()
                         activity.loadActionBar()
                     }
                 }
@@ -169,195 +170,13 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             super.handleMessage(msg)
         }
     }
+
     //显示用户资料卡
     private fun showUserProfile(user: CTUser) {
         mProfileDialog!!.showUser(user)
         setBackgroundAlpha(0.5f)
     }
 
-    @SuppressLint("InflateParams")
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    override fun initViews() {
-        context = this
-        rootView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
-        mChatToolWindow = PopupWindow(this)
-        val chattoolview = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)
-        mChatToolWindow!!.contentView = chattoolview
-        mChatToolWindow!!.isOutsideTouchable = true
-        mChatToolWindow!!.isFocusable = true
-        mChatToolWindow!!.setBackgroundDrawable(BitmapDrawable())
-        mChatToolWindow!!.background.alpha = 0
-        val btn_pic_select = chattoolview.findViewById<View>(R.id.btn_image_select)
-        val btn_emoji_select = chattoolview.findViewById<View>(R.id.btn_emoji_select)
-        btn_pic_select.setOnClickListener {
-            if (mChatToolWindow!!.isShowing) {
-                mChatToolWindow!!.dismiss()
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                this.requestPermissions(kotlin.arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 2)
-                return@setOnClickListener
-            }
-            val imageFile = File(mChatLogPath, "chatpic${File.separator}jpg")
-            if (imageFile.exists()) {
-                imageFile.delete()
-            }
-            try {
-                imageFile.createNewFile()
-            } catch (e: Exception) {
-                println(e)
-            }
-
-            //转换成Uri
-            val imageUri = Uri.fromFile(imageFile)
-            //开启选择呢绒界面
-            val intent = Intent("android.intent.action.GET_CONTENT")
-            //设置可以缩放
-            intent.putExtra("scale", true)
-            //设置可以裁剪
-            intent.putExtra("crop", true)
-            intent.type = "image/*"
-            //设置输出位置
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-            //开始选择
-            startActivityForResult(intent, CHOOSE_PHOTO)
-        }
-        btn_emoji_select.setOnClickListener {
-            if (mChatToolWindow!!.isShowing) {
-                mChatToolWindow!!.dismiss()
-            }
-            Toast.makeText(this, "别急铁子，表情功能马上上线", Toast.LENGTH_SHORT).show()
-        }
-        val bounce_anim = AnimationUtils.loadAnimation(this, R.anim.matching_bounce)
-        bounce_anim.setAnimationListener(mAnim_bounce)
-        val typeFace = Typeface.createFromAsset(this.assets, "fonts/myfonts.ttf")
-        txt_matching.typeface = typeFace
-        txt_matching.startAnimation(bounce_anim)
-        val rotate_anim = AnimationUtils.loadAnimation(this, R.anim.btn_more_rotate)
-        mAdapter = ChatAdapter()
-        mAdapter.OnAudioPlayerListener = mAudioPlaerListener
-        mAdapter.OnHeadPicClickListener = mHeadPicClickListener
-        chat_recycler.layoutManager = LinearLayoutManager(this)
-        chat_recycler.adapter = mAdapter
-        /**
-         * 弹出图片层
-         */
-        btn_more.setOnClickListener {
-            btn_more.startAnimation(rotate_anim)
-            val location = IntArray(2)
-            btn_more.getLocationOnScreen(location)
-            //在控件上方显示
-            mChatToolWindow!!.showAtLocation(btn_more, Gravity.NO_GRAVITY, (location[0] + btn_more.width / 2) - mChatToolWindow!!.width / 2, location[1] - btn_more.measuredHeight-100)
-        }
-        /**
-         * 语音文字输入切换
-         */
-        val bg_text= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.getDrawable(R.drawable.btn_switch_text_bg)
-        } else {
-            TODO("VERSION.SDK_INT < LOLLIPOP")
-        }
-        val bg_voice= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.getDrawable(R.drawable.btn_switch_voice_bg)
-        } else {
-            TODO("VERSION.SDK_INT < LOLLIPOP")
-        }
-        btn_switch_inputmode.setOnClickListener {
-            if (INPUTMODE) {
-                btn_switch_inputmode.setImageDrawable(bg_text)
-                btn_audio.visibility = View.VISIBLE
-                ed_content.visibility = View.INVISIBLE
-            } else {
-                btn_switch_inputmode.setImageDrawable(bg_voice)
-                btn_audio.visibility = View.INVISIBLE
-                ed_content.visibility = View.VISIBLE
-            }
-            INPUTMODE = !INPUTMODE
-        }
-        /**
-         * 发送语音
-         */
-        btn_audio.setOnLongClickListener {
-            btn_audio.text = context!!.resources.getString(R.string.realse_to_send)
-            mAudioRecorder!!.startRecord()
-            true
-        }
-        /**
-         * 松开
-         */
-        btn_audio.setOnTouchListener({ view, motionEvent ->
-            var isFilter = false
-            when (motionEvent.action) {
-                MotionEvent.ACTION_UP -> {
-                    if (mAudioRecorder!!.stopRecord() <= 0) {
-                        showMessage("录音时间太短")
-                    } else {
-                        btn_audio.text = context!!.resources.getString(R.string.longclick_speak)
-                    }
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    mAudioRecorder!!.cancelRecord()
-                }
-            }
-            isFilter
-        })
-        /**
-         * 切换按钮
-         */
-        val tmp_anim = AnimationUtils.loadAnimation(context, R.anim.btn_send_show)
-        val moreshow_anim = AnimationUtils.loadAnimation(context, R.anim.btn_more_show)
-        val hide_anim = AnimationUtils.loadAnimation(context, R.anim.btn_send_hide)
-        /**
-         * 编辑文本
-         */
-        ed_content.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(edit: Editable?) {
-                if (edit != null) {
-                    if (edit.isEmpty()) {
-                        btn_send.startAnimation(hide_anim)
-                        btn_send.visibility = View.INVISIBLE
-                        btn_more.startAnimation(moreshow_anim)
-                        btn_more.visibility = View.VISIBLE
-
-                    } else if (btn_send.visibility == View.INVISIBLE) {
-                        btn_more.visibility = View.INVISIBLE
-                        btn_send.visibility = View.VISIBLE
-                        btn_send.startAnimation(tmp_anim)
-
-                    }
-                }
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
-        ed_content.setOnFocusChangeListener { view, b ->
-            if (!b) {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(window.decorView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            } else {
-                chat_recycler.smoothScrollBy(0,
-                        chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
-            }
-        }
-        btn_send.setOnClickListener {
-            if (!ed_content.text.isEmpty()) {
-                mAdapter.addMyChat(ed_content.text.toString())
-                chat_recycler.smoothScrollToPosition(mAdapter.itemCount - 1)
-                chat_recycler.smoothScrollBy(0,
-                        chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
-                chatpresenter!!.sendTextMsg(ed_content.text.toString())
-                ed_content.text.clear()
-            }
-
-        }
-    }
 
     /**
      * 权限请求结果
@@ -380,15 +199,15 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             CHOOSE_PHOTO -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var imagepath = Utils.onSelectedImage(data!!, this)
-                    val srcfile=File(imagepath)
-                    if(srcfile.length()/8/1024>300){
-                        Toast.makeText(this,"您选择的图片太大",Toast.LENGTH_SHORT).show()
+                    val srcfile = File(imagepath)
+                    if (srcfile.length() / 8 / 1024 > 300) {
+                        Toast.makeText(this, "您选择的图片太大", Toast.LENGTH_SHORT).show()
                         return
                     }
                     imagepath = Utils.compressImage(imagepath!!, this)
                     //压缩图片到新的路径
                     mHand.postDelayed({
-                        println("新的图片地址"+imagepath)
+                        println("新的图片地址" + imagepath)
                         mAdapter.addMyMsg(imagepath!!, ChatAdapter.MSG_TYPE_IMGAE)
                         chatpresenter!!.sendImageMsg(Utils.encodeBase64File(imagepath!!))
 
@@ -471,13 +290,13 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_chat)
-        mHand=ChatHandler(this)
-        chatpresenter = ChatPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
         mView = LayoutInflater.from(this).inflate(R.layout.activity_chat, null)
-        AndroidBugSolver.addLayoutListener(chat_father, main_tool)
+        mHand = ChatHandler(this)
+        chatpresenter = ChatPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
+
         mChatLogPath = "" + Environment.getExternalStorageDirectory() + GlobalVar.LOCAL_DIRECTORY + GlobalVar.LOCAL_USER!!.Uid + "/" //当前用户音频缓存目录
-        mAudioRecorder = AudioRecoredUtils(mChatLogPath)
-        mAudioRecorder!!.audioStatusListener = this
+         mAudioRecorder = AudioRecoredUtils(mChatLogPath)
+         mAudioRecorder!!.audioStatusListener = this
         this.actionBar.hide()
         initViews()
         //发出匹配请求
@@ -488,12 +307,12 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     //导入ActionBar
     private fun loadActionBar() {
-        mMatchingState=2
+        mMatchingState = 2
         this.actionBar.setDisplayShowHomeEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)
         this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.actionbar_head))
         this.actionBar.title = "正在与" + mPartner!!.Nickname + "聊天..."
-        mProfileDialog = CTProfileCard(this, rootView!!, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+        mProfileDialog = CTProfileCard(this, mView!!, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         mProfileDialog!!.setOnDismissListener {
             setBackgroundAlpha(1f)
         }
@@ -514,7 +333,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
-        CTNote.getInstance(this, rootView!!).hide()
+        CTNote.getInstance(this, mView!!).hide()
         super.onStop()
     }
 
@@ -555,9 +374,9 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     override fun setFollowState(state: Boolean) {
         val item = mMenu.findItem(R.id.menu_follow)
         item.icon = if (state)
-            context!!.resources.getDrawable(R.mipmap.follow)
+            applicationContext!!.resources.getDrawable(R.mipmap.follow)
         else
-            context!!.resources.getDrawable(R.mipmap.unfollow)
+            applicationContext!!.resources.getDrawable(R.mipmap.unfollow)
 
     }
 
@@ -574,10 +393,191 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         return super.onKeyDown(keyCode, event)
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    override fun initViews() {
+        mChatToolWindow = PopupWindow(this)
+        val chattoolview = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)
+        mChatToolWindow!!.contentView = chattoolview
+        mChatToolWindow!!.isOutsideTouchable = true
+        mChatToolWindow!!.isFocusable = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mChatToolWindow!!.setBackgroundDrawable(getDrawable(R.drawable.bg_transparent))
+        }
+        mChatToolWindow!!.background.alpha = 0
+        val btn_pic_select = chattoolview.findViewById<View>(R.id.btn_image_select)
+        val btn_emoji_select = chattoolview.findViewById<View>(R.id.btn_emoji_select)
+        btn_pic_select.setOnClickListener {
+            if (mChatToolWindow!!.isShowing) {
+                mChatToolWindow!!.dismiss()
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                this.requestPermissions(kotlin.arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 2)
+                return@setOnClickListener
+            }
+            val imageFile = File(mChatLogPath, "chatpic${File.separator}jpg")
+            if (imageFile.exists()) {
+                imageFile.delete()
+            }
+            try {
+                imageFile.createNewFile()
+            } catch (e: Exception) {
+                println(e)
+            }
+
+            //转换成Uri
+            val imageUri = Uri.fromFile(imageFile)
+            //开启选择呢绒界面
+            val intent = Intent("android.intent.action.GET_CONTENT")
+            //设置可以缩放
+            intent.putExtra("scale", true)
+            //设置可以裁剪
+            intent.putExtra("crop", true)
+            intent.type = "image/*"
+            //设置输出位置
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+            //开始选择
+            startActivityForResult(intent, CHOOSE_PHOTO)
+        }
+        btn_emoji_select.setOnClickListener {
+            if (mChatToolWindow!!.isShowing) {
+                mChatToolWindow!!.dismiss()
+            }
+            Toast.makeText(this, "别急铁子，表情功能马上上线", Toast.LENGTH_SHORT).show()
+        }
+        bounce_anim.setAnimationListener(mAnim_bounce)
+        txt_matching.typeface = TYPEFACE_HUAKANG
+        txt_matching.startAnimation(bounce_anim)
+        val rotate_anim = AnimationUtils.loadAnimation(this, R.anim.btn_more_rotate)
+        mAdapter = ChatAdapter()
+        mAdapter.OnAudioPlayerListener = mAudioPlaerListener
+        mAdapter.OnHeadPicClickListener = mHeadPicClickListener
+        chat_recycler.layoutManager = LinearLayoutManager(this)
+        chat_recycler.adapter = mAdapter
+        /**
+         * 弹出图片层
+         */
+        btn_more.setOnClickListener {
+            btn_more.startAnimation(rotate_anim)
+            val location = IntArray(2)
+            btn_more.getLocationOnScreen(location)
+            //在控件上方显示
+            mChatToolWindow!!.showAtLocation(btn_more, Gravity.NO_GRAVITY, (location[0] + btn_more.width / 2) - mChatToolWindow!!.width / 2, location[1] - btn_more.measuredHeight - 100)
+        }
+        /**
+         * 语音文字输入切换
+         */
+        val bg_text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getDrawable(R.drawable.btn_switch_text_bg)
+        } else {
+            TODO("VERSION.SDK_INT < LOLLIPOP")
+        }
+        val bg_voice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getDrawable(R.drawable.btn_switch_voice_bg)
+        } else {
+            TODO("VERSION.SDK_INT < LOLLIPOP")
+        }
+        btn_switch_inputmode.setOnClickListener {
+            if (INPUTMODE) {
+                btn_switch_inputmode.setImageDrawable(bg_text)
+                btn_audio.visibility = View.VISIBLE
+                ed_content.visibility = View.INVISIBLE
+            } else {
+                btn_switch_inputmode.setImageDrawable(bg_voice)
+                btn_audio.visibility = View.INVISIBLE
+                ed_content.visibility = View.VISIBLE
+            }
+            INPUTMODE = !INPUTMODE
+        }
+        /**
+         * 发送语音
+         */
+        btn_audio.setOnLongClickListener {
+            btn_audio.text = applicationContext!!.resources.getString(R.string.realse_to_send)
+            mAudioRecorder!!.startRecord()
+            true
+        }
+        /**
+         * 松开
+         */
+        btn_audio.setOnTouchListener({ view, motionEvent ->
+            var isFilter = false
+            when (motionEvent.action) {
+                MotionEvent.ACTION_UP -> {
+                    if (mAudioRecorder!!.stopRecord() <= 0) {
+                        showMessage("录音时间太短")
+                    } else {
+                        btn_audio.text = applicationContext!!.resources.getString(R.string.longclick_speak)
+                    }
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    mAudioRecorder!!.cancelRecord()
+                }
+            }
+            isFilter
+        })
+        /**
+         * 切换按钮
+         */
+        val tmp_anim = AnimationUtils.loadAnimation(applicationContext, R.anim.btn_send_show)
+        val moreshow_anim = AnimationUtils.loadAnimation(applicationContext, R.anim.btn_more_show)
+        val hide_anim = AnimationUtils.loadAnimation(applicationContext, R.anim.btn_send_hide)
+        /**
+         * 编辑文本
+         */
+        ed_content.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(edit: Editable?) {
+                if (edit != null) {
+                    if (edit.isEmpty()) {
+                        btn_send.startAnimation(hide_anim)
+                        btn_send.visibility = View.INVISIBLE
+                        btn_more.startAnimation(moreshow_anim)
+                        btn_more.visibility = View.VISIBLE
+
+                    } else if (btn_send.visibility == View.INVISIBLE) {
+                        btn_more.visibility = View.INVISIBLE
+                        btn_send.visibility = View.VISIBLE
+                        btn_send.startAnimation(tmp_anim)
+
+                    }
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+        ed_content.setOnFocusChangeListener { view, b ->
+            if (!b) {
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(window.decorView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            } else {
+                chat_recycler.smoothScrollBy(0,
+                        chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
+            }
+        }
+        btn_send.setOnClickListener {
+            if (!ed_content.text.isEmpty()) {
+                mAdapter.addMyChat(ed_content.text.toString())
+                chat_recycler.smoothScrollToPosition(mAdapter.itemCount - 1)
+                chat_recycler.smoothScrollBy(0,
+                        chat_recycler.computeVerticalScrollExtent(), AccelerateDecelerateInterpolator())
+                chatpresenter!!.sendTextMsg(ed_content.text.toString())
+                ed_content.text.clear()
+            }
+
+        }
+    }
+
     override fun Close() {
         //退出匹配 发出空闲状态
         if (chatpresenter != null) {
-            println("当前状态"+mMatchingState)
+            println("当前状态" + mMatchingState)
             when (mMatchingState) {
                 0 -> {//空闲
 
@@ -597,19 +597,36 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             }
             chatpresenter!!.unregsiter()
         }
+        if (mChatToolWindow != null) {
+            mChatToolWindow!!.dismiss()
+            mChatToolWindow!!.contentView=null
+        }
+        if (mProfileDialog != null) {
+            mProfileDialog!!.dismiss()
+        }
+        mAdapter.clearAll()
+        mChatToolWindow = null
+        mProfileDialog = null
+
+        mPartner = null
+        Utils.deleteFileorFolder(mChatLogPath)
+        chat_recycler.removeAllViews()
         this.finish()
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onDestroy() {
-        if(chatpresenter!=null){
+        if (chatpresenter != null) {
             chatpresenter!!.unregsiter()
         }
         chatpresenter = null
-        mAudioRecorder!!.stopPlayAudio()
-        mAudioRecorder!!.stopRecord()
-        Utils.deleteFileorFolder(mChatLogPath)
-        CTNote.getInstance(this,rootView!!).hide()
+        mView = null
+        if (mAudioRecorder != null) {
+            mAudioRecorder!!.stopPlayAudio()
+            mAudioRecorder!!.stopRecord()
+        }
+        mAudioRecorder = null
+        System.gc()
         super.onDestroy()
     }
 }
