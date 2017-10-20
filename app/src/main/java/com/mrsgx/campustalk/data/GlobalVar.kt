@@ -30,5 +30,6 @@ class GlobalVar {
         val CHOOSE_PHOTO: Int = 1
         val CHANGE_SETTING:Int=2
         var TYPEFACE_HUAKANG:Typeface?=null
+     val SELECT_TIME_RANGE: String="select_time"
     }
 }

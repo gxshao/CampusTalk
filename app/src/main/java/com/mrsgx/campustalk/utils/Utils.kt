@@ -257,7 +257,6 @@ class Utils {
             }
 
         }
-
         private fun compressImage(image: Bitmap): ByteArray {
             val baos = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos)// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
@@ -278,6 +277,26 @@ class Utils {
             baos.flush()
             return arr
         }
+
+         fun GetDistanceGoogle(degree:Degree,degree2:Degree):Int{
+            val radLat1 = radians(degree.X)
+            val radLng1 = radians(degree.Y)
+            val radLat2 = radians(degree2.X)
+            val radLng2 = radians(degree2.Y)
+            var s = Math.acos(Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radLng1 - radLng2) + Math.sin(radLat1) * Math.sin(radLat2))
+            s *= EARTH_RADIUS
+            s = (Math.round(s * 10000) / 10000).toDouble()
+            return s.toInt()
+        }
+        private const val EARTH_RADIUS = 6378137.0;//地球半径(米)
+        private fun radians(d: Double): Double {
+            return d * Math.PI / 180.0
+        }
+    }
+
+    class Degree {
+        var X:Double=0.0
+        var Y:Double=0.0
     }
 
 }

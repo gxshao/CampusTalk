@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.R.string.btn_sign
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHANGE_SETTING
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
@@ -186,7 +187,31 @@ class SettingFragment : Fragment() {
             //开始选择
             startActivityForResult(intent, CHOOSE_PHOTO)
         }
+        initView()
+        signIn.setOnClickListener {
+            rootview!!.signUp(GlobalVar.LOCAL_USER!!.Uid)
+        }
         txt_settings_nickname.text = GlobalVar.LOCAL_USER!!.Nickname
+    }
+
+    fun setCoin(num:Int){
+        txt_gold.text=(Integer.parseInt(txt_gold.text.toString())+num).toString()
+    }
+    fun setBtnState(b:Boolean) {
+        if (b) {
+            signIn.text = "已签到"
+            signIn.isEnabled = false
+            signIn.isClickable = false
+        } else
+        {
+            signIn.text=this.getString(R.string.btn_sign)
+            signIn.isEnabled=true
+            signIn.isClickable=true
+        }
+    }
+    private fun initView() {
+        //初始化签到和金币按钮
+        rootview!!.initUserProperty(GlobalVar.LOCAL_USER!!.Uid)
     }
 
     override fun onDetach() {

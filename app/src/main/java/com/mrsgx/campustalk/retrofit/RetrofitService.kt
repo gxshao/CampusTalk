@@ -1,6 +1,7 @@
 package com.mrsgx.campustalk.retrofit
 
 import com.mrsgx.campustalk.data.ResponseResult
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -48,6 +49,21 @@ interface RetrofitService {
     @POST(Api.API_SERVER_COMMON)
     fun GetFollowList(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
 
+    @POST(Api.API_SERVER_COMMON)
+    fun SignUp(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<Boolean>>
+
+    @POST(Api.API_SERVER_COMMON)
+    fun CheckSign(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<Boolean>>
+
+    @POST(Api.API_SERVER_COMMON)
+    fun GetUserProperty(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid:String?):Observable<ResponseResult<String>>  //以后可能换成实体类型 当前只存金钱
+
     @POST(Api.API_SERVER_GPSINFO)
     fun uploadGpsInfo(@Query(Api.KEY)key:String?,@Query(Api.API_GPS)location:String):Observable<ResponseResult<Boolean>>
+
+    @POST(Api.API_SERVER_FIND)
+    fun getLocationList(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid: String?,@Query(Api.API_TIMES)time:String):Observable<ResponseResult<ArrayList<CTLocation>>>
+
+    @POST(Api.API_SERVER_FIND)
+    fun getUserListByLoc(@Query(Api.KEY)key:String?,@Query(Api.API_UID)uid: String?,@Query(Api.API_SELECTLOC)location: String):Observable<ResponseResult<ArrayList<CTUser>>>
 }

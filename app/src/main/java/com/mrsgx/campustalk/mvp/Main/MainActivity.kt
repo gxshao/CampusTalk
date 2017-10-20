@@ -5,10 +5,7 @@ import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -44,6 +41,21 @@ import java.lang.ref.WeakReference
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
         , FollowFragment.OnFragmentInteractionListener, FindFragment.OnFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener {
+    override fun setSignBtnSate(b: Boolean) {
+        mSettingFrag!!.setBtnState(b)
+    }
+
+    override fun initUserProperty(uid: String) {
+        mainpresenter.initUserProperty(uid)
+    }
+
+    override fun signUp(uid: String) {
+        mainpresenter.signUp(uid)
+    }
+
+    override fun setCoin(num: Int) {
+        mSettingFrag!!.setCoin(num)
+    }
 
 
     override fun setNavigator(state: Int) {
@@ -138,6 +150,9 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+
+    }
     override fun showUserProfile(user: CTUser) {
 
         mProfileDialog!!.showUser(user)

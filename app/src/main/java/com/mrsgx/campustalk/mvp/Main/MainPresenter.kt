@@ -26,6 +26,46 @@ import java.io.File
 class MainPresenter(private val view: MainContract.View, private val workerRepository: WorkerRepository, private val context: Context) : MainContract.Presenter {
 
 
+    override fun initUserProperty(uid: String) {
+        val disposable=workerRepository.GetUserProperty(uid).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object :DisposableObserver<ResponseResult<String>>(){
+                    override fun onNext(value: ResponseResult<String>?) {
+                        view.setCoin(Integer.parseInt(value!!.Body))
+                    }
+
+                    override fun onComplete() {
+
+                   }
+
+                    override fun onError(e: Throwable?) {
+
+                    }
+                })
+        compositeDisposable.addAll(disposable)
+    }
+
+    override fun signUp(uid: String) {
+        val disposable=workerRepository.SignUp(uid).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object :DisposableObserver<ResponseResult<Boolean>>(){
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+                    }
+
+                    override fun onNext(value: ResponseResult<Boolean>?) {
+                        view.showMessage("签到成功！金币+10")
+                        view.setSignBtnSate(false)
+                        view.setCoin(10)
+                    }
+                })
+        compositeDisposable.add(disposable)
+    }
+
+
     private val compositeDisposable = CompositeDisposable()
 
 

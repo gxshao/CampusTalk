@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_5"
+    android:paddingBottom="@dimen/dp_5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.github.snowdream.android.widget.SmartImageView
+        android:id="@+id/find_headpic"
+        android:layout_width="@dimen/middle_pic"
+        android:src="@mipmap/headpic"
+        android:layout_height="@dimen/middle_pic" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_5">
+        <TextView
+            android:id="@+id/find_nickname"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/TitleSize"
+            android:layout_height="wrap_content"
+            android:text="昵称"/>
+
+        <TextView
+            android:id="@+id/find_userexplain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/unable"
+            android:maxLength="50"
+            android:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView"
+            android:textAlignment="gravity"
+            android:textSize="@dimen/small_txt" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/find_btn_follow"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:text="关注"
+        android:background="@drawable/btn_common_style"
+        android:layout_marginStart="@dimen/dp_5" />
+</LinearLayout>

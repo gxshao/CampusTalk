@@ -147,6 +147,7 @@ class ConnService : Service() {
             }
                 if(loc!=null)
                 {
+                    println("loc:"+loc.Latitude+"     "+loc.Longitude)
                     DB.getInstance(applicationContext).insertLocation(loc)
                 }
             }
@@ -176,6 +177,7 @@ class ConnService : Service() {
 
     override fun onDestroy() {
         IS_UPLOAD=false
+        mLocationClient.stop()
         super.onDestroy()
     }
     //初始化百度位置信息

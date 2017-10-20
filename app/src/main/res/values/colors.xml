@@ -24,7 +24,7 @@
     <color name="ctnote_red_start">#eb3f2f</color>
     <color name="ctnote_red_center">#ec2f1d</color>
     <color name="ctnote_red_end">#a71406</color>
-
+    <color name="logo_blue">#0b81c6</color>
     <color name="ctnote_blue_start">#3399cc</color>
     <color name="ctnote_blue_center">#4279ee</color>
     <color name="ctnote_blue_end">#0066B2</color>

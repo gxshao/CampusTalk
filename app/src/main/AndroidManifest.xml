@@ -59,11 +59,7 @@
             android:name=".mvp.Welcome.WelcomeActivity"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -90,15 +86,21 @@
 
         <activity
             android:name=".mvp.Chat.ChatActivity"
-            android:launchMode="standard"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.FadeTransition" >
 
 
         </activity>
         <activity
             android:name=".mvp.Find.FindActivity"
-            android:launchMode="standard"
-            android:theme="@style/AppTheme.FadeTransition" />
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.FadeTransition">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".mvp.Profile.ProfileActivity" />
         <activity android:name=".mvp.Setting.SettingActivity"></activity>
     </application>

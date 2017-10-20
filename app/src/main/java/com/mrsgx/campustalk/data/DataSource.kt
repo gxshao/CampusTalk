@@ -1,10 +1,12 @@
 package com.mrsgx.campustalk.data
 
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.retrofit.Api
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -24,7 +26,11 @@ interface DataSource {
     fun FollowEvents(uid:String?,tid:String?,op:String):Observable<ResponseResult<Boolean>>
     fun GetFollowList(uid:String?):Observable<ResponseResult<ArrayList<CTUser>>>
     fun uploadGpsInfo(location:String):Observable<ResponseResult<Boolean>>
-
+    fun getLocationList(uid: String?,time:String):Observable<ResponseResult<ArrayList<CTLocation>>>
+    fun getUserListByLoc(uid: String?,location: String):Observable<ResponseResult<ArrayList<CTUser>>>
+    fun SignUp(uid:String?):Observable<ResponseResult<Boolean>>
+    fun CheckSign(uid:String?):Observable<ResponseResult<Boolean>>
+    fun GetUserProperty(uid:String?):Observable<ResponseResult<String>>
 
 
 }

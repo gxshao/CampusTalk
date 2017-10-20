@@ -10,16 +10,15 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.ALLOW_FIND_DAY
 import com.mrsgx.campustalk.mvp.Find.FindActivity
 import kotlinx.android.synthetic.main.fragment_find.*
+import java.util.*
 
 
 /**
@@ -57,7 +56,7 @@ class FindFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        // Inflate the people_list_layout for this fragment
         return inflater!!.inflate(R.layout.fragment_find, container, false)
     }
 
@@ -103,19 +102,23 @@ class FindFragment : Fragment() {
 
     }
 
-    private val mOnDateSelected = DatePickerDialog.OnDateSetListener { p, y, m, d ->
-        mDay = "$y-$m-$d"
+    private val mOnDateSelected = DatePickerDialog.OnDateSetListener { p, yyyy, MM, dd ->
+        mDay = "$yyyy-$MM-$dd"
         ed_date.setText(mDay)
     }
 
 
-    private val mOnStartTimeSelected = TimePickerDialog.OnTimeSetListener { p0, h, m ->
-        mStartTime = "$h:$m"
+    private val mOnStartTimeSelected = TimePickerDialog.OnTimeSetListener { p0, hh, mm ->
+        mStartTime = "$hh:$mm"
         ed_start_time.setText(mStartTime)
     }
 
-    private val mOnEndTimeSelected = TimePickerDialog.OnTimeSetListener { p0, h, m ->
-        mEndTime = "$h:$m"
+    private val mOnEndTimeSelected = TimePickerDialog.OnTimeSetListener { p0, hh, mm ->
+        mEndTime = "$hh:$mm"
+        if(Date.parse(mEndTime)<=Date.parse(mStartTime)){
+            rootview!!.showMessage("时间区间选择错误")
+            return@OnTimeSetListener
+        }
         ed_end_time.setText(mEndTime)
     }
 
@@ -128,10 +131,11 @@ class FindFragment : Fragment() {
         mStartTimePcker = TimePickerDialog(context, R.style.ThemeDialog, mOnStartTimeSelected, 0, 0, true)
         mEndPicker = TimePickerDialog(context, R.style.ThemeDialog, mOnEndTimeSelected, 0, 0, true)
         btn_search.setOnClickListener {
-            //startActivity(Intent(context, FindActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
             //待传入的数据为
-            //AlertTime = mYear + "-" + mMonth + "-" + mDay + " " + mHour + ":" + mMinutes;
-            startActivity(Intent(context, FindActivity::class.java))
+            val times=mDay+mStartTime+"$"+mDay+mEndTime
+            val intent=Intent(context, FindActivity::class.java)
+            intent.putExtra(GlobalVar.SELECT_TIME_RANGE,times)
+            startActivity(intent)
         }
         ed_date.setOnClickListener {
             mDatePicker.show()

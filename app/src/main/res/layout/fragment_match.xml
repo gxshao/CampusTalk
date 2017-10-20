@@ -7,7 +7,7 @@
     android:background="@drawable/match_fragment_shape"
     tools:context="com.mrsgx.campustalk.mvp.Main.MatchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragmpeople_list_layoutyout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

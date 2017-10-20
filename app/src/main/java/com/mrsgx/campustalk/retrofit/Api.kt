@@ -8,6 +8,7 @@ import com.mrsgx.campustalk.data.GlobalVar
 class   Api{
     companion object {
         const val KEY="key"
+        //interfaces
         const val API_BASE:String="http://"+ GlobalVar.IP+":13614/subsite/CampusTalk/"
         const val API_HEADPIC_BASE= API_BASE+"/images/headpic/"
         const val API_STUCARD_BASE= API_BASE+"/images/stucard/"
@@ -15,6 +16,9 @@ class   Api{
         const val API_SERVER_COMMON = API_BASE+"/events/ctCommon.ashx"
         const val API_SERVER_MATCH= API_BASE+"/events/ctMatch.ashx"
         const val API_SERVER_GPSINFO="events/ctGpsInfo.ashx"
+        const val API_SERVER_FIND="events/ctSearch.ashx"
+
+        //parameters
         const val API_EMAIL="email"
         const val API_CTUSER="user"
         const val API_PWD="pass"
@@ -24,6 +28,8 @@ class   Api{
         const val API_QUIT="quit"
         const val API_SCHOOLCODE="schoolcode"
         const val API_GPS="gps"
+        const val API_TIMES="time"
+        const val API_SELECTLOC="selectloc"
 
         const val API_TID="tid" //被关注目标ID
         const val API_OP="op" //操作 0 或 1

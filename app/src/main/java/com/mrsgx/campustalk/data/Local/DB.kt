@@ -46,8 +46,10 @@ class DB(private val context: Context) {
     companion object {
         private var INSTANCE: WeakReference<DB>? = null
         fun getInstance(context: Context): DB {
+            synchronized(this){
             if (INSTANCE == null|| INSTANCE!!.get()==null) {
                 INSTANCE = WeakReference(DB(context))
+            }
             }
             return INSTANCE?.get()!!
         }

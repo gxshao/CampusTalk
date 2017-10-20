@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:background="@drawable/match_fragment_shape"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/btn_close_peoplelist"
+        android:layout_width="match_parent"
+        android:text="关闭"
+        android:textAlignment="gravity"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/btn_text_size"
+        android:layout_height="@dimen/small_pic"
+        android:background="@drawable/ctnote_bg_red"
+         />
+
+    <ListView
+        android:id="@+id/list_people"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

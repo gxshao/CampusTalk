@@ -7,7 +7,7 @@
     tools:ignore="RtlSymmetry"
     tools:context="com.mrsgx.campustalk.mvp.Main.SettingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragmpeople_list_layoutyout -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:background="@drawable/shape_big_headpic"
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/dp_10"
+
             android:layout_height="@dimen/settings_pic_height">
             <com.github.snowdream.android.widget.SmartImageView
                 android:id="@+id/btn_change_headpic"
@@ -42,12 +42,13 @@
 
             <ImageView
                 android:id="@+id/textView3"
+                android:padding="@dimen/dp_5"
                 android:layout_width="@dimen/small_pic"
                 android:layout_height="@dimen/small_pic"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_6"
                 android:layout_marginStart="@dimen/dp_6"
-                android:src="@mipmap/usr"
+                android:src="@mipmap/ic_headpic"
                  />
 
             <TextView
@@ -60,6 +61,7 @@
                 android:text="Marshall."
                 android:layout_marginStart="10dp" />
             <Button
+                android:id="@+id/signIn"
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/tiny_pic"
                 android:textColor="@android:color/white"
@@ -87,7 +89,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_gravity="center_vertical"
-                android:text="20"/>
+                android:text="0"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -121,7 +123,8 @@
                     android:id="@+id/img_profile"
                     android:layout_width="@dimen/small_pic"
                     android:layout_height="@dimen/small_pic"
-                    android:src="@drawable/btn_switch_text_bg" />
+                    android:padding="@dimen/dp_5"
+                    android:src="@mipmap/ic_profile" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -156,7 +159,9 @@
                     android:id="@+id/imageView5"
                     android:layout_width="@dimen/small_pic"
                     android:layout_height="@dimen/small_pic"
-                    android:src="@drawable/btn_switch_text_bg" />
+
+                    android:padding="@dimen/dp_5"
+                    android:src="@mipmap/ic_pass" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -193,7 +198,9 @@
                     android:id="@+id/img_settings"
                     android:layout_width="@dimen/small_pic"
                     android:layout_height="@dimen/small_pic"
-                    android:src="@drawable/btn_switch_text_bg" />
+
+                    android:padding="@dimen/dp_5"
+                    android:src="@mipmap/ic_setting" />
 
                 <TextView
                     android:id="@+id/txt_settings"
@@ -228,7 +235,7 @@
                     android:id="@+id/img_about"
                     android:layout_width="@dimen/small_pic"
                     android:layout_height="@dimen/small_pic"
-                    android:src="@drawable/btn_switch_text_bg" />
+                    android:src="@mipmap/about" />
 
                 <TextView
                     android:id="@+id/txt_about"

@@ -18,6 +18,10 @@ class MainContract{
         fun cancelFollow(uid:String)
         fun initFollowData(list:ArrayList<CTUser>)
         fun showUserProfile(user:CTUser)
+        fun setCoin(num:Int)
+        fun signUp(uid: String)
+        fun initUserProperty(uid: String)
+        fun setSignBtnSate(b:Boolean)
     }
     interface Presenter:BasePresenter{
         fun initData()
@@ -25,5 +29,7 @@ class MainContract{
         fun updateFollowList()
         fun cancelFollow(uid:String)
         fun uploadLocationInfo(list:ArrayList<CTLocation>)
+        fun signUp(uid: String)
+        fun initUserProperty(uid: String)
     }
 }

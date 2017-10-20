@@ -2,6 +2,7 @@ package com.mrsgx.campustalk.data.Remote
 
 import com.mrsgx.campustalk.data.DataSource
 import com.mrsgx.campustalk.data.ResponseResult
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.retrofit.Api
 import com.mrsgx.campustalk.retrofit.RetrofitClient
@@ -14,6 +15,26 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRemoteDataSource : DataSource {
+    override fun SignUp(uid: String?): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).SignUp("Sign",uid)
+    }
+
+    override fun CheckSign(uid: String?): Observable<ResponseResult<Boolean>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).CheckSign("CheckSign",uid)
+    }
+
+    override fun GetUserProperty(uid: String?): Observable<ResponseResult<String>> {
+       return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).GetUserProperty("getUserProperty",uid)
+    }
+
+    override fun getLocationList(uid: String?, time: String): Observable<ResponseResult<ArrayList<CTLocation>>> {
+        return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).getLocationList("getloc",uid,time)
+    }
+
+    override fun getUserListByLoc(uid: String?, location: String): Observable<ResponseResult<ArrayList<CTUser>>> {
+       return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).getUserListByLoc("getPWAM",uid,location)
+    }
+
     override fun uploadGpsInfo(location: String): Observable<ResponseResult<Boolean>> {
 
         return RetrofitClient.getInstance()!!.create(RetrofitService::class.java).uploadGpsInfo("s",location)

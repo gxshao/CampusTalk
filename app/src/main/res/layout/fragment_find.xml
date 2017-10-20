@@ -6,7 +6,7 @@
     android:background="@drawable/find_fragment_shape"
     tools:context="com.mrsgx.campustalk.mvp.Main.FindFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragmpeople_list_layoutyout -->
 
     <LinearLayout
     android:orientation="vertical"

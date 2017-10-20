@@ -1,6 +1,7 @@
 package com.mrsgx.campustalk.data
 
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
+import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -10,6 +11,26 @@ import okhttp3.RequestBody
  * Created by Shao on 2017/9/14.
  */
 class WorkerRepository(private val workerRemoteDataSource: DataSource) : DataSource {
+    override fun SignUp(uid: String?): Observable<ResponseResult<Boolean>> {
+        return workerRemoteDataSource.SignUp(uid)
+    }
+
+    override fun CheckSign(uid: String?): Observable<ResponseResult<Boolean>> {
+        return workerRemoteDataSource.CheckSign(uid)
+    }
+
+    override fun GetUserProperty(uid: String?): Observable<ResponseResult<String>> {
+        return workerRemoteDataSource.GetUserProperty(uid)
+    }
+
+    override fun getLocationList(uid: String?, time: String): Observable<ResponseResult<ArrayList<CTLocation>>> {
+        return workerRemoteDataSource.getLocationList(uid,time)
+    }
+
+    override fun getUserListByLoc(uid: String?, location: String): Observable<ResponseResult<ArrayList<CTUser>>> {
+        return workerRemoteDataSource.getUserListByLoc(uid,location)
+    }
+
     override fun uploadGpsInfo(location: String): Observable<ResponseResult<Boolean>> {
         return workerRemoteDataSource.uploadGpsInfo(location)
     }
