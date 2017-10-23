@@ -121,4 +121,6 @@
     <string name="quit">退出</string>
     <string name="tips_show_navi">是否显示导航栏</string>
     <string name="tips_network_state">通讯服务器状态:</string>
+    <string name="start_find">开始寻找</string>
+    <string name="zero">0</string>
 </resources>

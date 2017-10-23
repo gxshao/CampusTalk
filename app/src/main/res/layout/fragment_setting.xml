@@ -1,8 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/setting_fragment_shape"
     tools:ignore="RtlSymmetry"
     tools:context="com.mrsgx.campustalk.mvp.Main.SettingFragment">
@@ -58,7 +57,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Marshall."
                 android:layout_marginStart="10dp" />
             <Button
                 android:id="@+id/signIn"
@@ -89,7 +87,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_gravity="center_vertical"
-                android:text="0"/>
+                android:text="@string/zero"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -127,7 +125,7 @@
                     android:src="@mipmap/ic_profile" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_6"
@@ -165,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_6"
@@ -204,7 +202,7 @@
 
                 <TextView
                     android:id="@+id/txt_settings"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_6"
@@ -239,7 +237,7 @@
 
                 <TextView
                     android:id="@+id/txt_about"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_6"
@@ -256,11 +254,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="@dimen/dp_6"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_logout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"

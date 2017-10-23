@@ -9,13 +9,14 @@ import com.squareup.leakcanary.LeakCanary
 
 /**
  * Created by Shao on 2017/9/29.
+ * Application
  */
 class App: MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         SDKInitializer.initialize(applicationContext)
-        //GPS位置信息上传
-        LeakCanary.install(this)
+        //GPS位置信息上传  LeakCanary.install(this)
+
         TYPEFACE_HUAKANG = Typeface.createFromAsset(this.assets, "fonts/myfonts.ttf")
     }
     override fun onTerminate() {

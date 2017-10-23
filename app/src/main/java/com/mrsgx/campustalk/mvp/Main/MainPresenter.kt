@@ -57,9 +57,14 @@ class MainPresenter(private val view: MainContract.View, private val workerRepos
                     }
 
                     override fun onNext(value: ResponseResult<Boolean>?) {
-                        view.showMessage("签到成功！金币+10")
-                        view.setSignBtnSate(false)
-                        view.setCoin(10)
+                        if(value!!.Body!!) {
+                            view.showMessage("签到成功！金币+10")
+                            view.setSignBtnSate(true)
+                            view.setCoin(10)
+                        }else
+                        {
+                            view.showMessage("签到失败，请稍候重试")
+                        }
                     }
                 })
         compositeDisposable.add(disposable)

@@ -12,6 +12,7 @@ import android.opengl.ETC1.getWidth
 
 /**
  * Created by Shao on 2017/9/22.
+ *
  */
 class MainViewPagerTransform: ViewPager.PageTransformer {
     var MIN_SCALE = 0.75f
@@ -31,7 +32,7 @@ class MainViewPagerTransform: ViewPager.PageTransformer {
             // Fade the page out.
             view.alpha = 1 - position
             // Counteract the default slide transition
-            view.translationX = pageWidth * -position+30f  //左移BUG
+            view.translationX = pageWidth * -position+20f //左移BUG
             // Scale the page down (between MIN_SCALE and 1)
             val scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position))
             view.scaleX = scaleFactor

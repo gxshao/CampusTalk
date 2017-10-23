@@ -211,7 +211,8 @@ class SettingFragment : Fragment() {
     }
     private fun initView() {
         //初始化签到和金币按钮
-        rootview!!.initUserProperty(GlobalVar.LOCAL_USER!!.Uid)
+        if(rootview!=null)
+            rootview!!.initUserProperty(GlobalVar.LOCAL_USER!!.Uid)
     }
 
     override fun onDetach() {

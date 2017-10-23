@@ -36,7 +36,7 @@ class FindPrensenter(private val view: FindContract.View, private val workerRepo
                     }
 
                     override fun onError(e: Throwable?) {
-                        println(e)
+                        println("获取列表失败"+e)
                     }
                 })
         compostionDisposeable.add(disposeable)

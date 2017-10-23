@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.ALLOW_FIND_DAY
 import com.mrsgx.campustalk.mvp.Find.FindActivity
 import kotlinx.android.synthetic.main.fragment_find.*
+import java.sql.Time
 import java.util.*
 
 
@@ -43,8 +45,8 @@ class FindFragment : Fragment() {
     private lateinit var mEndPicker: TimePickerDialog
 
     private var mDay = ""
-    private var mStartTime = ""
-    private var mEndTime = ""
+    private var mStartTime = "00:00:00"
+    private var mEndTime = "00:00:00"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,19 +105,20 @@ class FindFragment : Fragment() {
     }
 
     private val mOnDateSelected = DatePickerDialog.OnDateSetListener { p, yyyy, MM, dd ->
-        mDay = "$yyyy-$MM-$dd"
+        val ms=MM+1
+        mDay = "$yyyy-$ms-$dd"
         ed_date.setText(mDay)
     }
 
 
     private val mOnStartTimeSelected = TimePickerDialog.OnTimeSetListener { p0, hh, mm ->
-        mStartTime = "$hh:$mm"
+        mStartTime = "$hh:$mm:0"
         ed_start_time.setText(mStartTime)
     }
 
     private val mOnEndTimeSelected = TimePickerDialog.OnTimeSetListener { p0, hh, mm ->
-        mEndTime = "$hh:$mm"
-        if(Date.parse(mEndTime)<=Date.parse(mStartTime)){
+        mEndTime ="$hh:$mm:0"
+        if(Time.valueOf(mEndTime)<=Time.valueOf(mStartTime)){
             rootview!!.showMessage("时间区间选择错误")
             return@OnTimeSetListener
         }
@@ -132,7 +135,7 @@ class FindFragment : Fragment() {
         mEndPicker = TimePickerDialog(context, R.style.ThemeDialog, mOnEndTimeSelected, 0, 0, true)
         btn_search.setOnClickListener {
             //待传入的数据为
-            val times=mDay+mStartTime+"$"+mDay+mEndTime
+            val times= "$mDay $mStartTime$$mDay $mEndTime"
             val intent=Intent(context, FindActivity::class.java)
             intent.putExtra(GlobalVar.SELECT_TIME_RANGE,times)
             startActivity(intent)

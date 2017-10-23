@@ -1,14 +1,13 @@
 package com.mrsgx.campustalk.mvp.Find
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.view.*
-import android.widget.Button
-import android.widget.ListView
-import android.widget.PopupWindow
-import android.widget.SimpleAdapter
 import com.baidu.mapapi.map.BaiduMap
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
@@ -22,11 +21,20 @@ import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_find.*
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.widget.*
+import com.github.snowdream.android.widget.SmartImageView
+import com.mrsgx.campustalk.retrofit.Api
 
 
 class FindActivity : Activity(),FindContract.View {
     override fun setItemEnable(pos: Int) {
         //关注之后的状态
+        if(mSelectBtn!=null){
+            mSelectBtn!!.isEnabled=false
+            mSelectBtn!!.text="已关注"
+        }
     }
 
 
@@ -34,20 +42,31 @@ class FindActivity : Activity(),FindContract.View {
     private lateinit var mPopListUsers:PopupWindow
     private lateinit var mAdapter:SimpleAdapter
     private lateinit var mListView:ListView
+    private lateinit var mView:View
+    private lateinit var context:Context
+    private var mSelectBtn:Button?=null
     override fun showUserList(users: ArrayList<HashMap<String,String>>) {
+        if(users.size<=0)
+        {
+            showMessage("附近没有一面之缘的异性用户( • ̀ω•́ )✧")
+            return
+        }
         mListUser.clear()
         mListUser.addAll(users)
         mAdapter.notifyDataSetChanged()
+        mPopListUsers.setBackgroundDrawable(ColorDrawable())
+        mPopListUsers.showAsDropDown(mView)
     }
 
     override fun showMarkers(marks: ArrayList<CTLocation>) {
         if(marks.size<=0){
             return
         }
-        setUserMapCenter(LatLng(marks[0].Longitude.toDouble(),marks[0].Latitude.toDouble()))
+        println(marks.size)
         for(temp in marks){
             addMarker(temp)
         }
+        setUserMapCenter(LatLng(marks[0].Latitude.toDouble(),marks[0].Longitude.toDouble()))
     }
 
     /**
@@ -57,10 +76,11 @@ class FindActivity : Activity(),FindContract.View {
      *            屏幕透明度0.0-1.0 1表示完全不透明
      */
     fun setBackgroundAlpha(bgAlpha: Float) {
-        val lp = (this).window.attributes;
+        val lp = (this).window.attributes
         lp.alpha = bgAlpha
         (this).window.attributes = lp
     }
+    @SuppressLint("InflateParams")
     fun initPopWindow(){
         mPopListUsers= PopupWindow(this)
         mPopListUsers.contentView=LayoutInflater.from(this).inflate(R.layout.people_list_layout,null)
@@ -77,8 +97,15 @@ class FindActivity : Activity(),FindContract.View {
                 val p = position
                 val view = super.getView(position, convertView, parent)
                 val useBtn = view.findViewById<View>(R.id.find_btn_follow) as Button
+                val nickname=view.findViewById<View>(R.id.find_nickname) as TextView
+                val headpic=view.findViewById<View>(R.id.find_headpic) as SmartImageView
+                val userexplain=view.findViewById<View>(R.id.find_userexplain) as TextView
+                nickname.text=mListUser[position]["nickname"].toString()
+                headpic.setImageUrl(Api.API_HEADPIC_BASE+mListUser[position]["headpic"].toString(),Rect())
+                userexplain.text=mListUser[position]["userexplain"].toString()
                 useBtn.setOnClickListener {
                     findchatpresenter.followPartner(mListUser[p]["uid"].toString(),p)
+                    mSelectBtn=useBtn
                 }
                 return view
             }
@@ -96,11 +123,12 @@ class FindActivity : Activity(),FindContract.View {
                 mPopListUsers.dismiss()
                 mListUser.clear()
                 mAdapter.notifyDataSetChanged()
-                mListView.removeAllViews()
             }
             mListView.adapter=mAdapter
         }
     }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("InflateParams")
     override fun initViews() {
         rootView=LayoutInflater.from(this).inflate(R.layout.activity_find,null)
         mMap=map_bdmap.map
@@ -113,12 +141,17 @@ class FindActivity : Activity(),FindContract.View {
             setUserMapCenter(m.position)
             //弹出附近的人
             val bundle=m.extraInfo
-            TalkerProgressHelper.getInstance(applicationContext).show("正在加载附近的人..")
-            findchatpresenter.getUserListByLoc(bundle.getParcelable("markLoc"))
-            false
+            TalkerProgressHelper.getInstance(context).show("正在加载附近的人..")
+            if(bundle!=null){
+                    findchatpresenter.getUserListByLoc(bundle.getParcelable("markLoc"))
+            }else
+            {
+                println("传递数据为空")
+            }
+              true
         }
 
-        this.actionBar.setBackgroundDrawable(this.resources.getDrawable(R.drawable.actionbar_head))
+        this.actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.actionbar_head))
         this.actionBar.title="时光机"
         this.actionBar.setDisplayUseLogoEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)
@@ -128,7 +161,7 @@ class FindActivity : Activity(),FindContract.View {
      * 添加新的标记到地图中
      */
     private fun addMarker(loc:CTLocation){
-        val point=LatLng(loc.Longitude.toDouble(),loc.Latitude.toDouble())
+        val point=LatLng(loc.Latitude.toDouble(),loc.Longitude.toDouble())
         val icon=com.baidu.mapapi.map.BitmapDescriptorFactory
                 .fromResource(R.mipmap.marker)
         val option:MarkerOptions = MarkerOptions()
@@ -168,7 +201,7 @@ class FindActivity : Activity(),FindContract.View {
     }
 
     override fun showMessage(msg: String?) {
-
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
@@ -185,11 +218,14 @@ class FindActivity : Activity(),FindContract.View {
 
     private lateinit var mMap:BaiduMap
     private lateinit var findchatpresenter:FindPrensenter
+    @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-        setContentView(R.layout.activity_find)
+        mView=LayoutInflater.from(this).inflate(R.layout.activity_find,null)
+        setContentView(mView)
+        context=this
         mListUser=ArrayList()
         findchatpresenter= FindPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()),this)
         TalkerProgressHelper.getInstance(this).show("正在加载坐标数据请稍候...")
