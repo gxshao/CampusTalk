@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.*
-import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewPager
@@ -38,7 +37,6 @@ import com.zsoft.signala.ConnectionState
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.ref.WeakReference
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
         , FollowFragment.OnFragmentInteractionListener, FindFragment.OnFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener {
     override fun setSignBtnSate(b: Boolean) {
@@ -141,9 +139,12 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun startNewPage(target: Class<*>?) {
-        startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        } else {
+            startActivity(Intent(this, target))
+        }
     }
 
     override fun setPresenter(presenter: MainContract.Presenter?) {
@@ -153,6 +154,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 
     }
+
     override fun showUserProfile(user: CTUser) {
 
         mProfileDialog!!.showUser(user)
@@ -219,7 +221,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
         viewpagerAdapter = FragAdapter(fm, mFragments)
         viewpager.adapter = viewpagerAdapter
-        viewpager.offscreenPageLimit=0
+        viewpager.offscreenPageLimit = 0
         /**
          * 页面滑动事件
          */
@@ -263,19 +265,23 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         colorAnimationView.setmViewPager(viewpager, 4, 0xffB1D3EC.toInt(), 0xff6CAAD9.toInt(), 0xff0066B2.toInt(), 0xff285577.toInt())
         radio_navi.setOnCheckedChangeListener(mRadioChanged)
         val mWidth = this.resources.getDimension(R.dimen.radio_width).toInt()
-        val icon_match = this.getDrawable(R.mipmap.icon_match)
-        icon_match.setBounds(0, 0, mWidth, mWidth)
-        val icon_find = this.getDrawable(R.mipmap.icon_find)
-        icon_find.setBounds(0, 0, mWidth, mWidth)
-        val icon_follow = this.getDrawable(R.mipmap.icon_follow)
-        icon_follow.setBounds(0, 0, mWidth, mWidth)
-        val icon_my = this.getDrawable(R.mipmap.icon_my)
-        icon_my.setBounds(0, 0, mWidth, mWidth)
-
-        radio_match.setCompoundDrawables(null, icon_match, null, null)
-        radio_find.setCompoundDrawables(null, icon_find, null, null)
-        radio_follow.setCompoundDrawables(null, icon_follow, null, null)
-        radio_setting.setCompoundDrawables(null, icon_my, null, null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getDrawable(R.mipmap.icon_match)
+            val icon_match = this.getDrawable(R.mipmap.icon_match)
+            icon_match.setBounds(0, 0, mWidth, mWidth)
+            val icon_find = this.getDrawable(R.mipmap.icon_find)
+            icon_find.setBounds(0, 0, mWidth, mWidth)
+            val icon_follow = this.getDrawable(R.mipmap.icon_follow)
+            icon_follow.setBounds(0, 0, mWidth, mWidth)
+            val icon_my = this.getDrawable(R.mipmap.icon_my)
+            icon_my.setBounds(0, 0, mWidth, mWidth)
+            radio_match.setCompoundDrawables(null, icon_match, null, null)
+            radio_find.setCompoundDrawables(null, icon_find, null, null)
+            radio_follow.setCompoundDrawables(null, icon_follow, null, null)
+            radio_setting.setCompoundDrawables(null, icon_my, null, null)
+        } else {
+            Toast.makeText(this,"版本过低..",Toast.LENGTH_SHORT).show()
+        }
         if (DB.getInstance(this).getUserState(GlobalVar.LOCAL_USER!!.Uid) == GlobalVar.USER_STATE_UNATH) {
             //跳转到资料页面弹出资料修改
             mAlertDailog.show()
@@ -312,7 +318,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     }
     private lateinit var mainpresenter: MainPresenter
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -438,7 +443,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         btn.startAnimation(ani)
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun moveNaviBar(frgbar: FrameLayout, state: Boolean) {
         val ani: TranslateAnimation = if (state) {
             AnimationUtils.loadAnimation(this, R.anim.navi_out) as TranslateAnimation

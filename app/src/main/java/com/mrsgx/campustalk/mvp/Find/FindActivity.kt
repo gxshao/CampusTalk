@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.view.*
 import com.baidu.mapapi.map.BaiduMap
 import com.baidu.mapapi.map.MapStatus
@@ -127,7 +126,6 @@ class FindActivity : Activity(),FindContract.View {
             mListView.adapter=mAdapter
         }
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("InflateParams")
     override fun initViews() {
         rootView=LayoutInflater.from(this).inflate(R.layout.activity_find,null)
@@ -203,7 +201,6 @@ class FindActivity : Activity(),FindContract.View {
     override fun showMessage(msg: String?) {
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this,rootView!!).show(msg,level,time)
     }
@@ -219,7 +216,6 @@ class FindActivity : Activity(),FindContract.View {
     private lateinit var mMap:BaiduMap
     private lateinit var findchatpresenter:FindPrensenter
     @SuppressLint("InflateParams")
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -256,7 +252,6 @@ class FindActivity : Activity(),FindContract.View {
 
     private var rootView: View?=null
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         CTNote.getInstance(this,rootView!!).hide()
         super.onStop()

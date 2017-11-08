@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.annotation.RequiresApi
 import android.view.*
 import android.widget.Toast
 import com.mrsgx.campustalk.R
@@ -47,17 +46,17 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this,rootView!!).show(msg,level,time)
     }
     private val CHOOSE_PHOTO=1
     private var imagepath:String?=""
     private var context: Context?=null
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initViews() {
         this.actionBar.title=getString(R.string.title_complete_profile)
-        this.actionBar.setBackgroundDrawable(getDrawable(R.drawable.actionbar_head))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.actionBar.setBackgroundDrawable(getDrawable(R.drawable.actionbar_head))
+        }
         this.actionBar.setDisplayHomeAsUpEnabled(true)
         mAlertDialog= AlertDialog.Builder(this)
                 .setCancelable(false)
@@ -97,7 +96,9 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
             }
             else
             {
-                pic_stucard.setImageDrawable(this.getDrawable(R.mipmap.headpic))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    pic_stucard.setImageDrawable(this.getDrawable(R.mipmap.headpic))
+                }
             }
             ed_userexplain.setText(if(!user.Userexplain.isNullOrEmpty()) user.Userexplain else null)
 
@@ -139,7 +140,6 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -190,7 +190,6 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
     override fun setPresenter(presenter: ProfileContract.Presenter?) {
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)

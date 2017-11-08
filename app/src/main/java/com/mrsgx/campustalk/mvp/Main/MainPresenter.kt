@@ -31,7 +31,8 @@ class MainPresenter(private val view: MainContract.View, private val workerRepos
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(object :DisposableObserver<ResponseResult<String>>(){
                     override fun onNext(value: ResponseResult<String>?) {
-                        view.setCoin(Integer.parseInt(value!!.Body))
+                        if(!value!!.Body.isNullOrEmpty())
+                        view.setCoin(Integer.parseInt(value.Body))
                     }
 
                     override fun onComplete() {

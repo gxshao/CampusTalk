@@ -10,11 +10,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
-import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -181,7 +179,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     /**
      * 权限请求结果
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 2) {
@@ -232,7 +229,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this, mView!!).show(msg, level, time)
     }
@@ -285,7 +281,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     }
 
     @SuppressLint("InflateParams")
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -331,7 +326,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         (this).window.attributes = lp
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         CTNote.getInstance(this, mView!!).hide()
         super.onStop()
@@ -392,9 +386,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
         return super.onKeyDown(keyCode, event)
     }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun initViews() {
         mChatToolWindow = PopupWindow(this)
         val chattoolview = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)

@@ -54,7 +54,6 @@ class RegisterActivity : Activity(), RegisterContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
         CTNote.getInstance(this, rootView!!).show(msg, level, time)
     }
@@ -231,12 +230,10 @@ class RegisterActivity : Activity(), RegisterContract.View {
         }
 
     }
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         CTNote.getInstance(this,rootView!!).hide()
         super.onStop()
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)

@@ -32,11 +32,11 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         const val TIME_SHORT = 4
         const val TIME_LONG = 20
 
-        private var INSTANCE:WeakReference<CTNote>? = null
+        private var INSTANCE: WeakReference<CTNote>? = null
         private var rootview: WeakReference<View>? = null
 
         fun getInstance(context: Context, r: View): CTNote {
-            if (INSTANCE == null|| INSTANCE!!.get()==null) {
+            if (INSTANCE == null || INSTANCE!!.get() == null) {
                 INSTANCE = WeakReference(CTNote(context))
             }
             rootview = WeakReference(r)
@@ -51,11 +51,12 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     private val MILLISECOND: Int = 1000 //时间系数
     private var mTimer: Timer = Timer()
     private var isRunning = false
-    private var Title_Tips=""
-    private var Title_Warning=""
-    private var Title_Error=""
-    private var Title_Notify=""
-    private lateinit var mHandler:CtnoteHandler
+    private var Title_Tips = ""
+    private var Title_Warning = ""
+    private var Title_Error = ""
+    private var Title_Notify = ""
+    private lateinit var mHandler: CtnoteHandler
+
     init {
         try {
             view = LayoutInflater.from(context).inflate(R.layout.ctnote, null)
@@ -74,22 +75,21 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                     this.dismiss()
                 }
             }
-            mHandler= CtnoteHandler(this)
-        }catch (e:Exception){
+            mHandler = CtnoteHandler(this)
+        } catch (e: Exception) {
             println(e)
         }
-        Title_Tips=context.resources.getString(R.string.tips)
-        Title_Error=context.resources.getString(R.string.error)
-        Title_Notify=context.resources.getString(R.string.notify)
-        Title_Warning=context.resources.getString(R.string.warning)
+        Title_Tips = context.resources.getString(R.string.tips)
+        Title_Error = context.resources.getString(R.string.error)
+        Title_Notify = context.resources.getString(R.string.notify)
+        Title_Warning = context.resources.getString(R.string.warning)
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-            /***
+    /***
      * 显示通知
      */
     fun show(content: String, level: Int, len: Int) {
-        mTitle!!.text=Title_Tips
+        mTitle!!.text = Title_Tips
         mContent!!.text = content
         //判断级别并设置背景和时间
 
@@ -98,41 +98,45 @@ class CTNote(private val context: Context) : PopupWindow(context) {
             LEVEL_TIPS -> {
             }
             LEVEL_ERROR -> {
-                mTitle!!.text=Title_Error
+                mTitle!!.text = Title_Error
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_red)
             }
             LEVEL_WARNING -> {
-                mTitle!!.text=Title_Warning
+                mTitle!!.text = Title_Warning
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_orange)
             }
             LEVEL_NOTIFY -> {
-                mTitle!!.text=Title_Notify
+                mTitle!!.text = Title_Notify
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_blue)
             }
         }
-        background.alpha=180
+        background.alpha = 180
         view!!.setBackgroundDrawable(background)
         if (this.isShowing) {
             this.update()
         } else {
             //从上面弹出
-            try{
-            if(!(rootview?.get()!!.context as Activity).isDestroyed&&!(rootview?.get()!!.context as Activity).isFinishing){
-                  this.showAtLocation(rootview?.get(), android.view.Gravity.TOP, 0, 0)
-            }
-            }catch (e:Exception){
+            try {
+                if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    !(rootview?.get()!!.context as Activity).isDestroyed && !(rootview?.get()!!.context as Activity).isFinishing
+                } else {
+                    true
+                }) {
+                    this.showAtLocation(rootview?.get(), android.view.Gravity.TOP, 0, 0)
+                }
+            } catch (e: Exception) {
                 println(e)
             }
         }
         if (!isRunning) {
             mTimer.purge()
-            mTimer=Timer()
+            mTimer = Timer()
             mTimer.schedule(getDismisTask(), (MILLISECOND * len).toLong())
             isRunning = true
         } else {
             mTimer.cancel()
             mTimer.purge()
-            mTimer=Timer()
+            mTimer = Timer()
             mTimer.schedule(getDismisTask(), (MILLISECOND * len).toLong())
             isRunning = true
         }
@@ -141,40 +145,44 @@ class CTNote(private val context: Context) : PopupWindow(context) {
     /**
      * 自动退出线程
      */
-    private fun getDismisTask():TimerTask{
+    private fun getDismisTask(): TimerTask {
         return object : TimerTask() {
-           override fun run() {
-               mHandler.sendMessage(mHandler.obtainMessage())
-               isRunning = false
-               cancel()
-           }
-       }
+            override fun run() {
+                mHandler.sendMessage(mHandler.obtainMessage())
+                isRunning = false
+                cancel()
+            }
+        }
     }
-    class CtnoteHandler(note:CTNote):Handler(){
-        private val mHand:WeakReference<CTNote> by lazy {
+
+    class CtnoteHandler(note: CTNote) : Handler() {
+        private val mHand: WeakReference<CTNote> by lazy {
             WeakReference<CTNote>(note)
         }
 
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         override fun handleMessage(msg: Message?) {
-            val ct=mHand.get()
-            if(ct!=null){
-                    ct.hide()
+            val ct = mHand.get()
+            if (ct != null) {
+                ct.hide()
             }
             super.handleMessage(msg)
         }
     }
 
-            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    /**
+    /**
      * 手动退出方法
      */
     fun hide() {
         try {
-            if(!(context as Activity).isDestroyed&&!(context).isFinishing)
+            if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                !(context as Activity).isDestroyed && !(context).isFinishing
+            } else {
+                true
+            }) {
                 this.dismiss()
-            rootview=null
-
+                rootview = null
+            }
         } catch (e: IllegalArgumentException) {
             // Handle or log or ignore
         } catch (e: Exception) {

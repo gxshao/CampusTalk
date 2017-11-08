@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -31,37 +30,37 @@ class LoginActivity : Activity(), LoginContract.View {
 
     var STOP_TEXT_ANIM = false
     var loginpresenter: LoginPresenter? = null
-    var rootView: View?=null
-    lateinit var mHandler:LoginHandler
-    companion object{
-         var LOGIN_INSTANCE:WeakReference<LoginActivity>?=null
+    var rootView: View? = null
+    lateinit var mHandler: LoginHandler
+
+    companion object {
+        var LOGIN_INSTANCE: WeakReference<LoginActivity>? = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initViews() {
-        rootView=LayoutInflater.from(this).inflate(R.layout.activity_login,null)
-        var i=0
-        val timer=Timer()
+        rootView = LayoutInflater.from(this).inflate(R.layout.activity_login, null)
+        var i = 0
+        val timer = Timer()
         anim_title.postDelayed({
             timer.schedule(object : TimerTask() {
                 override fun run() {
-                    if(STOP_TEXT_ANIM)
+                    if (STOP_TEXT_ANIM)
                         this.cancel()
-                    val msg=mHandler.obtainMessage()
-                    msg.obj=i++
+                    val msg = mHandler.obtainMessage()
+                    msg.obj = i++
                     mHandler.sendMessage(msg)
-                    if(i>1)
-                        i=0
+                    if (i > 1)
+                        i = 0
                 }
 
-            },100,5000)
+            }, 100, 5000)
         }, 1000)
-        val animLoginBox=AnimationUtils.loadAnimation(this,R.anim.login_box_enter)
-        login_sub_box.post{
+        val animLoginBox = AnimationUtils.loadAnimation(this, R.anim.login_box_enter)
+        login_sub_box.post {
             login_sub_box.startAnimation(animLoginBox)
         }
         btn_login.setOnClickListener {
-            loginpresenter!!.Login(ed_email.text.toString(),ed_pass.text.toString())
+            loginpresenter!!.Login(ed_email.text.toString(), ed_pass.text.toString())
         }
         btn_reg.setOnClickListener {
             startNewPage(RegisterActivity::class.java)
@@ -69,16 +68,18 @@ class LoginActivity : Activity(), LoginContract.View {
 
     }
 
-    class LoginHandler(activity: LoginActivity):Handler(){
-        private val loginHandler:WeakReference<LoginActivity> by lazy {
-             WeakReference<LoginActivity>(activity)
+    class LoginHandler(activity: LoginActivity) : Handler() {
+        private val loginHandler: WeakReference<LoginActivity> by lazy {
+            WeakReference<LoginActivity>(activity)
         }
+
         override fun handleMessage(msg: Message?) {
-            val activity= loginHandler.get() ?: return
+            val activity = loginHandler.get() ?: return
             activity.anim_title.animateText(activity.text!![msg!!.obj as Int])
             super.handleMessage(msg)
         }
     }
+
     override fun Close() {
     }
 
@@ -91,39 +92,43 @@ class LoginActivity : Activity(), LoginContract.View {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun startNewPage(target: Class<*>?) {
-        startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivity(Intent(this, target), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        } else {
+            startActivity(Intent(this, target))
+        }
     }
+
     //自定义提示
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun showMessage(msg: String, level: Int, time: Int) {
-        CTNote.getInstance(this,rootView!!).show(msg,level,time)
+        CTNote.getInstance(this, rootView!!).show(msg, level, time)
     }
+
     override fun setPresenter(presenter: LoginContract.Presenter?) {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
-        CTNote.getInstance(this,rootView!!).hide()
+        CTNote.getInstance(this, rootView!!).hide()
         super.onStop()
     }
+
     override fun onDestroy() {
-        STOP_TEXT_ANIM=true
-        loginpresenter=null
+        STOP_TEXT_ANIM = true
+        loginpresenter = null
         System.gc()
         super.onDestroy()
     }
-    var text:Array<String>?=null
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    var text: Array<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setContentView(R.layout.activity_login)
-        mHandler=LoginHandler(this)
+        mHandler = LoginHandler(this)
         initViews()
-        text= arrayOf(this.resources.getString(R.string.app_name),this.resources.getString(R.string.sign_in)+"☺")
+        text = arrayOf(this.resources.getString(R.string.app_name), this.resources.getString(R.string.sign_in) + "☺")
         LOGIN_INSTANCE = WeakReference(this)
         loginpresenter = LoginPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
 

@@ -9,7 +9,7 @@ class   Api{
     companion object {
         const val KEY="key"
         //interfaces
-        const val API_BASE:String="http://"+ GlobalVar.IP+":13614/subsite/CampusTalk/"
+        const val API_BASE:String="http://"+ GlobalVar.IP+"/subsite/CampusTalk/"
         const val API_HEADPIC_BASE= API_BASE+"/images/headpic/"
         const val API_STUCARD_BASE= API_BASE+"/images/stucard/"
         const val API_SERVER_VALIEDATE = API_BASE+"/events/ctValidate.ashx"

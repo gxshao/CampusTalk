@@ -10,8 +10,8 @@ import com.mrsgx.campustalk.obj.CTUser
 class GlobalVar {
     companion object {
        //const val IP="192.168.2.125"
-        const val IP="10.2.2.46"
-        val SERVER_URL= "http://$IP:13614/MyConnection"
+        const val IP="mrsgx.cn"
+        val SERVER_URL= "http://$IP/MyConnection"
         var LOCAL_USER:CTUser?=CTUser()
         val LOCAL_DIRECTORY="/campustalk/"
         val USER_STATE_GOOD="0" //正常
