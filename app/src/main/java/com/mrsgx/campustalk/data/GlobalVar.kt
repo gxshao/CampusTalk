@@ -2,6 +2,7 @@ package com.mrsgx.campustalk.data
 
 import android.graphics.Typeface
 import com.mrsgx.campustalk.obj.CTUser
+import java.lang.reflect.Type
 
 /**
  * Created by Shao on 2017/9/14.
@@ -30,7 +31,7 @@ class GlobalVar {
         val ACTION_UNFOLLOW="0" //取消关注
         val CHOOSE_PHOTO: Int = 1
         val CHANGE_SETTING:Int=2
-        var TYPEFACE_HUAKANG:Typeface?=null
      val SELECT_TIME_RANGE: String="select_time"
+     var typeface:Typeface?=null
     }
 }

@@ -164,6 +164,7 @@
                 android:layout_gravity="center_vertical"
                 android:entries="@array/area"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textSize="@dimen/contentSize" />
 
@@ -174,6 +175,7 @@
                 android:layout_gravity="center_vertical"
                 android:entries="@array/school"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textSize="@dimen/contentSize" />
         </LinearLayout>

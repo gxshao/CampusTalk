@@ -18,6 +18,7 @@ import com.zsoft.signala.transport.longpolling.LongPollingTransport
 import java.lang.ref.WeakReference
 
 /**
+ * 聊天服务器通信
  * Created by Shao on 2017/9/6.
  */
 class CTConnection(url: String?, context: Context?, transport: ITransport?) : Connection(url, context, transport) {
@@ -38,7 +39,6 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         super.OnError(exception)
     }
     override fun OnMessage(message: String?) {
-        println(message)
         if(!message.isNullOrEmpty()){
             val aType = object : TypeToken<CTData<Any>>() {}.type
             val msg=Gson().fromJson<CTData<Any>>(message,aType)
@@ -65,7 +65,7 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                             "next"->{
                                 //单向连接断开，重新加载chat activity
                                 if(mChatListener!=null)
-                                mChatListener!!.onNextMatch()
+                                    mChatListener!!.onNextMatch()
                             }
                         }
                     }

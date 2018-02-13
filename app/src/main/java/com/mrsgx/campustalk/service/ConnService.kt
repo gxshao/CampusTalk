@@ -37,7 +37,6 @@ class ConnService : Service() {
             val worker= WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance())
             while(IS_UPLOAD){
                 val str=Gson().toJson(DB.getInstance(applicationContext).getAllLocation())
-                println(str)
                 worker.uploadGpsInfo(str).observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribeWith(object : DisposableObserver<ResponseResult<Boolean>>(){
@@ -46,12 +45,11 @@ class ConnService : Service() {
                             }
 
                             override fun onNext(value: ResponseResult<Boolean>?) {
-                                println("上传完成"+value!!.Body)
                                 DB.getInstance(applicationContext).clearLocation()
                             }
 
                             override fun onError(e: Throwable?) {
-                                println(e)
+
                             }
                         })
                 Thread.sleep(UPLOAD_SPAN)
@@ -64,7 +62,6 @@ class ConnService : Service() {
 
     private fun MyLocationListener()=object : BDAbstractLocationListener() {
         override fun onReceiveLocation(location: BDLocation) {
-            println("收到定位")
             //获取定位结果
             location.getTime();    //获取定位时间
             location.getLocationID();    //获取定位唯一ID，v7.2版本新增，用于排查定位问题
@@ -147,7 +144,6 @@ class ConnService : Service() {
             }
                 if(loc!=null)
                 {
-                    println("loc:"+loc.Latitude+"     "+loc.Longitude)
                     DB.getInstance(applicationContext).insertLocation(loc)
                 }
             }

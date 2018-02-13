@@ -2,7 +2,9 @@ package com.mrsgx.campustalk.mvp.Setting
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.KeyEvent
 import android.view.MenuItem
 import com.mrsgx.campustalk.R
@@ -22,16 +24,18 @@ class SettingActivity : Activity() {
     fun initViews(){
         this.actionBar.setDisplayHomeAsUpEnabled(true)
         this.title=this.getString(R.string.txt_settings)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.actionBar.setBackgroundDrawable(getDrawable(R.drawable.actionbar_head))
+        }
         switch_nvai.isChecked=SharedHelper.getInstance(this).getBoolean(SharedHelper.IS_SHOW_NAVI,true)
     }
     fun save(){
         val edit=SharedHelper.getInstance(this).edit()
+        edit.putBoolean(SharedHelper.IS_SHOW_NAVI,switch_nvai.isChecked)
+        edit.apply()
         val intent=Intent()
         intent.putExtra(SharedHelper.IS_SHOW_NAVI,switch_nvai.isChecked)
         setResult(CHANGE_SETTING,intent)
-        println("最新设置保存")
-        edit.putBoolean(SharedHelper.IS_SHOW_NAVI,switch_nvai.isChecked)
-        edit.apply()
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
@@ -54,7 +58,6 @@ class SettingActivity : Activity() {
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
     }
 }

@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.view.View
 import android.view.ViewGroup
 
 /**
@@ -20,7 +21,7 @@ class FragAdapter(private val fm: FragmentManager,private var fragments:List<Fra
        return fragments.size
     }
 
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
+    override fun destroyItem(container: View, position: Int, `object`: Any) {
     }
 
 }

@@ -93,7 +93,6 @@ class DB(private val context: Context) {
             connDB()
             rs = db!!.rawQuery(sql, null)
         } catch (e: Exception) {
-            println(e)
             return null
         }
         return rs
@@ -218,7 +217,6 @@ class DB(private val context: Context) {
     fun querySchoolByAreaCode(areacode: String): ArrayList<CTSchool> {
         val result = ArrayList<CTSchool>()
         val sql = "select * from $TABLE_SCHOOL_NAME where ${TableSchool.AREACODE}='$areacode'"
-        println(sql)
         val cursor = querySql(sql)
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -279,7 +277,6 @@ class DB(private val context: Context) {
             e.printStackTrace()
         }
         disconnDB()
-        println(" gps数量"+list.size)
         return list
     }
 

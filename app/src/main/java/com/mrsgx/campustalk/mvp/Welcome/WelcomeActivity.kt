@@ -3,23 +3,22 @@ package com.mrsgx.campustalk.mvp.Welcome
 import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.support.annotation.RequiresApi
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import com.mrsgx.campustalk.R
-import com.mrsgx.campustalk.R.id.txt_count
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.mvp.Login.LoginActivity
+import com.mrsgx.campustalk.utils.AudioPlayer
 import com.mrsgx.campustalk.utils.SharedHelper
 import com.mrsgx.campustalk.widget.CTNote
 import kotlinx.android.synthetic.main.activity_welcome.*
@@ -39,14 +38,14 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
     }
 
     override fun setPresenter(presenter: WelcomeContract.Presenter?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
     override fun initViews() {
         val timer = Timer()
         var count = 3  //等待秒数
         val context = this
         txt_count.text=getString(R.string.loading)
+        val player = AudioPlayer(this)
+        player.playAudio(R.raw.welcome)
         timer.schedule(object : TimerTask() {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun run() {

@@ -58,7 +58,6 @@ class RegisterPensenter(private val view: RegisterContract.View, private val wor
                     }
 
                     override fun onError(e: Throwable?) {
-                        println(e!!.message)
                        view.showMessage(context.getString(R.string.reg_fail_unknow))
                         TalkerProgressHelper.getInstance(context).hideDialog()
                     }

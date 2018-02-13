@@ -19,10 +19,12 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.mvp.Chat.ChatActivity
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_match.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -44,15 +46,14 @@ class MatchFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            mParam1 = arguments!!.getString(ARG_PARAM1)
+            mParam2 = arguments!!.getString(ARG_PARAM2)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_match, container, false)
-        view.setOnTouchListener { view, motionEvent ->
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_match, container, false)
+        view.setOnTouchListener { _, motionEvent ->
             true
         }
         return view
@@ -80,6 +81,7 @@ class MatchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val anim_match = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
         anim_match.setAnimationListener(mAnim_bounce)
+        txt_net_state_tips.typeface=GlobalVar.typeface
         btn_start_match.startAnimation(anim_match)
         btn_start_match.setOnClickListener {
             TalkerProgressHelper.getInstance(parentContext!!).show("正在准备匹配..")
@@ -92,13 +94,15 @@ class MatchFragment : Fragment() {
 
     var rootview: MainContract.View? = null
     var parentContext: Context? = null
-    val mHand:Handler by lazy { @SuppressLint("HandlerLeak")
-    object :Handler(){
-        override fun dispatchMessage(msg: Message?) {
-            TalkerProgressHelper.getInstance(parentContext!!).hideDialog()
-            super.dispatchMessage(msg)
+    val mHand:Handler by lazy {
+        @SuppressLint("HandlerLeak")
+        object :Handler(){
+            override fun handleMessage(msg: Message?) {
+                TalkerProgressHelper.getInstance(parentContext!!).hideDialog()
+                super.handleMessage(msg)
+            }
         }
-    } }
+    }
     private val mAnim_bounce = object : Animation.AnimationListener {
         override fun onAnimationRepeat(p0: Animation?) {
 

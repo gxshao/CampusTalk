@@ -1,20 +1,17 @@
 package com.mrsgx.campustalk.utils
 
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Handler
 import android.util.Log
 import com.mrsgx.campustalk.interfaces.OnAudioRecoredStatusListener
 import java.io.File
-import java.io.FileInputStream
-import java.lang.reflect.Executable
 
 /**
- * Created by Shao on 2017/10/10.
+ * 录音小工具
+ * Created by mrsgx on 2018/2/12.
  */
-class AudioRecoredUtils(val folderPath: String) {
+class AudioRecorder constructor(var folderPath:String) {
     private var mMediaRecorder: MediaRecorder? = null
-    private var mMediaPlayer: MediaPlayer? = null
     private var mAudioFile: String = ""
     private val MAX_LENGTH = 1000 * 60
     var startTime: Long = 0
@@ -27,7 +24,6 @@ class AudioRecoredUtils(val folderPath: String) {
             file.mkdirs()
         }
     }
-
     /**
      * 开始录音
      */
@@ -47,7 +43,6 @@ class AudioRecoredUtils(val folderPath: String) {
             startTime = System.currentTimeMillis()
             updateState()
         } catch (e: Exception) {
-            println("录音" + e)
         }
     }
 
@@ -121,44 +116,5 @@ class AudioRecoredUtils(val folderPath: String) {
             }
         }
         mHand.postDelayed(mAudioThreadStateUpdate, 1000)
-    }
-
-    /**
-     * 开始播放
-     */
-    fun playAudio(path: String) {
-        synchronized(this) {
-            try {
-
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = MediaPlayer()
-                }
-                if (mMediaPlayer!!.isPlaying || mMediaPlayer!!.isLooping)
-                    return
-                val file = File(path)
-                val fis = FileInputStream(file)
-                mMediaPlayer!!.setDataSource(fis.fd)
-                mMediaPlayer!!.prepare()
-                mMediaPlayer!!.start()
-                mMediaPlayer!!.setOnCompletionListener {
-                    stopPlayAudio()
-                }
-            } catch (e: Exception) {
-               println(e)
-            } finally {
-
-            }
-        }
-    }
-
-    /**
-     * 结束播放
-     */
-    fun stopPlayAudio() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.stop()
-            mMediaPlayer!!.release()
-        }
-        mMediaPlayer = null
     }
 }

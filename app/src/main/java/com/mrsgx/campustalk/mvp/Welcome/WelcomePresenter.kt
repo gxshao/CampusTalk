@@ -53,7 +53,6 @@ class WelcomePresenter(private val view: WelcomeContract.View, private val worke
                     }
 
                     override fun onError(e: Throwable?) {
-                        println(e)
                         view.showMessage(context.getString(R.string.fail_load_resources), CTNote.LEVEL_WARNING, CTNote.TIME_SHORT)
                         view.loadingPost()
                     }

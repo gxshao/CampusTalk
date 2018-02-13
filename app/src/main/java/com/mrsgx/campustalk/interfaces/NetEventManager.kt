@@ -58,7 +58,6 @@ class NetEventManager {
 
     fun broadcastOnSignalRChanged(state: Boolean) {
         synchronized(this) {
-            println("广播事件")
             for (event in mList) {
                 event.OnSignalRChanged(state)
             }

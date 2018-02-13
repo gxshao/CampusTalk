@@ -123,4 +123,10 @@
     <string name="tips_network_state">通讯服务器状态:</string>
     <string name="start_find">开始寻找</string>
     <string name="zero">0</string>
+    <string name="login_failed_unknow">登录状态异常，请您重新登录</string>
+    <string name="lower_version">版本过低</string>
+    <string name="waiting_for_auth">您当前账户待核验，请您随时关注账户状态。</string>
+    <string name="unregister_stucard">您尚未进行学生认证，点击确定完善资料,取消则退出应用</string>
+    <string name="personal_center">个人中心 ☺</string>
+    <string name="empty_follow_list">您的关注列表为空,快去匹配吧</string>
 </resources>

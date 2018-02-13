@@ -120,7 +120,7 @@ class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEve
             try {
                 imageFile.createNewFile()
             } catch (e: Exception) {
-                println(e)
+                e.printStackTrace()
             }
 
             //转换成Uri

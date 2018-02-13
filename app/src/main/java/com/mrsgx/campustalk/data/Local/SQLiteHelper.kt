@@ -1,6 +1,5 @@
 package com.mrsgx.campustalk.data.Local
 
-import android.app.Activity
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -65,7 +64,6 @@ class SQLiteHelper(context: Context,name:String): SQLiteOpenHelper(context,name,
                 TableLocation.UID + " text, " +
                 TableLocation.TIME + " text " +
                 ")"
-        println(sql)
         db.execSQL(sql)
     }
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {

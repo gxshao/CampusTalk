@@ -17,9 +17,9 @@
             android:paddingTop="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_10"
             android:text="@string/follow_list"
-            android:textAlignment="center"
+            android:paddingLeft="@dimen/dp_10"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/TitleSize" />
+            android:textSize="@dimen/middle_txt" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,8 +41,8 @@
             android:id="@+id/tips_empty_list"
             android:visibility="invisible"
             android:layout_width="wrap_content"
-            android:text="您的关注列表为空,快去匹配吧~"
-            android:textSize="@dimen/TitleSize"
+            android:text="@string/empty_follow_list"
+            android:textSize="@dimen/middle_txt"
             android:textColor="@android:color/darker_gray"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_height="wrap_content">

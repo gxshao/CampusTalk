@@ -1,6 +1,5 @@
 package com.mrsgx.campustalk.widget
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -15,10 +14,12 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.mrsgx.campustalk.R
+import com.mrsgx.campustalk.utils.AudioPlayer
 import java.lang.ref.WeakReference
 import java.util.*
 
 /**
+ * 自定义提示控件
  * Created by Shao on 2017/9/24.
  */
 class CTNote(private val context: Context) : PopupWindow(context) {
@@ -43,7 +44,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
             return INSTANCE?.get()!!
         }
     }
-
+    private var mPlayer:AudioPlayer?=null
     private var view: View? = null
     private var mTitle: TextView? = null
     private var mContent: TextView? = null
@@ -67,6 +68,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
             this.animationStyle = R.style.anim_ctnote
             this.width = ViewGroup.LayoutParams.WRAP_CONTENT
             this.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            mPlayer= AudioPlayer(context)
             if (view != null) {
                 mTitle = view!!.findViewById(R.id.txt_title_cnote)
                 mContent = view!!.findViewById(R.id.txt_note_cnote)
@@ -77,7 +79,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
             }
             mHandler = CtnoteHandler(this)
         } catch (e: Exception) {
-            println(e)
+            e.printStackTrace()
         }
         Title_Tips = context.resources.getString(R.string.tips)
         Title_Error = context.resources.getString(R.string.error)
@@ -96,13 +98,16 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         var background: Drawable = this.context.resources.getDrawable(R.drawable.ctnote_bg_green)
         when (level) {
             LEVEL_TIPS -> {
+
             }
             LEVEL_ERROR -> {
                 mTitle!!.text = Title_Error
+                mPlayer!!.playAudio(R.raw.wrong)
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_red)
             }
             LEVEL_WARNING -> {
                 mTitle!!.text = Title_Warning
+                mPlayer!!.playAudio(R.raw.warning)
                 background = this.context.resources.getDrawable(R.drawable.ctnote_bg_orange)
             }
             LEVEL_NOTIFY -> {
@@ -113,7 +118,7 @@ class CTNote(private val context: Context) : PopupWindow(context) {
         background.alpha = 180
         view!!.setBackgroundDrawable(background)
         if (this.isShowing) {
-            this.update()
+            return
         } else {
             //从上面弹出
             try {
@@ -125,7 +130,8 @@ class CTNote(private val context: Context) : PopupWindow(context) {
                     this.showAtLocation(rootview?.get(), android.view.Gravity.TOP, 0, 0)
                 }
             } catch (e: Exception) {
-                println(e)
+
+                e.printStackTrace()
             }
         }
         if (!isRunning) {

@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,17 +59,14 @@ class SettingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            mParam1 = arguments!!.getString(ARG_PARAM1)
+            mParam2 = arguments!!.getString(ARG_PARAM2)
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-    @SuppressLint("CommitPrefEdits")
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        return inflater!!.inflate(R.layout.fragment_setting, container, false)
+        return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -76,7 +74,7 @@ class SettingFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 2) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                pic_stucard.performClick()
+                rootview!!.showMessage("Permission Granted")
             } else {
                 rootview!!.showMessage("请重新配置SD卡权限！", CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
             }
@@ -91,9 +89,8 @@ class SettingFragment : Fragment() {
                 }
             }
             CHANGE_SETTING->{
-                println("读取配置")
                 if(rootview!=null)
-                rootview!!.setNavigator(if(data!!.getBooleanExtra(SharedHelper.IS_SHOW_NAVI,true)) View.VISIBLE else View.INVISIBLE)
+                    rootview!!.setNavigator(if(data!!.getBooleanExtra(SharedHelper.IS_SHOW_NAVI,true)) View.VISIBLE else View.INVISIBLE)
 
             }
 
@@ -127,8 +124,9 @@ class SettingFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setting_title.typeface=GlobalVar.typeface
         btn_logout.setOnClickListener {
-            AlertDialog.Builder(parentContext).setTitle("退出").setMessage("注销并退出请点击确定！").setPositiveButton(context.getString(R.string.yes), { dialogInterface, i ->
+            AlertDialog.Builder(parentContext).setTitle("退出").setMessage("注销并退出请点击确定！").setPositiveButton(context!!.getString(R.string.yes), { _, i ->
                 TalkerProgressHelper.getInstance(parentContext!!).show("正在注销..")
                 val ed = SharedHelper.getInstance(parentContext!!).edit()
                 ed.putString(SharedHelper.KEY_EMAIL, "")
@@ -146,7 +144,7 @@ class SettingFragment : Fragment() {
             startActivity(intent)
         }
         btn_about.setOnClickListener {
-            AlertDialog.Builder(context).setTitle(context.getString(R.string.txt_about)).setMessage("CampusTalk小组作品，欢迎访问www.mrsgx.cn获取更多资讯").setNegativeButton(context.getString(R.string.quit), null).show()
+            AlertDialog.Builder(parentContext).setTitle(context!!.getString(R.string.txt_about)).setMessage("CampusTalk小组作品，欢迎访问www.mrsgx.cn获取更多资讯").setNegativeButton(context!!.getString(R.string.quit), null).show()
         }
         btn_settings.setOnClickListener {
             startActivityForResult(Intent(context,SettingActivity::class.java), CHANGE_SETTING)
@@ -158,7 +156,7 @@ class SettingFragment : Fragment() {
         }
         btn_change_headpic.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    && context!!.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 this.requestPermissions(kotlin.arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 2)
                 return@setOnClickListener
             }
@@ -170,7 +168,6 @@ class SettingFragment : Fragment() {
             try {
                 imageFile.createNewFile()
             } catch (e: Exception) {
-                println(e)
             }
 
             //转换成Uri

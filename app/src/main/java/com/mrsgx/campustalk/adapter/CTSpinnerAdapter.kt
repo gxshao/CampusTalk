@@ -2,7 +2,7 @@ package com.mrsgx.campustalk.adapter
 
 import android.content.Context
 import android.database.DataSetObserver
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SpinnerAdapter
@@ -70,8 +70,10 @@ class CTSpinnerAdapter(private val context: Context, private val mListData: Arra
         {
             TextView(context)
         }
+        txt!!.gravity=Gravity.CENTER_HORIZONTAL
+        txt.setPadding(10,2,10,2)
         val map = mListData[p]
-        txt!!.text = map["key2"].toString()
+        txt.text = map["key2"].toString()
         txt.tag = map["key1"].toString()
         mListView.add(txt)
         return txt

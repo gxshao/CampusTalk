@@ -27,12 +27,12 @@ import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.ChatAdapter
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
-import com.mrsgx.campustalk.data.GlobalVar.Companion.TYPEFACE_HUAKANG
 import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.interfaces.OnAudioRecoredStatusListener
 import com.mrsgx.campustalk.obj.CTUser
-import com.mrsgx.campustalk.utils.AudioRecoredUtils
+import com.mrsgx.campustalk.utils.AudioPlayer
+import com.mrsgx.campustalk.utils.AudioRecorder
 import com.mrsgx.campustalk.utils.Utils
 import com.mrsgx.campustalk.widget.CTNote
 import com.mrsgx.campustalk.widget.CTProfileCard
@@ -91,17 +91,18 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     private var chatpresenter: ChatContract.Prensenter? = null
     private lateinit var mAdapter: ChatAdapter
     private var mMatchingState: Int = 0
-    private var mAudioRecorder: AudioRecoredUtils? = null
+    private var mAudioRecorder: AudioRecorder? = null
+    private var mAudioPlayer: AudioPlayer? = null
     private var mChatToolWindow: PopupWindow? = null
     private var mChatLogPath: String = ""
-    private val bounce_anim:Animation by lazy{
+    private val bounce_anim: Animation by lazy {
         AnimationUtils.loadAnimation(applicationContext, R.anim.matching_bounce)
     }
     private val mAudioPlaerListener = View.OnClickListener { view ->
         val tag = view.tag
         if (tag != null) {
             val path = tag as String
-            mAudioRecorder!!.playAudio(path)
+            mAudioPlayer!!.playAudio(path)
         }
     }
     private val mHeadPicClickListener = View.OnClickListener { view ->
@@ -204,7 +205,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
                     imagepath = Utils.compressImage(imagepath!!, this)
                     //压缩图片到新的路径
                     mHand.postDelayed({
-                        println("新的图片地址" + imagepath)
+
                         mAdapter.addMyMsg(imagepath!!, ChatAdapter.MSG_TYPE_IMGAE)
                         chatpresenter!!.sendImageMsg(Utils.encodeBase64File(imagepath!!))
 
@@ -290,8 +291,9 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         chatpresenter = ChatPrensenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
 
         mChatLogPath = "" + Environment.getExternalStorageDirectory() + GlobalVar.LOCAL_DIRECTORY + GlobalVar.LOCAL_USER!!.Uid + "/" //当前用户音频缓存目录
-         mAudioRecorder = AudioRecoredUtils(mChatLogPath)
-         mAudioRecorder!!.audioStatusListener = this
+        mAudioRecorder = AudioRecorder(mChatLogPath)
+        mAudioPlayer = AudioPlayer(this)
+        mAudioRecorder!!.audioStatusListener = this
         this.actionBar.hide()
         initViews()
         //发出匹配请求
@@ -386,6 +388,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
         return super.onKeyDown(keyCode, event)
     }
+
     override fun initViews() {
         mChatToolWindow = PopupWindow(this)
         val chattoolview = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)
@@ -414,7 +417,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             try {
                 imageFile.createNewFile()
             } catch (e: Exception) {
-                println(e)
+
             }
 
             //转换成Uri
@@ -438,7 +441,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             Toast.makeText(this, "别急铁子，表情功能马上上线", Toast.LENGTH_SHORT).show()
         }
         bounce_anim.setAnimationListener(mAnim_bounce)
-        txt_matching.typeface = TYPEFACE_HUAKANG
+        txt_matching.typeface = GlobalVar.typeface
         txt_matching.startAnimation(bounce_anim)
         val rotate_anim = AnimationUtils.loadAnimation(this, R.anim.btn_more_rotate)
         mAdapter = ChatAdapter()
@@ -568,7 +571,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     override fun Close() {
         //退出匹配 发出空闲状态
         if (chatpresenter != null) {
-            println("当前状态" + mMatchingState)
             when (mMatchingState) {
                 0 -> {//空闲
 
@@ -590,7 +592,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
         if (mChatToolWindow != null) {
             mChatToolWindow!!.dismiss()
-            mChatToolWindow!!.contentView=null
+            mChatToolWindow!!.contentView = null
         }
         if (mProfileDialog != null) {
             mProfileDialog!!.dismiss()
@@ -612,11 +614,12 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
         }
         chatpresenter = null
         mView = null
-        if (mAudioRecorder != null) {
-            mAudioRecorder!!.stopPlayAudio()
+        if (mAudioRecorder != null)
             mAudioRecorder!!.stopRecord()
-        }
+        if (mAudioPlayer != null)
+            mAudioPlayer!!.stopPlayAudio()
         mAudioRecorder = null
+        mAudioPlayer = null
         System.gc()
         super.onDestroy()
     }

@@ -140,7 +140,8 @@ class Utils {
                 mediaPlayer.setDataSource(fis.fd)
                 mediaPlayer.prepare()
             } catch (e: Exception) {
-                println(e)
+
+                e.printStackTrace()
             }
 
             return mediaPlayer.duration
@@ -173,9 +174,6 @@ class Utils {
                 inputFile.read(buffer)
                 inputFile.close()
                 result = NativeUtils().encode(buffer)
-                println("图片大小："+result.length)
-            } else {
-                println("图片不存在" + result)
             }
             return result
         }
@@ -196,7 +194,7 @@ class Utils {
                 out.close()
                 out.flush()
             } catch (e: Exception) {
-                println(e)
+                e.printStackTrace()
             }
         }
 

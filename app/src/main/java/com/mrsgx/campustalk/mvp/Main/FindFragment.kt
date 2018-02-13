@@ -51,15 +51,14 @@ class FindFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            mParam1 = arguments!!.getString(ARG_PARAM1)
+            mParam2 = arguments!!.getString(ARG_PARAM2)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the people_list_layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_find, container, false)
+        return inflater.inflate(R.layout.fragment_find, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -126,8 +125,8 @@ class FindFragment : Fragment() {
     }
 
     private fun initViews() {
-        val typeFace = Typeface.createFromAsset(context.assets, "fonts/myfonts.ttf")
-        fint_title.typeface = typeFace
+
+        fint_title.typeface = GlobalVar.typeface
         mDatePicker = DatePickerDialog(context, R.style.ThemeDialog, mOnDateSelected, 0, 0, 0)
         mDatePicker.datePicker.minDate = System.currentTimeMillis() - ALLOW_FIND_DAY
         mDatePicker.datePicker.maxDate = System.currentTimeMillis()

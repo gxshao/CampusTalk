@@ -1,6 +1,5 @@
 package com.mrsgx.campustalk.mvp.Main
 
-import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
@@ -36,6 +35,7 @@ import com.mrsgx.campustalk.widget.MainViewPagerTransform
 import com.zsoft.signala.ConnectionState
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.ref.WeakReference
+
 
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
         , FollowFragment.OnFragmentInteractionListener, FindFragment.OnFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener {
@@ -123,7 +123,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             }
             mMatchFrag!!.setNetworkStateIcon(state)
             mHand.postDelayed({ CTConnection.getInstance(this).Start() }, RECONNECT_INTERVAL)
-            println("收到断开信息")
             mCONN_SERVICE_STATE = state
         }
 
@@ -168,7 +167,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     var viewpagerAdapter: FragAdapter? = null
     private var mProfileDialog: CTProfileCard? = null
     private lateinit var mHand: MainHandler
-    @SuppressLint("InflateParams")
     override fun initViews() {
         /**
          * 登录信息校验
@@ -177,17 +175,21 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         if (GlobalVar.LOCAL_USER == null) {
             GlobalVar.LOCAL_USER = DB.getInstance(this).getLocalUser(SharedHelper.getInstance(this).getString(SharedHelper.KEY_EMAIL, ""))
         }
-        mAlertDailog = AlertDialog.Builder(this).setTitle("访问受限").setCancelable(false).setMessage("您尚未进行学生认证，点击确定完善资料,取消则退出应用").setPositiveButton("确定") { p0, p1 ->
+        mAlertDailog = AlertDialog.Builder(this).setTitle("访问受限").setCancelable(false).setMessage(getString(R.string.unregister_stucard)).setPositiveButton("确定") { p0, p1 ->
             startNewPage(ProfileActivity::class.java)
         }.setNegativeButton("取消", { p, v ->
             Close()
         }).create()
         rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
         if (GlobalVar.LOCAL_USER!!.State == GlobalVar.USER_STATE_WAITING) {
-            AlertDialog.Builder(this).setTitle("提示").setMessage("您当前账户待核验，请您随时关注账户状态。").setPositiveButton("退出", { dialogInterface, i ->
+            AlertDialog.Builder(this).setTitle("提示").setMessage(getString(R.string.waiting_for_auth)).setCancelable(false).setPositiveButton("退出", { dialogInterface, i ->
                 this.Close()
             }).setCancelable(false).show()
         }
+        //毛玻璃原始状态初始化
+//        front_glass.isDrawingCacheEnabled=true
+//        maskImage= Bitmap.createBitmap(front_glass.drawingCache)
+//        front_glass.isDrawingCacheEnabled=false
         /**
          * 初始化fragment
          *
@@ -280,7 +282,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             radio_follow.setCompoundDrawables(null, icon_follow, null, null)
             radio_setting.setCompoundDrawables(null, icon_my, null, null)
         } else {
-            Toast.makeText(this,"版本过低..",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,getString(R.string.lower_version),Toast.LENGTH_SHORT).show()
         }
         if (DB.getInstance(this).getUserState(GlobalVar.LOCAL_USER!!.Uid) == GlobalVar.USER_STATE_UNATH) {
             //跳转到资料页面弹出资料修改
@@ -344,19 +346,15 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
      *            屏幕透明度0.0-1.0 1表示完全不透明
      */
     fun setBackgroundAlpha(bgAlpha: Float) {
-        val lp = (this).window.attributes;
+        val lp = (this).window.attributes
         lp.alpha = bgAlpha
         (this).window.attributes = lp
-    }
-
-    override fun onAttachFragment(fragment: Fragment?) {
-        super.onAttachFragment(fragment)
     }
 
 
     override fun onResume() {
         if (GlobalVar.LOCAL_USER == null) {
-            showMessage("登录状态异常，请您重新登录", CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
+            showMessage(getString(R.string.login_failed_unknow), CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
             mHand.postDelayed({
                 val msg = mHand.obtainMessage()
                 msg.what = 1
@@ -412,7 +410,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
             val x = e2!!.x - e1!!.x
-            val y = e2.y - e1.y
 
             if (x > 0 && !mNaviState) {
                 btn_img_navi_switch.performClick()
@@ -455,10 +452,17 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             parm.marginStart = this.resources.getDimension(R.dimen.hide_navibar_width).toInt()
             radio_navi.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.navi_sub_hide)
             radio_navi.startLayoutAnimation()
+            front_glass.alpha=0.2f
+            front_glass.isClickable=false
+            front_glass.invalidate()
         } else {
             parm.marginStart = 0
             radio_navi.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.navi_sub_show)
             radio_navi.startLayoutAnimation()
+            //毛玻璃
+           front_glass.alpha=0.5f
+            front_glass.isClickable=true
+            front_glass.invalidate()
         }
         ani.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {
@@ -475,6 +479,8 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         })
         frgbar.layoutParams = parm
         frgbar.startAnimation(ani)
+
+
     }
 //动画区}
 
@@ -484,6 +490,27 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     }
 
+    private var exitTime: Long = 0// 退出时间
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        // TODO 按两次返回键退出应用程序
+        if (keyCode == KeyEvent.KEYCODE_BACK &&event.repeatCount==0) {
+            // 判断间隔时间 大于2秒就退出应用
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                // 应用名
+                val applicationName = resources.getString(
+                        R.string.app_name)
+                val msg = "再按一次返回键退出" + applicationName
+                //String msg1 = "再按一次返回键回到桌面";
+                showMessage(msg)
+                // 计算两次返回键按下的时间差
+                exitTime = System.currentTimeMillis()
+            } else {
+                finish()
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
     override fun onStop() {
         CTNote.getInstance(this, rootView!!).hide()
         super.onStop()

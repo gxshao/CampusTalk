@@ -61,7 +61,6 @@ class FindActivity : Activity(),FindContract.View {
         if(marks.size<=0){
             return
         }
-        println(marks.size)
         for(temp in marks){
             addMarker(temp)
         }
@@ -142,14 +141,13 @@ class FindActivity : Activity(),FindContract.View {
             TalkerProgressHelper.getInstance(context).show("正在加载附近的人..")
             if(bundle!=null){
                     findchatpresenter.getUserListByLoc(bundle.getParcelable("markLoc"))
-            }else
-            {
-                println("传递数据为空")
             }
               true
         }
 
-        this.actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.actionbar_head))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.actionbar_head))
+        }
         this.actionBar.title="时光机"
         this.actionBar.setDisplayUseLogoEnabled(false)
         this.actionBar.setDisplayHomeAsUpEnabled(true)

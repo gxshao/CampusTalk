@@ -1,6 +1,5 @@
 package com.mrsgx.campustalk.mvp.Regesiter
 
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.ActivityOptions
@@ -11,13 +10,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.annotation.RequiresApi
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
-import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.Toast
 import com.mrsgx.campustalk.R
@@ -111,7 +108,6 @@ class RegisterActivity : Activity(), RegisterContract.View {
                 mSchoolList = ArrayList()
             }
             val schools = DB.getInstance(context!!).querySchoolByAreaCode(userAreaCode!!)
-            println(schools.size)
             for (school in schools) {
                 val map = HashMap<String, String>()
                 map.put("key1", school.SCode)
@@ -141,7 +137,6 @@ class RegisterActivity : Activity(), RegisterContract.View {
                         presenter!!.CheckEmail(email)
                     else
                         presenter!!.IS_EMAIL_AVILIABLE = false
-                    println("正表达式"+RegMatchs.MatchEmail(email))
                 }
             }
         }
@@ -236,7 +231,9 @@ class RegisterActivity : Activity(), RegisterContract.View {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        }
         setContentView(R.layout.activity_regesiter)
         mHand= RegisterHandler(this)
         initViews()

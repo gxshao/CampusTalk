@@ -113,14 +113,13 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
                             view.showMessage(context.getString(R.string.start_match_failed))
                             view.Close()
                         }
-                        println("匹配结果:"+value.Body!!)
+
                     }
 
                     override fun onError(e: Throwable?) {
                         view.setCurrentState(0)
                         view.showMessage(context.getString(R.string.start_match_failed))
                         view.Close()
-                        println("匹配遇到错误"+e)
                     }
 
                     override fun onComplete() {
@@ -205,7 +204,6 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
 
     private val compositeDisposable=CompositeDisposable()
     override fun getPartnerInfo(uid: String){
-        println(uid)
         val disposable = workerRepository.GetUserInfoById(uid).observeOn(AndroidSchedulers.mainThread()!!)
                 .subscribeOn(Schedulers.io()!!)
                 .subscribeWith(object : DisposableObserver<ResponseResult<CTUser>>() {
@@ -214,7 +212,7 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
                     }
 
                     override fun onError(e: Throwable?) {
-                        println("获取对方资料失败！"+e!!.message)
+
                        view.setPartner(CTUser())
                         getPartnerInfo(uid)
                     }

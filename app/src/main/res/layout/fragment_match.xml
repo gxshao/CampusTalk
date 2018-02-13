@@ -8,10 +8,6 @@
 
     <!-- TODO: Update blank fragmpeople_list_layoutyout -->
     <RelativeLayout
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,41 +15,34 @@
             android:id="@+id/net_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:paddingStart="@dimen/dp_10"
+            android:background="@drawable/follow_bar"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/dp_20"
-            android:paddingRight="@dimen/dp_20"
-            android:paddingTop="@dimen/dp_20">
+            tools:ignore="RtlSymmetry">
 
             <TextView
-
+                android:id="@+id/txt_net_state_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:alpha="1"
+                android:textColor="@android:color/white"
                 android:text="@string/tips_network_state"
-                android:textSize="@dimen/contentSize" />
+                android:textSize="@dimen/middle_txt" />
 
             <View
                 android:id="@+id/icon_net_state"
                 android:layout_width="@dimen/contentSize"
                 android:layout_height="@dimen/contentSize"
+                android:layout_marginStart="@dimen/dp_5"
                 android:layout_gravity="center_vertical"
                 android:background="@mipmap/wifi_disconnect"
                  />
         </LinearLayout>
-        <TextView
-            android:id="@+id/match_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/net_state"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="46dp"
-            android:alpha="1"
-            android:text="@string/txt_matching"
-            android:textSize="@dimen/middle_txt" />
+
         <Button
             android:id="@+id/btn_start_match"
             android:layout_width="@dimen/big_button"

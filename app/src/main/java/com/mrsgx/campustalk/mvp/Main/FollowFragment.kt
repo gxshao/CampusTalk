@@ -51,15 +51,14 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            mParam1 = arguments!!.getString(ARG_PARAM1)
+            mParam2 = arguments!!.getString(ARG_PARAM2)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the people_list_layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_follow, container, false)
+        return inflater.inflate(R.layout.fragment_follow, container, false)
     }
 
     val mArray = ArrayList<CTUser>()
@@ -71,7 +70,7 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
     @SuppressLint("ResourceAsColor")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        follow_title.typeface=GlobalVar.TYPEFACE_HUAKANG
+        follow_title.typeface= GlobalVar.typeface
         layoutManager = LinearLayoutManager(context)
         mAdataper = FollowAdapter(mArray)
         mAdataper!!.mUnfollowListener = btnListener
@@ -106,7 +105,6 @@ class FollowFragment : Fragment(), RecyclerViewClickListener {
                 RecyclerView.SCROLL_STATE_DRAGGING -> {
                     synchronized(this) {
                         val lvip = layoutManager!!.findLastVisibleItemPosition()
-                        println(lvip)
                         if (lvip + 1 == mAdataper!!.itemCount) {
                             if (swipe_refresh.isRefreshing) {
                                 mAdataper!!.notifyItemRemoved(mAdataper!!.itemCount)

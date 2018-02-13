@@ -26,17 +26,29 @@
         android:paddingRight="10dp"
         android:paddingStart="10dp"
         android:paddingTop="@dimen/small_distance"
-        tools:ignore="RtlSymmetry">
+        tools:ignore="RtlHardcoded,RtlSymmetry">
 
     </android.support.v4.view.ViewPager>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/front_glass"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/white"
 
+            android:alpha="0.2" />
+    </FrameLayout>
     <FrameLayout
         android:id="@+id/frg_navibar"
         android:layout_width="@dimen/navibar_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/hide_navibar_width"
         android:layout_marginStart="@dimen/hide_navibar_width"
-       >
+        tools:ignore="RtlHardcoded">
 
 
         <LinearLayout
@@ -68,7 +80,7 @@
                         android:button="@null"
                         android:text="@string/match"
                         android:textAlignment="center"
-                        android:textSize="@dimen/contentSize" />
+                        android:textSize="@dimen/middle_txt" />
 
                     <RadioButton
                         android:id="@+id/radio_find"
@@ -78,7 +90,7 @@
                         android:drawableTop="@mipmap/icon_find"
                         android:text="@string/find"
                         android:textAlignment="center"
-                        android:textSize="@dimen/contentSize" />
+                        android:textSize="@dimen/middle_txt" />
 
                     <RadioButton
                         android:id="@+id/radio_follow"
@@ -88,7 +100,7 @@
                         android:drawableTop="@mipmap/follow"
                         android:text="@string/follow"
                         android:textAlignment="center"
-                        android:textSize="@dimen/contentSize" />
+                        android:textSize="@dimen/middle_txt" />
 
                     <RadioButton
                         android:id="@+id/radio_setting"
@@ -98,7 +110,7 @@
                         android:drawableTop="@mipmap/icon_my"
                         android:text="@string/settings"
                         android:textAlignment="center"
-                        android:textSize="@dimen/contentSize" />
+                        android:textSize="@dimen/middle_txt" />
                 </RadioGroup>
             </ScrollView>
 
@@ -125,5 +137,6 @@
         </LinearLayout>
 
     </FrameLayout>
+
 
 </RelativeLayout>

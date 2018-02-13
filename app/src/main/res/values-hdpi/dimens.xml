@@ -19,7 +19,7 @@
     <dimen name="btn_text_size">15sp</dimen>
     <dimen name="edit_width">250dp</dimen>
     <dimen name="edit_height">50dp</dimen>
-    <dimen name="small_pic">40dp</dimen>
+    <dimen name="small_pic">30dp</dimen>
     <dimen name="middle_pic">60dp</dimen>
     <dimen name="tiny_pic">20dp</dimen>
     <dimen name="small_txt">10sp</dimen>

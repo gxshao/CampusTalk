@@ -12,7 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/setting_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_10"
+            android:text="@string/personal_center"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:background="@drawable/follow_bar"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/middle_txt" />
         <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/shape_big_headpic"
@@ -132,7 +142,8 @@
                     android:layout_marginStart="@dimen/dp_6"
                     android:layout_weight="1"
                     android:text="@string/txt_changeprofile"
-                    android:textSize="@dimen/middle_txt" />
+                    android:textSize="@dimen/middle_txt"
+                    tools:ignore="RtlHardcoded" />
             </LinearLayout>
 
             <View
