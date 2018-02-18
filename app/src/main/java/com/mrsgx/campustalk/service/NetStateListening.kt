@@ -12,6 +12,7 @@ import com.zsoft.signala.transport.StateBase
 import java.sql.Connection
 
 /**
+ * 网络状态的广播接收者
  * Created by Shao on 2017/9/20.
  */
 

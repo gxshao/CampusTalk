@@ -49,13 +49,13 @@
             android:value="qGBTwwFqlEKC561TGfO22V4K4eX57h8n" />
 
         <activity
-            android:name=".mvp.Main.MainActivity"
+            android:name=".mvp.main.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/SplashTheme">
 
         </activity>
         <activity
-            android:name=".mvp.Welcome.WelcomeActivity"
+            android:name=".mvp.welcome.WelcomeActivity"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -75,10 +75,10 @@
             android:process=":remote" />
 
         <activity
-            android:name=".mvp.Login.LoginActivity"
+            android:name=".mvp.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.Regesiter.RegisterActivity"
+            android:name=".mvp.register.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- BroadCastReceiver -->
         <receiver android:name=".service.NetStateListening">
@@ -89,20 +89,20 @@
         </receiver>
 
         <activity
-            android:name=".mvp.Chat.ChatActivity"
-            android:launchMode="singleTask"
+            android:name=".mvp.chat.ChatActivity"
+            android:launchMode="standard"
             android:theme="@style/AppTheme.FadeTransition">
 
 
         </activity>
         <activity
-            android:name=".mvp.Find.FindActivity"
+            android:name=".mvp.find.FindActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.FadeTransition">
 
         </activity>
-        <activity android:name=".mvp.Profile.ProfileActivity" />
-        <activity android:name=".mvp.Setting.SettingActivity"></activity>
+        <activity android:name=".mvp.profile.ProfileActivity" />
+        <activity android:name=".mvp.setting.SettingActivity" />
     </application>
 
 </manifest>

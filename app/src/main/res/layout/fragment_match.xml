@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/match_fragment_shape"
-    tools:context="com.mrsgx.campustalk.mvp.Main.MatchFragment">
+    tools:context="com.mrsgx.campustalk.mvp.main.MatchFragment">
 
     <!-- TODO: Update blank fragmpeople_list_layoutyout -->
     <RelativeLayout

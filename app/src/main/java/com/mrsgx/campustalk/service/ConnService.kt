@@ -3,6 +3,7 @@ package com.mrsgx.campustalk.service
 import android.Manifest
 import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
@@ -14,8 +15,8 @@ import com.baidu.location.LocationClientOption
 import com.google.gson.Gson
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.UPLOAD_SPAN
-import com.mrsgx.campustalk.data.Local.DB
-import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
+import com.mrsgx.campustalk.data.local.DB
+import com.mrsgx.campustalk.data.remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.ResponseResult
 import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.obj.CTLocation
@@ -25,6 +26,7 @@ import io.reactivex.schedulers.Schedulers
 
 
 class ConnService : Service() {
+    private val netStateListening=NetStateListening()
     private val mLocationClient: LocationClient by lazy {
         LocationClient(applicationContext).apply {
             registerLocationListener(myListener)
@@ -159,7 +161,11 @@ class ConnService : Service() {
     }
 
     override fun onCreate() {
-        CTConnection.getInstance(this).Start()
+        val intentFilter=IntentFilter()
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        intentFilter.addAction("campustalk.disconnectSignalR")
+        registerReceiver(netStateListening,intentFilter)
+        CTConnection.getInstance(applicationContext).Start()
         //声明LocationClient类
         initLocation()
         mLocationClient.start()
@@ -174,6 +180,7 @@ class ConnService : Service() {
     override fun onDestroy() {
         IS_UPLOAD=false
         mLocationClient.stop()
+        unregisterReceiver(netStateListening)
         super.onDestroy()
     }
     //初始化百度位置信息

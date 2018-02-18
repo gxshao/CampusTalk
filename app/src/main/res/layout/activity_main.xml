@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mrsgx.campustalk.mvp.Main.MainActivity">
+    tools:context="com.mrsgx.campustalk.mvp.main.MainActivity">
 
     <com.mrsgx.campustalk.widget.ColorAnimationView
         android:id="@+id/colorAnimationView"
@@ -38,9 +38,8 @@
             android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@android:color/white"
-
-            android:alpha="0.2" />
+            android:src="@android:color/darker_gray"
+            android:alpha="0" />
     </FrameLayout>
     <FrameLayout
         android:id="@+id/frg_navibar"

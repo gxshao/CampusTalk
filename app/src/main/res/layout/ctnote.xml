@@ -42,7 +42,7 @@
         android:layout_marginBottom="5dp"
         android:maxLines="5"
         android:text="TextView"
-        android:textSize="@dimen/contentSize"
+        android:textSize="@dimen/middle_txt"
         android:layout_marginStart="8dp" />
 
 </RelativeLayout>

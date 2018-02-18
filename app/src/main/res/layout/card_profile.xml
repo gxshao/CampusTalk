@@ -34,6 +34,7 @@
                     android:id="@+id/pic_card_headpic"
                     android:layout_width="@dimen/middle_pic"
                     android:layout_height="@dimen/middle_pic"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/headpic" />
                 <LinearLayout
                     android:orientation="vertical"

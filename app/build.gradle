@@ -16,7 +16,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-frtti -fexceptions"
-                abiFilters "armeabi","armeabi-v7a","x86","arm64-v8a","x86_64"
+                abiFilters "armeabi", "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             }
         }
     }
@@ -36,7 +36,7 @@ android {
             path "CMakeLists.txt"
         }
     }
-    lintOptions{
+    lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
@@ -71,9 +71,10 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     implementation 'com.android.support:recyclerview-v7:27.0.2'
     implementation 'org.json:org.json:chargebee-1.0'
-    implementation 'com.github.erizet.signala:signala:0.20'
-    implementation 'com.github.erizet.signala:signala-longpolling:0.20'
-    implementation 'com.github.erizet.signala:parallel-basic-http-client:0.20'
+
+    compile files('libs/SignalA.aar')
+    compile files('libs/SignalA.LongPolling.aar')
+    compile files('libs/parallel-basic-http-client.aar')
     compile 'com.hanks:htextview-scale:0.1.1'
     compile 'com.hanks:htextview-base:0.1.1'
     implementation 'com.github.snowdream.android:smartimageview:0.0.2'

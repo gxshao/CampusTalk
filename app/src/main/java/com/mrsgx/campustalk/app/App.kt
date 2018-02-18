@@ -4,7 +4,7 @@ import android.app.Application
 import android.graphics.Typeface
 import com.baidu.mapapi.SDKInitializer
 import com.mrsgx.campustalk.data.GlobalVar
-import com.mrsgx.campustalk.data.Local.DB
+import com.mrsgx.campustalk.data.local.DB
 
 /**
  * Created by Shao on 2017/9/29.

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/dp_20"
     android:paddingLeft="@dimen/dp_20"
     android:paddingTop="@dimen/dp_20"
-    tools:context="com.mrsgx.campustalk.mvp.Setting.SettingActivity">
+    tools:context="com.mrsgx.campustalk.mvp.setting.SettingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:background="@drawable/follow_fragment_shape"
-        tools:context="com.mrsgx.campustalk.mvp.Main.FollowFragment"
+        tools:context="com.mrsgx.campustalk.mvp.main.FollowFragment"
         android:layout_height="match_parent"
         android:orientation="vertical">
 

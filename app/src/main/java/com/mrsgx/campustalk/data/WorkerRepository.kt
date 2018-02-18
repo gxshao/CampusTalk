@@ -1,11 +1,9 @@
 package com.mrsgx.campustalk.data
 
-import com.mrsgx.campustalk.data.Remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.obj.CTLocation
 import com.mrsgx.campustalk.obj.CTUser
 import io.reactivex.Observable
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 /**
  * Created by Shao on 2017/9/14.

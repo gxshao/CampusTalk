@@ -9,7 +9,7 @@
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:paddingTop="@dimen/dp_10"
-    tools:context="com.mrsgx.campustalk.mvp.Profile.ProfileActivity">
+    tools:context="com.mrsgx.campustalk.mvp.profile.ProfileActivity">
 
 
     <LinearLayout

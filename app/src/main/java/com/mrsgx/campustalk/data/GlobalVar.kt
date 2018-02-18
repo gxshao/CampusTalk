@@ -10,8 +10,8 @@ import java.lang.reflect.Type
  */
 class GlobalVar {
     companion object {
-       //const val IP="192.168.2.125"
-        const val IP="mrsgx.cn"
+       const val IP="192.168.1.105:13614"
+       // const val IP="mrsgx.cn"
         val SERVER_URL= "http://$IP/MyConnection"
         var LOCAL_USER:CTUser?=CTUser()
         val LOCAL_DIRECTORY="/campustalk/"
@@ -29,6 +29,8 @@ class GlobalVar {
         val UPLOAD_SPAN=180000L //半小时上传一次
         val ACTION_FOLLOW="1"//关注
         val ACTION_UNFOLLOW="0" //取消关注
+
+     //REQUESTCODE
         val CHOOSE_PHOTO: Int = 1
         val CHANGE_SETTING:Int=2
      val SELECT_TIME_RANGE: String="select_time"

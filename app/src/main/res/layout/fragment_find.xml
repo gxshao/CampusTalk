@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/find_fragment_shape"
-    tools:context="com.mrsgx.campustalk.mvp.Main.FindFragment"
+    tools:context="com.mrsgx.campustalk.mvp.main.FindFragment"
     tools:ignore="RtlSymmetry">
 
     <!-- TODO: Update blank fragmpeople_list_layoutyout -->
@@ -47,7 +47,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp_10"
-                android:text="@string/find_introduction" />
+                android:text="@string/find_introduction"
+                android:textAlignment="center"
+                android:textColor="@color/chat_actionbar" />
 
             <View
 
@@ -68,7 +70,8 @@
                     android:layout_weight="1.5"
                     android:gravity="center_horizontal"
                     android:text="@string/date"
-                    android:textAlignment="gravity" />
+                    android:textAlignment="gravity"
+                    android:textColor="@color/chat_actionbar" />
 
                 <View
                     android:layout_width="1dp"
@@ -92,6 +95,7 @@
                     android:paddingLeft="2dp"
                     android:paddingStart="2dp"
                     android:paddingTop="@dimen/dp_6"
+                    android:textSize="@dimen/middle_txt"
                     tools:ignore="TextFields" />
 
             </LinearLayout>
@@ -113,7 +117,8 @@
                     android:layout_weight="1.5"
                     android:gravity="center_horizontal"
                     android:text="@string/begain_time"
-                    android:textAlignment="gravity" />
+                    android:textAlignment="gravity"
+                    android:textColor="@color/chat_actionbar" />
 
                 <View
                     android:layout_width="1dp"
@@ -136,7 +141,9 @@
                     android:paddingBottom="@dimen/dp_6"
                     android:paddingLeft="2dp"
                     android:paddingStart="2dp"
-                    android:paddingTop="@dimen/dp_6" />
+                    android:paddingTop="@dimen/dp_6"
+                    android:textSize="@dimen/middle_txt"
+                    tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
 
@@ -157,7 +164,8 @@
                     android:layout_weight="1.5"
                     android:gravity="center_horizontal"
                     android:text="@string/end_time"
-                    android:textAlignment="gravity" />
+                    android:textAlignment="gravity"
+                    android:textColor="@color/chat_actionbar" />
 
                 <View
                     android:layout_width="1dp"
@@ -180,7 +188,8 @@
                     android:paddingBottom="@dimen/dp_6"
                     android:paddingLeft="2dp"
                     android:paddingStart="2dp"
-                    android:paddingTop="@dimen/dp_6" />
+                    android:paddingTop="@dimen/dp_6"
+                    android:textSize="@dimen/middle_txt" />
 
             </LinearLayout>
 
@@ -206,7 +215,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_common_style"
                 android:text="@string/start_find"
-                android:textColor="@android:color/white" />
+                android:clickable="false"
+                android:enabled="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/middle_txt" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

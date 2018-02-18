@@ -1,7 +1,9 @@
 package com.mrsgx.campustalk.service;
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.widget.TableRow
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mrsgx.campustalk.data.GlobalVar
@@ -25,11 +27,12 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
 
     var mChatListener: ChatInterfaces?=null
     companion object {
-        private var mConn: WeakReference<CTConnection>?=null
+        @SuppressLint("StaticFieldLeak")
+        private var mConn: CTConnection?=null
         fun getInstance(context: Context?): CTConnection {
-            if(mConn==null|| mConn!!.get()==null)
-                mConn = WeakReference(CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport()))
-            return mConn?.get()!!
+            if(mConn==null)
+                mConn = CTConnection(GlobalVar.SERVER_URL, context,LongPollingTransport() )
+            return mConn!!
         }
     }
 
@@ -74,8 +77,16 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         }
         super.OnMessage(message)
     }
-
+    var isReconnected=false
     override fun OnStateChanged(oldState: StateBase?, newState: StateBase?) {
+
+        val reconnection= Runnable {
+            if(!isReconnected){
+            Thread.sleep(2000)
+            CTConnection.getInstance(context).Start()
+            }
+        }
+        val th=Thread(reconnection)
 
         if(oldState!!.state!=newState!!.state)
         {
@@ -84,7 +95,9 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         intent.action = "campustalk.disconnectSignalR"
             when(newState.state){
                 ConnectionState.Connected->{
+                    isReconnected=true
                     intent.putExtra(GlobalVar.SIGNAL_STATE,true)
+                    context.sendBroadcast(intent)
                     val data=CTData<CTUser>()
                     data.DataType=CTData.DATATYPE_CONNECTED
                     data.Body=GlobalVar.LOCAL_USER
@@ -96,13 +109,19 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                         }
                     })
                 }
-                ConnectionState.Disconnected ->   intent.putExtra(GlobalVar.SIGNAL_STATE,false)
-                ConnectionState.Connecting ->{}
-                ConnectionState.Reconnecting -> {}
+                ConnectionState.Disconnected ->   {intent.putExtra(GlobalVar.SIGNAL_STATE,false)
+                    isReconnected=false
+                    th.start()
+                }
+                ConnectionState.Connecting ->{
+
+                }
+                ConnectionState.Reconnecting -> {
+
+                }
                 ConnectionState.Disconnecting -> {}
                 null->{}
             }
-        context.sendBroadcast(intent)
 
         }
         super.OnStateChanged(oldState, newState)

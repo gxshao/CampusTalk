@@ -9,6 +9,7 @@ import retrofit2.http.*
 
 
 /**
+ * Retrofit框架访问接口配置
  * Created by Shao on 2017/9/4.
  */
 interface RetrofitService {

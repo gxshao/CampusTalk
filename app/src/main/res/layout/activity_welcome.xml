@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/welcome_bg"
-    tools:context="com.mrsgx.campustalk.mvp.Welcome.WelcomeActivity">
+    tools:context="com.mrsgx.campustalk.mvp.welcome.WelcomeActivity">
 
 
     <TextView

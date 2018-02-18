@@ -65,7 +65,6 @@ class AudioRecorder constructor(var folderPath:String) {
             }
             mAudioFile = ""
         } catch (e: Exception) {
-            Log.e("结束录音", e.message)
             mMediaRecorder!!.reset()
             mMediaRecorder!!.release()
             mMediaRecorder = null

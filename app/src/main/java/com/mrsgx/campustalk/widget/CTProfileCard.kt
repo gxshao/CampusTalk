@@ -9,9 +9,11 @@ import com.github.snowdream.android.widget.SmartImageView
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.obj.CTUser
+import com.mrsgx.campustalk.retrofit.Api
 
 
 /**
+ * 资料卡
  * Created by Shao on 2017/10/9.
  */
 class CTProfileCard(context: Context, val rootView: View, widths: Int, heights: Int) : PopupWindow(LayoutInflater.from(context).inflate(R.layout.card_profile, null), widths, heights) {
@@ -38,7 +40,9 @@ class CTProfileCard(context: Context, val rootView: View, widths: Int, heights: 
         isClippingEnabled = false
         this.setBackgroundDrawable(android.graphics.drawable.BitmapDrawable())
         this.isOutsideTouchable = true
+        this.isTouchable=true
         this.isFocusable = true
+        this.animationStyle=R.style.Animation_AppCompat_DropDownUp
     }
 
     fun showUser(user: CTUser) {
@@ -48,7 +52,7 @@ class CTProfileCard(context: Context, val rootView: View, widths: Int, heights: 
         txt_schoolname!!.text=user.School!!.SName
         txt_userexplain!!.text=user.Userexplain
         txt_sex!!.text=if(user.Sex == GlobalVar.SEX_MAN) "男" else "女"
-        pic_headpic!!.setImageUrl(user.Headpic, Rect())
+        pic_headpic!!.setImageUrl(Api.API_HEADPIC_BASE+user.Headpic, Rect())
         showAtLocation(rootView, Gravity.BOTTOM, 0, 0)
     }
 
