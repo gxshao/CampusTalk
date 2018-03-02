@@ -2,7 +2,6 @@ package com.mrsgx.campustalk.mvp.register
 
 import android.annotation.TargetApi
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -134,7 +133,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
             kotlin.run {
                 if (!b) {
                     val email = view.ed_email.text.toString()
-                    if (email.isNotEmpty() && RegMatchs.MatchEmail(email))
+                    if (email.isNotEmpty() && RegMatchs.matchEmail(email))
                         presenter!!.CheckEmail(email)
                     else
                         presenter!!.IS_EMAIL_AVILIABLE = false

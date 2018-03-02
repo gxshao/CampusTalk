@@ -113,8 +113,9 @@ class LoginActivity : Activity(), LoginContract.View {
 
     override fun onDestroy() {
         STOP_TEXT_ANIM = true
+        if(loginpresenter!=null)
+            loginpresenter!!.compositeDisposable.dispose()
         loginpresenter = null
-        System.gc()
         super.onDestroy()
     }
 

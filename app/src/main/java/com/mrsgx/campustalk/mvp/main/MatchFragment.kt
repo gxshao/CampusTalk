@@ -76,15 +76,15 @@ class MatchFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val anim_match = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
-        anim_match.setAnimationListener(mAnim_bounce)
+        val animMatch = AnimationUtils.loadAnimation(context, R.anim.match_btn_flash)
+        animMatch.setAnimationListener(mAnimBounce)
         txt_net_state_tips.typeface = GlobalVar.typeface
-        btn_start_match.startAnimation(anim_match)
+        btn_start_match.startAnimation(animMatch)
         btn_start_match.setOnClickListener {
             try {
                 TalkerProgressHelper.getInstance(parentContext!!).show("正在准备匹配..")
                 mHand.postDelayed({
-                    startActivity(Intent(context, ChatActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+                    startActivity(Intent(context, ChatActivity::class.java))
                     mHand.sendMessage(mHand.obtainMessage())
                 }, 1500)
             }catch (e:Exception)
@@ -97,7 +97,7 @@ class MatchFragment : Fragment() {
 
     var rootview: MainContract.View? = null
     var parentContext: Context? = null
-    val mHand: Handler by lazy {
+    private val mHand: Handler by lazy {
         @SuppressLint("HandlerLeak")
         object : Handler() {
             override fun handleMessage(msg: Message?) {
@@ -106,16 +106,16 @@ class MatchFragment : Fragment() {
             }
         }
     }
-    private val mAnim_bounce = object : Animation.AnimationListener {
+    private val mAnimBounce = object : Animation.AnimationListener {
         override fun onAnimationRepeat(p0: Animation?) {
 
         }
 
         override fun onAnimationEnd(p0: Animation?) {
             if (parentContext != null) {
-                val bounce_anim = AnimationUtils.loadAnimation(parentContext, R.anim.match_btn_flash)
-                bounce_anim.setAnimationListener(this)
-                btn_start_match.startAnimation(bounce_anim)
+                val bounceAnim = AnimationUtils.loadAnimation(parentContext, R.anim.match_btn_flash)
+                bounceAnim.setAnimationListener(this)
+                btn_start_match.startAnimation(bounceAnim)
             }
         }
 

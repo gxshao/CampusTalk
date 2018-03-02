@@ -4,7 +4,6 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -16,7 +15,6 @@ import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
@@ -28,21 +26,17 @@ import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.adapter.ChatAdapter
 import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.data.GlobalVar.Companion.CHOOSE_PHOTO
-import com.mrsgx.campustalk.data.remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.data.WorkerRepository
-import com.mrsgx.campustalk.interfaces.NetEventManager
+import com.mrsgx.campustalk.data.remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.interfaces.OnAudioRecoredStatusListener
 import com.mrsgx.campustalk.obj.CTUser
-import com.mrsgx.campustalk.service.CTConnection
 import com.mrsgx.campustalk.utils.AudioPlayer
 import com.mrsgx.campustalk.utils.AudioRecorder
 import com.mrsgx.campustalk.utils.Utils
 import com.mrsgx.campustalk.widget.CTNote
 import com.mrsgx.campustalk.widget.CTProfileCard
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.File
-import java.lang.ref.WeakReference
 
 
 class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener {
@@ -321,8 +315,6 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        Log.e("sssssssssssssss","重新加载activity")
-
         super.onRestoreInstanceState(savedInstanceState)
     }
     //导入ActionBar
@@ -345,7 +337,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
      * @param bgAlpha
      *            屏幕透明度0.0-1.0 1表示完全不透明
      */
-    fun setBackgroundAlpha(bgAlpha: Float) {
+    private fun setBackgroundAlpha(bgAlpha: Float) {
         val lp = (this).window.attributes
         lp.alpha = bgAlpha
         (this).window.attributes = lp
@@ -417,17 +409,22 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
 
     override fun initViews() {
         mChatToolWindow = PopupWindow(this)
-        val chattoolview = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)
-        mChatToolWindow!!.contentView = chattoolview
+        val chatToolView = LayoutInflater.from(this).inflate(R.layout.chat_tools_layout, null)
+        mChatToolWindow!!.contentView = chatToolView
         mChatToolWindow!!.isOutsideTouchable = true
         mChatToolWindow!!.isFocusable = true
+
+        //透明状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mChatToolWindow!!.setBackgroundDrawable(getDrawable(R.drawable.bg_transparent))
         }
         mChatToolWindow!!.background.alpha = 0
-        val btn_pic_select = chattoolview.findViewById<View>(R.id.btn_image_select)
-        val btn_emoji_select = chattoolview.findViewById<View>(R.id.btn_emoji_select)
-        btn_pic_select.setOnClickListener {
+        val btnPicSelect = chatToolView.findViewById<View>(R.id.btn_image_select)
+        val btnEmojiSelect = chatToolView.findViewById<View>(R.id.btn_emoji_select)
+        btnPicSelect.setOnClickListener {
             if (mChatToolWindow!!.isShowing) {
                 mChatToolWindow!!.dismiss()
             }
@@ -460,7 +457,7 @@ class ChatActivity : Activity(), ChatContract.View, OnAudioRecoredStatusListener
             //开始选择
             startActivityForResult(intent, CHOOSE_PHOTO)
         }
-        btn_emoji_select.setOnClickListener {
+        btnEmojiSelect.setOnClickListener {
             if (mChatToolWindow!!.isShowing) {
                 mChatToolWindow!!.dismiss()
             }

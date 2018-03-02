@@ -36,7 +36,7 @@ class LoginPresenter(private val view:LoginContract.View, private val workerRepo
             view.showMessage(context.getString(R.string.pass_is_null),CTNote.LEVEL_WARNING,CTNote.TIME_SHORT)
             return
         }
-        if(!RegMatchs.MatchEmail(email)){
+        if(!RegMatchs.matchEmail(email)){
             view.showMessage(context.getString(R.string.wrong_email),CTNote.LEVEL_WARNING,CTNote.TIME_SHORT)
             return
         }
@@ -55,12 +55,12 @@ class LoginPresenter(private val view:LoginContract.View, private val workerRepo
                     override fun onNext(value: ResponseResult<CTUser>) {
                         val user=value.Body
                         if(user!=null){
-                            if(user.Email==null||user.Email.equals(""))
+                            if(user.Email.equals(""))
                             {
                                 view.showMessage(context.getString(R.string.login_failed_problem_email))
                                 return
                             }
-                            if(user.Uid==null||user.Uid.equals("")){
+                            if(user.Uid.equals("")){
                                 view.showMessage(context.getString(R.string.login_failed_problem_password))
                                 return
                             }
@@ -88,7 +88,7 @@ class LoginPresenter(private val view:LoginContract.View, private val workerRepo
 
     }
 
-    private var compositeDisposable=CompositeDisposable()
+    var compositeDisposable=CompositeDisposable()
     override fun subscribe() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

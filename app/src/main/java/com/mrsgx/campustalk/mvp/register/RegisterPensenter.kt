@@ -1,6 +1,7 @@
 package com.mrsgx.campustalk.mvp.register
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
@@ -114,7 +115,7 @@ class RegisterPensenter(private val view: RegisterContract.View, private val wor
                             IS_EMAIL_AVILIABLE = b
                             //根据判断结果修改UI状态
                             if(!b)
-                                view.showMessage(context.getString(R.string.error_reged_email), CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
+                                view.showMessage(context.getString(R.string.error_reged_email), CTNote.LEVEL_ERROR, CTNote.TIME_LONG)
                         }
                     }
                 })

@@ -1,7 +1,9 @@
 package com.mrsgx.campustalk.mvp.main
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.*
 import android.support.v4.app.Fragment
@@ -20,6 +22,8 @@ import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.data.local.DB
 import com.mrsgx.campustalk.data.remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.interfaces.NetEventManager
+import com.mrsgx.campustalk.mvp.fragment.CTFragGlass
+import com.mrsgx.campustalk.mvp.fragment.ILiveBlur
 import com.mrsgx.campustalk.mvp.login.LoginActivity
 import com.mrsgx.campustalk.mvp.profile.ProfileActivity
 import com.mrsgx.campustalk.obj.CTUser
@@ -171,6 +175,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     private var mFollowFrag: FollowFragment? = null
     private var mMatchFrag: MatchFragment? = null
     private var mSettingFrag: SettingFragment? = null
+    private lateinit var iLiveBlur: ILiveBlur
     var viewpagerAdapter: FragAdapter? = null
     private var mProfileDialog: CTProfileCard? = null
     private lateinit var mHand: MainHandler
@@ -187,7 +192,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         }.setNegativeButton("取消", { p, v ->
                     Close()
                 }).create()
-        rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
+
         if (GlobalVar.LOCAL_USER!!.State == GlobalVar.USER_STATE_WAITING) {
             AlertDialog.Builder(this).setTitle("提示").setMessage(getString(R.string.waiting_for_auth)).setCancelable(false).setPositiveButton("退出", { dialogInterface, i ->
                 this.Close()
@@ -269,6 +274,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         btn_img_navi_switch.setOnClickListener {
             synchronized(this) {
                 moveNaviBar(frg_navibar, mNaviState)  //滑动隐藏的导航栏
+                onNaviMove(mNaviState)//毛玻璃 模糊程度渐变
                 mNaviState = !mNaviState
 
             }
@@ -310,6 +316,16 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         TalkerProgressHelper.getInstance(this).hideDialog()
     }
 
+    private fun onNaviMove(mNaviState: Boolean) {
+        //根据导航的进出状态 分别对目标进行渐变渲染
+        if (!mNaviState) {
+           iLiveBlur.onBluring()
+        } else {
+            iLiveBlur.restorBlurState()
+        }
+
+    }
+
     private val mRadioChanged = RadioGroup.OnCheckedChangeListener { p0, who ->
         run {
             when (who) {
@@ -326,10 +342,12 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
                     viewpager.setCurrentItem(3, true)
                 }
             }
+            iLiveBlur.onRefreshBlur()
         }
 
     }
     private lateinit var mainpresenter: MainPresenter
+    @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -338,6 +356,11 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         NetEventManager.getInstance().subscribe(this) //订阅网络消息
         startService(Intent(this, ConnService::class.java))
         mainpresenter = MainPresenter(this, WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance()), this)
+        //添加毛玻璃效果
+        rootView = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
+        val ctFragGlass = CTFragGlass(main_page!!)
+        iLiveBlur = ctFragGlass
+        supportFragmentManager.beginTransaction().add(R.id.frm_contianer, ctFragGlass).commit()
         initViews()
         gestureDetector = GestureDetector(this, listener)
 
@@ -374,12 +397,8 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             mAlertDailog.show()
         }
         TalkerProgressHelper.hide()
-        front_glass.alpha = 0f
-        front_glass.isClickable = false
-        front_glass.invalidate()
         super.onResume()
     }
-
     class MainHandler(activity: MainActivity) : Handler() {
         private val mMainHand: WeakReference<MainActivity> by lazy {
             WeakReference<MainActivity>(activity)
@@ -465,17 +484,11 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             parm.marginStart = this.resources.getDimension(R.dimen.hide_navibar_width).toInt()
             radio_navi.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.navi_sub_hide)
             radio_navi.startLayoutAnimation()
-            front_glass.alpha = 0f
-            front_glass.isClickable = false
-            front_glass.invalidate()
         } else {
             parm.marginStart = 0
             radio_navi.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.navi_sub_show)
             radio_navi.startLayoutAnimation()
             //遮罩
-            front_glass.alpha = 0.5f
-            front_glass.isClickable = true
-            front_glass.invalidate()
         }
         ani.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {
@@ -483,7 +496,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
             override fun onAnimationEnd(p0: Animation?) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    rotateSwitch(btn_img_navi_switch, mNaviState)
+
                 }
             }
 
@@ -492,16 +505,12 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         })
         frgbar.layoutParams = parm
         frgbar.startAnimation(ani)
-
+        rotateSwitch(btn_img_navi_switch, !mNaviState)
 
     }
 //动画区}
 
     private lateinit var mAlertDailog: AlertDialog
-
-    init {
-
-    }
 
     private var exitTime: Long = 0// 退出时间
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -538,4 +547,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         System.gc()
         super.onDestroy()
     }
+init {
+    System.loadLibrary("ctblur")
+}
 }

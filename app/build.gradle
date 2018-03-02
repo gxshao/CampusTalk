@@ -49,8 +49,10 @@ repositories {
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'org.jetbrains.anko:anko-sdk15:0.7.1' // sdk19, sdk21, sdk23 are also available
-    compile 'org.jetbrains.anko:anko-support-v4:0.7.1' // In case you need support.v4 bindings
+    compile 'org.jetbrains.anko:anko-sdk15:0.7.1'
+    // sdk19, sdk21, sdk23 are also available
+    compile 'org.jetbrains.anko:anko-support-v4:0.7.1'
+    // In case you need support.v4 bindings
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     //noinspection GradleCompatible
@@ -71,7 +73,6 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     implementation 'com.android.support:recyclerview-v7:27.0.2'
     implementation 'org.json:org.json:chargebee-1.0'
-
     compile files('libs/SignalA.aar')
     compile files('libs/SignalA.LongPolling.aar')
     compile files('libs/parallel-basic-http-client.aar')
@@ -79,4 +80,5 @@ dependencies {
     compile 'com.hanks:htextview-base:0.1.1'
     implementation 'com.github.snowdream.android:smartimageview:0.0.2'
     implementation files('libs/BaiduLBS_Android.jar')
+    implementation files('libs/ctblur.jar')
 }

@@ -120,7 +120,6 @@ class ConnService : Service() {
                 loc.Longitude =location.longitude.toString()
 
             } else if (location.getLocType() == BDLocation.TypeServerError) {
-
                 //当前网络定位失败
                 //可将定位唯一ID、IMEI、定位失败时间反馈至loc-bugs@baidu.com
 
