@@ -25,13 +25,15 @@ import java.lang.ref.WeakReference
  */
 class CTConnection(url: String?, context: Context?, transport: ITransport?) : Connection(url, context, transport) {
 
-    var mChatListener: ChatInterfaces?=null
+    var mChatListener: ChatInterfaces? = null
+
     companion object {
         @SuppressLint("StaticFieldLeak")
-        private var mConn: CTConnection?=null
+        private var mConn: CTConnection? = null
+
         fun getInstance(context: Context?): CTConnection {
-            if(mConn==null)
-                mConn = CTConnection(GlobalVar.SERVER_URL, context,LongPollingTransport() )
+            if (mConn == null)
+                mConn = CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport())
             return mConn!!
         }
     }
@@ -41,33 +43,34 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         Start()
         super.OnError(exception)
     }
+
     override fun OnMessage(message: String?) {
-        if(!message.isNullOrEmpty()){
+        if (!message.isNullOrEmpty()) {
             val aType = object : TypeToken<CTData<Any>>() {}.type
-            val msg=Gson().fromJson<CTData<Any>>(message,aType)
-            if(msg!=null){
-                when(msg.DataType){
-                    CTData.DATATYPE_REPLY->{
-                        val uid=msg.Body as String
-                        if(mChatListener!=null)
-                        mChatListener!!.onMatched(uid)
+            val msg = Gson().fromJson<CTData<Any>>(message, aType)
+            if (msg != null) {
+                when (msg.DataType) {
+                    CTData.DATATYPE_REPLY -> {
+                        val uid = msg.Body as String
+                        if (mChatListener != null)
+                            mChatListener!!.onMatched(uid)
                     }
-                    CTData.DATATYPE_MESSAGE->{
+                    CTData.DATATYPE_MESSAGE -> {
                         val bType = object : TypeToken<CTData<CTMessage>>() {}.type
-                        val d=Gson().fromJson<CTData<CTMessage>>(message,bType)
-                        if(mChatListener!=null)
-                        mChatListener!!.onMessage(d.Body!!)
+                        val d = Gson().fromJson<CTData<CTMessage>>(message, bType)
+                        if (mChatListener != null)
+                            mChatListener!!.onMessage(d.Body!!)
                     }
-                    CTData.DATATYPE_PUSH->{
+                    CTData.DATATYPE_PUSH -> {
                         //服务器推送信息
 
                     }
-                    CTData.DATATYPE_CONNECTED->{
+                    CTData.DATATYPE_CONNECTED -> {
                         //连接信息
-                        when(msg.Body){
-                            "next"->{
+                        when (msg.Body) {
+                            "next" -> {
                                 //单向连接断开，重新加载chat activity
-                                if(mChatListener!=null)
+                                if (mChatListener != null)
                                     mChatListener!!.onNextMatch()
                             }
                         }
@@ -77,31 +80,31 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         }
         super.OnMessage(message)
     }
-    var isReconnected=false
+
+    var isReconnected = false
     override fun OnStateChanged(oldState: StateBase?, newState: StateBase?) {
 
-        val reconnection= Runnable {
-            if(!isReconnected){
-            Thread.sleep(2000)
-            CTConnection.getInstance(context).Start()
+        val reconnection = Runnable {
+            if (!isReconnected) {
+                Thread.sleep(2000)
+                CTConnection.getInstance(context).Start()
             }
         }
-        val th=Thread(reconnection)
+        val th = Thread(reconnection)
 
-        if(oldState!!.state!=newState!!.state)
-        {
+        if (oldState!!.state != newState!!.state) {
 
-        val intent = Intent()
-        intent.action = "campustalk.disconnectSignalR"
-            when(newState.state){
-                ConnectionState.Connected->{
-                    isReconnected=true
-                    intent.putExtra(GlobalVar.SIGNAL_STATE,true)
+            val intent = Intent()
+            intent.action = "campustalk.disconnectSignalR"
+            when (newState.state) {
+                ConnectionState.Connected -> {
+                    isReconnected = true
+                    intent.putExtra(GlobalVar.SIGNAL_STATE, true)
                     context.sendBroadcast(intent)
-                    val data=CTData<CTUser>()
-                    data.DataType=CTData.DATATYPE_CONNECTED
-                    data.Body=GlobalVar.LOCAL_USER
-                    CTConnection.getInstance(context).Send(Gson().toJson(data),object :SendCallback(){
+                    val data = CTData<CTUser>()
+                    data.DataType = CTData.DATATYPE_CONNECTED
+                    data.Body = GlobalVar.LOCAL_USER
+                    CTConnection.getInstance(context).Send(Gson().toJson(data), object : SendCallback() {
                         override fun OnError(ex: java.lang.Exception?) {
                         }
 
@@ -109,18 +112,22 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                         }
                     })
                 }
-                ConnectionState.Disconnected ->   {intent.putExtra(GlobalVar.SIGNAL_STATE,false)
-                    isReconnected=false
+                ConnectionState.Disconnected -> {
+                    intent.putExtra(GlobalVar.SIGNAL_STATE, false)
+                    isReconnected = false
                     th.start()
                 }
-                ConnectionState.Connecting ->{
-
+                ConnectionState.Connecting -> {
+                    isReconnected=true
                 }
                 ConnectionState.Reconnecting -> {
+                    isReconnected=true
+                }
+                ConnectionState.Disconnecting -> {
 
                 }
-                ConnectionState.Disconnecting -> {}
-                null->{}
+                null -> {
+                }
             }
 
         }

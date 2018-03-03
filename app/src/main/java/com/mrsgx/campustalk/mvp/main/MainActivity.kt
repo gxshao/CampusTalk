@@ -1,13 +1,15 @@
 package com.mrsgx.campustalk.mvp.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Bitmap
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.PermissionChecker.checkSelfPermission
 import android.support.v4.view.ViewPager
 import android.view.*
 import android.view.animation.Animation
@@ -22,10 +24,12 @@ import com.mrsgx.campustalk.data.WorkerRepository
 import com.mrsgx.campustalk.data.local.DB
 import com.mrsgx.campustalk.data.remote.WorkerRemoteDataSource
 import com.mrsgx.campustalk.interfaces.NetEventManager
+import com.mrsgx.campustalk.mvp.BaseActivity
 import com.mrsgx.campustalk.mvp.fragment.CTFragGlass
 import com.mrsgx.campustalk.mvp.fragment.ILiveBlur
 import com.mrsgx.campustalk.mvp.login.LoginActivity
 import com.mrsgx.campustalk.mvp.profile.ProfileActivity
+import com.mrsgx.campustalk.mvp.welcome.WelcomeActivity
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.service.CTConnection
 import com.mrsgx.campustalk.service.ConnService
@@ -39,8 +43,14 @@ import com.mrsgx.campustalk.widget.MainViewPagerTransform
 import com.zsoft.signala.ConnectionState
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.ref.WeakReference
+import java.security.Permission
 
-
+/**
+ * 1.加载用户信息，学生认证校验和资料校验
+ * 2.链接通讯服务器  监听网络状态 done
+ * 3.加载导航 done
+ * 4.子页业务逻辑
+ */
 class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.NetEvent, MatchFragment.OnFragmentInteractionListener
         , FollowFragment.OnFragmentInteractionListener, FindFragment.OnFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener {
     override fun logout() {
@@ -153,7 +163,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     }
 
     override fun startNewPage(target: Class<*>?) {
-
         startActivity(Intent(this, target))
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
@@ -168,7 +177,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     override fun showUserProfile(user: CTUser) {
         mProfileDialog!!.showUser(user)
-        //setBackgroundAlpha(0.5f)
     }
 
     private var rootView: View? = null
@@ -198,10 +206,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
                 this.Close()
             }).setCancelable(false).show()
         }
-        //毛玻璃原始状态初始化
-//        front_glass.isDrawingCacheEnabled=true
-//        maskImage= Bitmap.createBitmap(front_glass.drawingCache)
-//        front_glass.isDrawingCacheEnabled=false
         /**
          * 初始化fragment
          *
@@ -233,7 +237,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         mFragments.add(find)
         mFragments.add(follow)
         mFragments.add(settings)
-
 
         viewpagerAdapter = FragAdapter(fm, mFragments)
         viewpager.adapter = viewpagerAdapter
@@ -267,7 +270,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         /**
          * 滑动事件
          */
-        frg_navibar.setOnTouchListener(NaviTouchEvent)
+        frg_navibar.setOnTouchListener(naviTouchEvent)
         /**
          * 导航栏事件
          */
@@ -319,7 +322,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     private fun onNaviMove(mNaviState: Boolean) {
         //根据导航的进出状态 分别对目标进行渐变渲染
         if (!mNaviState) {
-           iLiveBlur.onBluring()
+            iLiveBlur.onBluring()
         } else {
             iLiveBlur.restorBlurState()
         }
@@ -347,7 +350,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     }
     private lateinit var mainpresenter: MainPresenter
-    @SuppressLint("CommitTransaction")
+    @SuppressLint("CommitTransaction", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -362,15 +365,12 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         iLiveBlur = ctFragGlass
         supportFragmentManager.beginTransaction().add(R.id.frm_contianer, ctFragGlass).commit()
         initViews()
+
         gestureDetector = GestureDetector(this, listener)
 
-        /**
-         * 1.加载用户信息，学生认证校验和资料校验
-         * 2.链接通讯服务器  监听网络状态 done
-         * 3.加载导航 done
-         * 4.子页业务逻辑
-         */
+
     }
+
 
     /**
      * 设置添加屏幕的背景透明度
@@ -390,7 +390,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             showMessage(getString(R.string.login_failed_unknow), CTNote.LEVEL_ERROR, CTNote.TIME_SHORT)
             mHand.postDelayed({
                 val msg = mHand.obtainMessage()
-                msg.what = 1
+                msg.what = MainHandler.MSGTYPE_CLOSE_ACTIVITY
                 mHand.sendMessage(msg)
             }, 2000)
         } else if (GlobalVar.LOCAL_USER!!.State == GlobalVar.USER_STATE_UNATH) {
@@ -399,16 +399,23 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         TalkerProgressHelper.hide()
         super.onResume()
     }
+
     class MainHandler(activity: MainActivity) : Handler() {
         private val mMainHand: WeakReference<MainActivity> by lazy {
             WeakReference<MainActivity>(activity)
+        }
+
+        companion object {
+            const val MSGTYPE_CLOSE_ACTIVITY = 1
+
         }
 
         override fun handleMessage(msg: Message?) {
             val activity = mMainHand.get()
             if (activity != null) {
                 when (msg!!.what) {
-                    1 -> {
+                //关闭此页
+                    MSGTYPE_CLOSE_ACTIVITY -> {
                         activity.Close()
                     }
                 }
@@ -416,6 +423,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             super.handleMessage(msg)
         }
     }
+
 
     //{动画区
     private var gestureDetector: GestureDetector? = null
@@ -451,7 +459,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
             return true
         }
     }
-    private val NaviTouchEvent = View.OnTouchListener { view, motionEvent ->
+    private val naviTouchEvent = View.OnTouchListener { view, motionEvent ->
         kotlin.run {
             gestureDetector!!.onTouchEvent(motionEvent)
             true
@@ -472,6 +480,9 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         btn.startAnimation(ani)
     }
 
+    /**
+     * 移动导航栏
+     */
     private fun moveNaviBar(frgbar: FrameLayout, state: Boolean) {
         val ani: TranslateAnimation = if (state) {
             AnimationUtils.loadAnimation(this, R.anim.navi_out) as TranslateAnimation
@@ -514,7 +525,6 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     private var exitTime: Long = 0// 退出时间
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        // TODO 按两次返回键退出应用程序
         if (keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0) {
             // 判断间隔时间 大于2秒就退出应用
             if (System.currentTimeMillis() - exitTime > 2000) {
@@ -544,10 +554,10 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         TalkerProgressHelper.hide()
         CTConnection.getInstance(applicationContext).Stop()
         stopService(Intent(this, ConnService::class.java))
-        System.gc()
         super.onDestroy()
     }
-init {
-    System.loadLibrary("ctblur")
-}
+
+    init {
+        System.loadLibrary("ctblur")
+    }
 }

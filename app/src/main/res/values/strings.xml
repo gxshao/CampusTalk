@@ -130,4 +130,5 @@
     <string name="personal_center">个人中心 ☺</string>
     <string name="empty_follow_list">您的关注列表为空,快去匹配吧</string>
     <string name="tips_logout">注销登录请点击确定！</string>
+    <string name="tips_lower_system_version">您的系统版本较低，请手动配置权限</string>
 </resources>

@@ -116,8 +116,9 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
 
     override fun onDestroy() {
+        if(welpresenter!=null)
+            welpresenter!!.compositeDisposable.dispose()
         welpresenter=null
-        System.gc()
         super.onDestroy()
     }
     class MyHandler(activity: WelcomeActivity): Handler() {
