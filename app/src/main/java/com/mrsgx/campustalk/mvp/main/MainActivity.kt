@@ -87,7 +87,11 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
 
     override fun initFollowData(list: ArrayList<CTUser>) {
         if (mFollowFrag != null) {
-            mFollowFrag!!.initData(list)
+            try {
+                mFollowFrag!!.initData(list)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
     }
 
@@ -114,7 +118,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
     private var mNaviState = false
     private var mCONN_SERVICE_STATE = false
 
-    override fun OnNetChanged(net: Int) {
+    override fun onNetChanged(net: Int) {
         when (net) {
             Utils.NETWORK_NONE -> {
                 showMessage(getString(R.string.tips_network_disconnected), CTNote.LEVEL_ERROR, CTNote.TIME_LONG)
@@ -132,7 +136,7 @@ class MainActivity : FragmentActivity(), MainContract.View, NetStateListening.Ne
         }
     }
 
-    override fun OnSignalRChanged(state: Boolean) {
+    override fun onSignalRChanged(state: Boolean) {
         if (state) {
             if (mCONN_SERVICE_STATE != state) {
                 showMessage(getString(R.string.tips_connected_server), CTNote.LEVEL_TIPS, CTNote.TIME_SHORT)

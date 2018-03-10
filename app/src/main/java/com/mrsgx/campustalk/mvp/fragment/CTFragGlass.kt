@@ -34,7 +34,7 @@ class CTFragGlass(val rootview:View) : Fragment(),ILiveBlur {
     private lateinit var bluror: CTBlur
     //回调事件
     override fun onBluring() {
-        bluror.updateBlurView(5)
+       bluror.updateBlurView(2)
         curView.isClickable=true
     }
 
@@ -56,7 +56,7 @@ class CTFragGlass(val rootview:View) : Fragment(),ILiveBlur {
         mblurdata.viewsToBlurOnto=arr
         mblurdata.blurAlgorithm= CTBlurUtils.getIBlurAlgorithm(CTBlurUtils.ALGORITHM_GAUSSAINFASTBLUR,mblurdata.contextWrapper!!)
         bluror=CTBlur(mblurdata)
-        CTBlur.BLUR_ROUNDS_PER_UPDATE=50
+        CTBlur.BLUR_ROUNDS_PER_UPDATE=3
         return curView
     }
     override fun onAttach(context: Context?) {

@@ -29,12 +29,12 @@ import java.io.File
 
 
 class ProfileActivity : Activity(),ProfileContract.View,NetStateListening.NetEvent {
-    override fun OnNetChanged(net: Int) {
+    override fun onNetChanged(net: Int) {
 
 
     }
 
-    override fun OnSignalRChanged(state: Boolean) {
+    override fun onSignalRChanged(state: Boolean) {
 
     }
 

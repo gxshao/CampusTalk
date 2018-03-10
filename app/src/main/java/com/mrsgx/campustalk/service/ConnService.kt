@@ -33,11 +33,11 @@ class ConnService : Service() {
         }
     }
 
-    private var IS_UPLOAD=true
+    private var isUPLOAD =true
    private val mThread:Thread by lazy {
         Thread({
             val worker= WorkerRepository.getInstance(WorkerRemoteDataSource.getInstance())
-            while(IS_UPLOAD){
+            while(isUPLOAD){
                 val str=Gson().toJson(DB.getInstance(applicationContext).getAllLocation())
                 worker.uploadGpsInfo(str).observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
@@ -60,7 +60,7 @@ class ConnService : Service() {
     }
     private val BAIDU_READ_PHONE_STATE = 100
 
-    private val  myListener: BDAbstractLocationListener = MyLocationListener();
+    private val  myListener: BDAbstractLocationListener = MyLocationListener()
 
     private fun MyLocationListener()=object : BDAbstractLocationListener() {
         override fun onReceiveLocation(location: BDLocation) {
@@ -163,6 +163,7 @@ class ConnService : Service() {
         val intentFilter=IntentFilter()
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
         intentFilter.addAction("campustalk.disconnectSignalR")
+        intentFilter.addAction("campustalk.receivePushMessage")
         registerReceiver(netStateListening,intentFilter)
         CTConnection.getInstance(applicationContext).Start()
         //声明LocationClient类
@@ -177,7 +178,7 @@ class ConnService : Service() {
     }
 
     override fun onDestroy() {
-        IS_UPLOAD=false
+        isUPLOAD =false
         mLocationClient.stop()
         unregisterReceiver(netStateListening)
         super.onDestroy()

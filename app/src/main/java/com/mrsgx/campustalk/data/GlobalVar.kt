@@ -39,5 +39,8 @@ class GlobalVar {
 
         //权限集合
         val permissionList = arrayListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.RECORD_AUDIO, Manifest.permission.GET_ACCOUNTS)
+
+        //全局变量
+        var PUSH_MSG="暂无新公告~"
     }
 }

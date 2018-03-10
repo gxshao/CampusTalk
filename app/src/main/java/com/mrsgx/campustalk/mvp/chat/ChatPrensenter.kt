@@ -2,6 +2,10 @@ package com.mrsgx.campustalk.mvp.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapRegionDecoder
+import android.graphics.Rect
 import com.google.gson.Gson
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
@@ -21,9 +25,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import java.io.FileInputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * presenter
@@ -31,7 +37,7 @@ import java.util.*
  */
 class ChatPrensenter(private val view: ChatContract.View, private val workerRepository: WorkerRepository, private val context: Context) : ChatContract.Prensenter, ChatInterfaces, NetStateListening.NetEvent {
 
-    override fun OnNetChanged(net: Int) {
+    override fun onNetChanged(net: Int) {
         when (net) {
             Utils.NETWORK_NONE -> {
                 view.showMessage(context.getString(R.string.tips_signal_disconnect))
@@ -40,7 +46,7 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
         }
     }
 
-    override fun OnSignalRChanged(state: Boolean) {
+    override fun onSignalRChanged(state: Boolean) {
         if (state) {
 
         } else {
@@ -288,10 +294,10 @@ class ChatPrensenter(private val view: ChatContract.View, private val workerRepo
     }
 
     override fun subscribe() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change Body of created functions use File | Settings | File Templates.
     }
 
     override fun unsubscribe() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change Body of created functions use File | Settings | File Templates.
     }
 }

@@ -10,6 +10,7 @@ import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.ChatInterfaces
 import com.mrsgx.campustalk.obj.CTData
 import com.mrsgx.campustalk.obj.CTMessage
+import com.mrsgx.campustalk.obj.CTPushMessage
 import com.mrsgx.campustalk.obj.CTUser
 import com.zsoft.signala.Connection
 import com.zsoft.signala.ConnectionState
@@ -23,15 +24,17 @@ import java.lang.ref.WeakReference
  * 聊天服务器通信
  * Created by Shao on 2017/9/6.
  */
-class CTConnection(url: String?, context: Context?, transport: ITransport?) : Connection(url, context, transport) {
+class CTConnection(url: String?, context: Context, transport: ITransport?) : Connection(url, context, transport) {
 
     var mChatListener: ChatInterfaces? = null
-
+    val mContext:Context by lazy {
+        context
+    }
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var mConn: CTConnection? = null
 
-        fun getInstance(context: Context?): CTConnection {
+        fun getInstance(context: Context): CTConnection {
             if (mConn == null)
                 mConn = CTConnection(GlobalVar.SERVER_URL, context, LongPollingTransport())
             return mConn!!
@@ -63,7 +66,11 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
                     }
                     CTData.DATATYPE_PUSH -> {
                         //服务器推送信息
-
+                        val bType=object :TypeToken<CTData<CTPushMessage>>(){}.type
+                        val d=Gson().fromJson<CTData<CTPushMessage>>(message,bType)
+                        val intent=Intent("campustalk.receivePushMessage")
+                        intent.putExtra(CTPushMessage.PUSH_MSG,d.Body)
+                        mContext.sendBroadcast(intent)
                     }
                     CTData.DATATYPE_CONNECTED -> {
                         //连接信息
@@ -81,7 +88,7 @@ class CTConnection(url: String?, context: Context?, transport: ITransport?) : Co
         super.OnMessage(message)
     }
 
-    var isReconnected = false
+    private var isReconnected = false
     override fun OnStateChanged(oldState: StateBase?, newState: StateBase?) {
 
         val reconnection = Runnable {

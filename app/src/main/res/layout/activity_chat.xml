@@ -124,6 +124,19 @@
     </LinearLayout>
 </LinearLayout>
     <FrameLayout
+        android:id="@+id/frm_image_mask"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/chat_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@android:color/white" />
+    </FrameLayout>
+    <FrameLayout
         android:id="@+id/frm_mask"
         android:focusable="true"
         android:clickable="true"

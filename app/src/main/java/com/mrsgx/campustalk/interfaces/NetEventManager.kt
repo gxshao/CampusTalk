@@ -1,8 +1,6 @@
 package com.mrsgx.campustalk.interfaces
 
 import com.mrsgx.campustalk.service.NetStateListening
-import com.zsoft.signala.transport.StateBase
-import java.lang.ref.WeakReference
 
 /**
  * Created by Shao on 2017/9/20.
@@ -51,7 +49,7 @@ class NetEventManager {
     fun broadcastOnNetChanged(net: Int) {
         synchronized(this) {
             for (event in mList) {
-                event.OnNetChanged(net)
+                event.onNetChanged(net)
             }
         }
     }
@@ -59,7 +57,7 @@ class NetEventManager {
     fun broadcastOnSignalRChanged(state: Boolean) {
         synchronized(this) {
             for (event in mList) {
-                event.OnSignalRChanged(state)
+                event.onSignalRChanged(state)
             }
         }
     }

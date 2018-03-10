@@ -37,13 +37,14 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
 
     override fun setPresenter(presenter: WelcomeContract.Presenter?) {
     }
+    private lateinit var mAudioPlayer:AudioPlayer
     override fun initViews() {
         val timer = Timer()
         var count = 3  //等待秒数
         val context = this
         txt_count.text=getString(R.string.loading)
-        val player = AudioPlayer(this)
-        player.playAudio(R.raw.welcome)
+         mAudioPlayer = AudioPlayer(this)
+        mAudioPlayer.playAudio(R.raw.welcome)
         timer.schedule(object : TimerTask() {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun run() {
@@ -119,6 +120,7 @@ class WelcomeActivity : Activity(), WelcomeContract.View {
         if(welpresenter!=null)
             welpresenter!!.compositeDisposable.dispose()
         welpresenter=null
+        mAudioPlayer.stopPlayAudio()
         super.onDestroy()
     }
     class MyHandler(activity: WelcomeActivity): Handler() {

@@ -10,11 +10,9 @@ import android.widget.Button
 import android.widget.TextView
 import com.github.snowdream.android.widget.SmartImageView
 import com.mrsgx.campustalk.R
-import com.mrsgx.campustalk.data.GlobalVar
 import com.mrsgx.campustalk.interfaces.RecyclerViewClickListener
 import com.mrsgx.campustalk.obj.CTUser
 import com.mrsgx.campustalk.retrofit.Api
-import kotlinx.android.synthetic.main.item_follow_list.view.*
 import java.util.*
 
 /**

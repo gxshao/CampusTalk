@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.646">
 
-       <!-- <TextView
+        <!-- <TextView
             android:id="@+id/txt_apptitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,17 +30,17 @@
             android:id="@+id/anim_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
             android:layout_marginBottom="@dimen/big_distance"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/TitleSize"/>
+            android:text="@string/app_name"
+            android:textSize="@dimen/TitleSize" />
 
         <LinearLayout
             android:id="@+id/login_sub_box"
 
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -98,51 +98,53 @@
                     app:layout_constraintEnd_toEndOf="@+id/ed_email"
                     app:layout_constraintTop_toBottomOf="@+id/ed_email" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height"
-                android:background="@drawable/btn_common_style"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginTop="@dimen/btn_text_size"
-                android:textColor="@android:color/white"
+                android:background="@drawable/btn_common_style"
                 android:text="@string/sign_in"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/btn_text_size" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_height="wrap_content">
+                android:layout_marginTop="@dimen/small_distance">
 
                 <CheckBox
                     android:id="@+id/cb_autologin"
-                    android:checked="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center|center_horizontal"
+                    android:checked="true"
+                    android:theme="@style/CTMainTheme"
                     android:text="@string/autologin" />
 
                 <TextView
                     android:id="@+id/btn_reg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/checkBox"
-                    android:layout_alignBottom="@+id/checkBox"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center|center_horizontal|center_vertical"
-                    android:text="@string/sign_up"
-                    android:clickable="true"
+                    android:layout_marginEnd="@dimen/small_distance"
                     android:layout_marginRight="@dimen/small_distance"
-                    android:textColor="@android:color/black"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/btn_text_size"
+                    android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginEnd="@dimen/small_distance" />
+                    android:text="@string/sign_up"
+                    android:textAlignment="center"
+                   android:layout_centerVertical="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/btn_text_size"
+                    tools:ignore="RtlHardcoded,UnknownId" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -158,7 +160,12 @@
             tools:ignore="SpUsage" />
     </LinearLayout>
 
-
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 
 </android.support.constraint.ConstraintLayout>

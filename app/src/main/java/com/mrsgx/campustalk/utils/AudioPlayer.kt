@@ -11,54 +11,50 @@ import java.io.FileInputStream
  * Created by Shao on 2017/10/10.
  */
 class AudioPlayer constructor(val context: Context) {
-    private var mMediaPlayer: MediaPlayer? = null
 
+    private var mMediaPlayer:MediaPlayer = MediaPlayer()
+    private var isLoop=false
+    fun setLoop(b:Boolean){
+        isLoop=b
+    }
     /**
      * 开始播放
      */
     fun playAudio(path: String) {
-//        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.RECORD_AUDIO)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(context as Activity, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
-//        } else {
-
         val file = File(path)
         val fis = FileInputStream(file)
         playBase(fis.fd)
     }
-    fun  playAudio(id:Int){
-       try {
-           synchronized(this){
-           val mp=MediaPlayer.create(context,id)
-           mp.start()
-           mp.setOnCompletionListener {
-               mp.stop()
-               mp.reset()
-               mp.release()
-           }
-           }
-       }catch (e:Exception)
-       {
-           e.printStackTrace()
-       }
+
+    fun playAudio(id: Int) {
+        try {
+            synchronized(this) {
+                mMediaPlayer = MediaPlayer.create(context, id)
+                mMediaPlayer.setVolume(50f,50f)
+                mMediaPlayer.start()
+                mMediaPlayer.setOnCompletionListener {
+                    if(isLoop)
+                        mMediaPlayer.start()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun playBase(fd: FileDescriptor) {
         synchronized(this) {
             try {
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = MediaPlayer()
-                }
-                if (mMediaPlayer!!.isPlaying || mMediaPlayer!!.isLooping)
+                if (mMediaPlayer.isPlaying)
                     return
-                mMediaPlayer!!.setDataSource(fd)
-                mMediaPlayer!!.prepare()
-                mMediaPlayer!!.start()
-                mMediaPlayer!!.setOnCompletionListener {
-                    stopPlayAudio()
+                mMediaPlayer.setDataSource(fd)
+                mMediaPlayer.setVolume(50f,50f)
+                mMediaPlayer.prepare()
+                mMediaPlayer.start()
+                mMediaPlayer.setOnCompletionListener {
+                        mMediaPlayer.start()
                 }
             } catch (e: Exception) {
-
                 e.printStackTrace()
             } finally {
 
@@ -70,10 +66,9 @@ class AudioPlayer constructor(val context: Context) {
      * 结束播放
      */
     fun stopPlayAudio() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.stop()
-            mMediaPlayer!!.release()
-        }
-        mMediaPlayer = null
+        isLoop=false
+        mMediaPlayer.stop()
+        mMediaPlayer.reset()
+        mMediaPlayer.release()
     }
 }

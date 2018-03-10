@@ -192,7 +192,7 @@ class FindActivity : Activity(),FindContract.View {
         return super.onOptionsItemSelected(item)
     }
     override fun Close() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change Body of created functions use File | Settings | File Templates.
     }
 
     override fun showMessage(msg: String?) {
@@ -203,11 +203,11 @@ class FindActivity : Activity(),FindContract.View {
     }
 
     override fun startNewPage(target: Class<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change Body of created functions use File | Settings | File Templates.
     }
 
     override fun setPresenter(presenter: FindContract.Prensenter?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change Body of created functions use File | Settings | File Templates.
     }
 
     private lateinit var mMap:BaiduMap

@@ -1,9 +1,14 @@
 package com.mrsgx.campustalk.mvp.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ActivityOptions
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +16,8 @@ import android.os.Handler
 import android.os.Message
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v4.app.NotificationCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +26,12 @@ import android.view.animation.AnimationUtils
 
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
+import com.mrsgx.campustalk.interfaces.IOnReceive
 import com.mrsgx.campustalk.mvp.chat.ChatActivity
+import com.mrsgx.campustalk.obj.CTPushMessage
 import com.mrsgx.campustalk.utils.TalkerProgressHelper
 import kotlinx.android.synthetic.main.fragment_match.*
+import javax.microedition.khronos.opengles.GL
 
 /**
  * A simple [Fragment] subclass.
@@ -31,7 +41,13 @@ import kotlinx.android.synthetic.main.fragment_match.*
  * Use the [MatchFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MatchFragment : Fragment() {
+class MatchFragment : Fragment(), IOnReceive {
+
+
+    override fun onReceivePushMessage(msg: CTPushMessage) {
+        GlobalVar.PUSH_MSG=msg.Body
+        tvNotify.text = GlobalVar.PUSH_MSG
+    }
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -39,13 +55,28 @@ class MatchFragment : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
     private var mNetState: Boolean = false
+
+    private val mBroadcastReceiver:MatchReceiver= MatchReceiver()
+    private val intentFilter:IntentFilter= IntentFilter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments!!.getString(ARG_PARAM1)
             mParam2 = arguments!!.getString(ARG_PARAM2)
         }
+        mBroadcastReceiver.receiver=this
+        intentFilter.addAction("campustalk.receivePushMessage")
+    }
 
+    override fun onResume() {
+        tvNotify.text = GlobalVar.PUSH_MSG
+        context!!.registerReceiver(mBroadcastReceiver,intentFilter)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        context!!.unregisterReceiver(mBroadcastReceiver)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,8 +118,7 @@ class MatchFragment : Fragment() {
                     startActivity(Intent(context, ChatActivity::class.java))
                     mHand.sendMessage(mHand.obtainMessage())
                 }, 1500)
-            }catch (e:Exception)
-            {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -180,6 +210,18 @@ class MatchFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+    class MatchReceiver: BroadcastReceiver() {
+       lateinit var receiver:IOnReceive
+        override fun onReceive(context: Context?, intent: Intent) {
+            if (intent.action == "campustalk.receivePushMessage") {
+                //发起notification
+                val msg: CTPushMessage = intent.extras.getParcelable(CTPushMessage.PUSH_MSG)
+                receiver.onReceivePushMessage(msg)
+            }
+        }
+
+
     }
 
 

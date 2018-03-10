@@ -1,5 +1,6 @@
 package com.mrsgx.campustalk.mvp.chat
 
+import android.graphics.Bitmap
 import com.mrsgx.campustalk.mvp.BasePresenter
 import com.mrsgx.campustalk.mvp.BaseView
 import com.mrsgx.campustalk.obj.CTUser
@@ -20,6 +21,8 @@ class ChatContract {
         fun setCurrentState(state: Int)
         fun getCurrentState(): Int
         fun setFollowState(state:Boolean)
+        fun showChatImage(bitmap:Bitmap)
+        fun hideChatImage()
     }
 
     interface Prensenter : BasePresenter {

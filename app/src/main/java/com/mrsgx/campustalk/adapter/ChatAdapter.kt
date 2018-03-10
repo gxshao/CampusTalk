@@ -1,9 +1,8 @@
 package com.mrsgx.campustalk.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.BitmapRegionDecoder
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,8 +11,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import com.github.snowdream.android.widget.LocalImage
-import com.github.snowdream.android.widget.SmartImage
 import com.github.snowdream.android.widget.SmartImageView
 import com.mrsgx.campustalk.R
 import com.mrsgx.campustalk.data.GlobalVar
@@ -38,8 +35,9 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     val TYPE_MY = 1
     val TYPE_OTHER = 0
     var Partner: CTUser = CTUser()
-    var OnAudioPlayerListener:View.OnClickListener?=null
-    var OnHeadPicClickListener:View.OnClickListener?=null
+    lateinit var OnAudioPlayerListener:View.OnClickListener
+    lateinit var onImageCheckListener:View.OnClickListener
+    lateinit var OnHeadPicClickListener:View.OnClickListener
     override fun onBindViewHolder(holder: ChatHolder?, position: Int) {
         if (holder != null) {
             if (mListRoles[position] == TYPE_MY) {
@@ -90,6 +88,8 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
                     holder.image!!.layoutParams=lp
                     ///加载图片
                     holder.image!!.setImageBitmap(BitmapFactory.decodeFile(filepath))
+                    holder.image!!.tag=mListChat[position]
+                    holder.image!!.setOnClickListener(onImageCheckListener)
                 }
             }
         }

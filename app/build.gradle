@@ -81,4 +81,5 @@ dependencies {
     implementation 'com.github.snowdream.android:smartimageview:0.0.2'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation files('libs/ctblur.jar')
+    implementation 'com.android.support:support-v13:27.0.2'
 }
