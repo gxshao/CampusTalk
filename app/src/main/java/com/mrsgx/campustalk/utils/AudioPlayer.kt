@@ -12,11 +12,12 @@ import java.io.FileInputStream
  */
 class AudioPlayer constructor(val context: Context) {
 
-    private var mMediaPlayer:MediaPlayer = MediaPlayer()
-    private var isLoop=false
-    fun setLoop(b:Boolean){
-        isLoop=b
+    private var mMediaPlayer: MediaPlayer = MediaPlayer()
+    private var isLoop = false
+    fun setLoop(b: Boolean) {
+        isLoop = b
     }
+
     /**
      * 开始播放
      */
@@ -30,10 +31,10 @@ class AudioPlayer constructor(val context: Context) {
         try {
             synchronized(this) {
                 mMediaPlayer = MediaPlayer.create(context, id)
-                mMediaPlayer.setVolume(50f,50f)
+                mMediaPlayer.setVolume(50f, 50f)
                 mMediaPlayer.start()
                 mMediaPlayer.setOnCompletionListener {
-                    if(isLoop)
+                    if (isLoop)
                         mMediaPlayer.start()
                 }
             }
@@ -48,11 +49,12 @@ class AudioPlayer constructor(val context: Context) {
                 if (mMediaPlayer.isPlaying)
                     return
                 mMediaPlayer.setDataSource(fd)
-                mMediaPlayer.setVolume(50f,50f)
+                mMediaPlayer.setVolume(50f, 50f)
                 mMediaPlayer.prepare()
                 mMediaPlayer.start()
                 mMediaPlayer.setOnCompletionListener {
-                        mMediaPlayer.start()
+                    if (isLoop)
+                     mMediaPlayer.start()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -66,9 +68,10 @@ class AudioPlayer constructor(val context: Context) {
      * 结束播放
      */
     fun stopPlayAudio() {
-        isLoop=false
-        mMediaPlayer.stop()
-        mMediaPlayer.reset()
-        mMediaPlayer.release()
+        isLoop = false
+        if (mMediaPlayer.isPlaying) {
+            mMediaPlayer.stop()
+            mMediaPlayer.reset()
+        }
     }
 }
