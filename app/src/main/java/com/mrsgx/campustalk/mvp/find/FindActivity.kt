@@ -53,7 +53,9 @@ class FindActivity : Activity(),FindContract.View {
         mListUser.addAll(users)
         mAdapter.notifyDataSetChanged()
         mPopListUsers.setBackgroundDrawable(ColorDrawable())
-        mPopListUsers.showAsDropDown(mView)
+        val location = IntArray(2)
+        mView.getLocationOnScreen(location)
+        mPopListUsers.showAtLocation(mView, Gravity.CENTER_VERTICAL, location[0]/2,0)
     }
 
     override fun showMarkers(marks: ArrayList<CTLocation>) {
@@ -113,7 +115,7 @@ class FindActivity : Activity(),FindContract.View {
         val view=mPopListUsers.contentView
         val btnclose:Button
         if(view!=null){
-            mListView=view.findViewById(R.id.list_people)
+            mListView=view.findViewById(R.id.list_people) as ListView
             btnclose=view.findViewById(R.id.btn_close_peoplelist)
             btnclose.setOnClickListener {
                 //关闭当前列表
@@ -126,9 +128,11 @@ class FindActivity : Activity(),FindContract.View {
     }
     @SuppressLint("InflateParams")
     override fun initViews() {
+
         rootView=LayoutInflater.from(this).inflate(R.layout.activity_find,null)
         mMap=map_bdmap.map
         mMap.mapType=BaiduMap.MAP_TYPE_NORMAL
+        setUserMapCenter( LatLng(39.077206,117.116831) )
         /**
          * 点击标记时，去网络请求附近的人
          */
@@ -232,9 +236,12 @@ class FindActivity : Activity(),FindContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+
         TalkerProgressHelper.hide()
+
+        mMap.isMyLocationEnabled=false
         map_bdmap.onDestroy()
+        super.onDestroy()
     }
 
     override fun onResume() {

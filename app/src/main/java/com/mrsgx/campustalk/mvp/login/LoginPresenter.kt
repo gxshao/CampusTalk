@@ -54,17 +54,17 @@ class LoginPresenter(private val view:LoginContract.View, private val workerRepo
                     @SuppressLint("CommitPrefEdits")
                     override fun onNext(value: ResponseResult<CTUser>) {
                         val user=value.Body
-                        if(user!=null){
-                            if(user.Email.equals(""))
+                        if(user != null){
+                            if(user.Email!=null&&user.Email.equals(""))
                             {
                                 view.showMessage(context.getString(R.string.login_failed_problem_email))
                                 return
                             }
-                            if(user.Uid.equals("")){
+                            if(user.Uid!=null&&user.Uid.equals("")){
                                 view.showMessage(context.getString(R.string.login_failed_problem_password))
                                 return
                             }
-                            if(user.State==GlobalVar.USER_STATE_STOPPED){
+                            if(user.State!=null&&user.State==GlobalVar.USER_STATE_STOPPED){
                                 view.showMessage(context.getString(R.string.login_failed_problem_stopped))
                                 return
                             }

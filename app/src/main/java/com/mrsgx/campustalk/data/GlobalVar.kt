@@ -11,7 +11,7 @@ import java.lang.reflect.Type
  */
 class GlobalVar {
     companion object {
-       // const val IP = "192.168.2.222:13614"
+        //const val IP = "192.168.2.222:13614"
          const val IP="mrsgx.cn"
         val SERVER_URL = "http://$IP/MyConnection"
         var LOCAL_USER: CTUser? = CTUser()

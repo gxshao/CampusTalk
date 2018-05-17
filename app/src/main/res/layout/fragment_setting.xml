@@ -77,20 +77,21 @@
                 android:textColor="@android:color/white"
                 android:background="@drawable/btn_common_style"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_20"
                 android:text="@string/btn_sign"
                 android:textSize="@dimen/small_txt"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
-                android:layout_marginStart="@dimen/dp_40" />
+                android:layout_marginStart="@dimen/dp_20"
+                tools:ignore="RtlHardcoded" />
 
             <ImageView
-                android:layout_marginLeft="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_width="@dimen/tiny_pic"
                 android:layout_height="@dimen/tiny_pic"
                 android:layout_gravity="center_vertical"
                 android:src="@mipmap/gold"
-                android:layout_marginStart="@dimen/dp_40" />
+                android:layout_marginStart="@dimen/dp_20" />
             <TextView
                 android:id="@+id/txt_gold"
                 android:layout_width="wrap_content"
