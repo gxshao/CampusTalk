@@ -1,5 +1,5 @@
 # CampusTalk
-This is my personal project compiled by kotlin programming language.
+Archived
 
 # 功能概述
 [毕业设计]一个基于校园的随机匹配的聊天的系统
